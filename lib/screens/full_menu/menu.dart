@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/screens/QR/qr.dart';
 import 'package:gigi_app/screens/full_menu/bar.dart';
 import 'package:gigi_app/screens/full_menu/location_bar.dart';
+import 'package:gigi_app/screens/full_menu/percent_ind2.dart';
+import 'package:gigi_app/screens/full_menu/percent_ind3.dart';
+import 'package:gigi_app/screens/full_menu/percent_indicator.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 
 import '../../constant/size_constants.dart';
@@ -23,11 +26,14 @@ class Menu extends StatelessWidget {
             child: Column(
               children: [
                 location_bar(),
+                SizedBox(height: 10),
+                Dashboard(),
+                SizedBox(height: 10),
+                Stacked_container(),
+                SizedBox(height: 10),
+                Stacked_container2(),
                 Deals(),
                 Deals(),
-                Deals(),
-                Deals(),
-                Deals()
               ],
             ),
           ),
