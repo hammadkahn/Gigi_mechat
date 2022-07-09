@@ -32,6 +32,19 @@ class Menu extends StatelessWidget {
                 Stacked_container(),
                 SizedBox(height: 10),
                 Stacked_container2(),
+                SizedBox(height: 50),
+                Row(
+                  children: [
+                    Text(
+                      'Our Deals',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Mulish',
+                          color: Color(0xFF4A4A6A)),
+                    ),
+                  ],
+                ),
                 Deals(),
                 Deals(),
               ],

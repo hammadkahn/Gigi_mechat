@@ -6,6 +6,8 @@ import 'package:gigi_app/screens/full_menu/chat.dart';
 import 'package:gigi_app/screens/full_menu/contact.dart';
 import 'package:gigi_app/screens/full_menu/menu.dart';
 import 'package:gigi_app/screens/full_menu/profile.dart';
+import 'package:gigi_app/support/contact.dart';
+import 'package:gigi_app/support/support.dart';
 
 class Bar extends StatefulWidget {
   @override
@@ -17,9 +19,9 @@ class _BarState extends State<Bar> {
 
   final List<Widget> _children = [
     Menu(),
-    Contact_us(),
+    Contact(),
     QR(),
-    Chat(),
+    Support(),
     Profile(),
   ];
 
@@ -72,7 +74,7 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 1;
-                          currentScreen = Contact_us();
+                          currentScreen = Contact();
                         });
                       },
                       child: Image.asset(
@@ -87,7 +89,7 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 2;
-                          currentScreen = Chat();
+                          currentScreen = Support();
                         });
                       },
                       child: Image.asset(
