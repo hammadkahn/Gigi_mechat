@@ -7,57 +7,86 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Stack(
+        Column(
           children: [
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.transparent,
-                  ),
-                ),
-                LinearPercentIndicator(
-                  animation: true,
-                  animationDuration: 2000,
-                  width: MediaQuery.of(context).size.width - 48,
-                  lineHeight: 8.0,
-                  percent: 0.5,
-                  progressColor: Colors.blue,
-                  barRadius: Radius.circular(8),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 6, left: 6),
-              child: Container(
-                // color: Colors.red,
-                width: MediaQuery.of(context).size.width - 48,
-                height: 70,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.home),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Total Sale: '),
-                        Text(' \$ 56789'),
-                      ],
-                    ),
-                  ],
-                ),
+            Container(
+              width: double.infinity,
+              height: 95,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.transparent,
               ),
             ),
+            LinearPercentIndicator(
+              animation: true,
+              animationDuration: 2000,
+              width: MediaQuery.of(context).size.width - 48,
+              lineHeight: 8.0,
+              percent: 0.5,
+              progressColor: Colors.green,
+              barRadius: Radius.circular(8),
+            ),
           ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 6, left: 6),
+          child: Container(
+            // color: Colors.red,
+            width: MediaQuery.of(context).size.width - 48,
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Color(0xffA7E3B8),
+                    ),
+                    child: Image.asset(
+                      'assets/images/shop.png',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Total Sale: ',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Mulish',
+                            color: Color(0xFF4A4A6A)),
+                      ),
+                      Text(
+                        '\$ 14,106.98',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Mulish',
+                            color: Color(0xFF4A4A6A)),
+                      ),
+                    ],
+                  ),
+                ),
+                Spacer(),
+              ],
+            ),
+          ),
         ),
       ],
     );
