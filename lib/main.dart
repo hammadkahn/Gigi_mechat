@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/screens/onboarding/onboard.dart';
-import 'package:gigi_app/splash_screen/splash.dart';
+
+import '../splash_screen/splash.dart';
 
 import 'constant/theme.dart';
 
@@ -15,10 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: theme(),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

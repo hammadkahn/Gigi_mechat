@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gigi_app/screens/authentication/auth.dart';
+import 'package:gigi_app/services/auth/merchant_auth.dart';
 import 'package:gigi_app/support/support.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Ham_burger extends StatelessWidget {
-  const Ham_burger({Key? key}) : super(key: key);
+  const Ham_burger({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,8 @@ class Ham_burger extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/images/kfc.png'),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 13, bottom: 10),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 13, bottom: 10),
                     child: Text('KFC',
                         style: TextStyle(
                             fontFamily: 'DMSans',
@@ -39,20 +40,20 @@ class Ham_burger extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             color: Color(0xff32324D))),
                   ),
-                  Text(
-                      textAlign: TextAlign.center,
+                  const Text(
                       'California, US\n+12345678901234  |   g,mamed@mail.com',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'DMSans',
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: Color(0xffC5C5C5))),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                          padding: const EdgeInsets.only(top: 22, bottom: 25),
+                      const Padding(
+                          padding: EdgeInsets.only(top: 22, bottom: 25),
                           child: Divider(
                             color: Color(0xFFE6E6E6),
                             thickness: 0.5,
@@ -60,14 +61,14 @@ class Ham_burger extends StatelessWidget {
                             indent: 82,
                             endIndent: 79,
                           )),
-                      Text("Active Offers",
+                      const Text("Active Offers",
                           style: TextStyle(
                               fontFamily: 'Mulish',
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff32324D))),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 18, bottom: 18),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 18, bottom: 18),
                         child: Divider(
                           color: Color(0xFFE6E6E6),
                           thickness: 0.5,
@@ -76,14 +77,14 @@ class Ham_burger extends StatelessWidget {
                           endIndent: 79,
                         ),
                       ),
-                      Text("My Branches",
+                      const Text("My Branches",
                           style: TextStyle(
                               fontFamily: 'Mulish',
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff32324D))),
-                      Padding(
-                          padding: const EdgeInsets.only(top: 18, bottom: 18),
+                      const Padding(
+                          padding: EdgeInsets.only(top: 18, bottom: 18),
                           child: Divider(
                             color: Color(0xFFE6E6E6),
                             thickness: 0.5,
@@ -93,10 +94,10 @@ class Ham_burger extends StatelessWidget {
                           )),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => Support()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const Support()));
                         },
-                        child: Text("Support",
+                        child: const Text("Support",
                             style: TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 12,
@@ -107,12 +108,21 @@ class Ham_burger extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 200, bottom: 56),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => auth_page()));
+                            MerchantAuthServices().logOut(token).then((value) {
+                              if (value == 'success') {
+                                isLogOut();
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const auth_page()),
+                                    (route) => false);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(value)));
+                              }
+                            });
                           },
-                          child: Text('Log out',
+                          child: const Text('Log out',
                               style: TextStyle(
                                   fontFamily: 'Mulish',
                                   fontSize: 12,
@@ -129,5 +139,10 @@ class Ham_burger extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> isLogOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 }

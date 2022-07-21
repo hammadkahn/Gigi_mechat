@@ -4,7 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class Stacked_container2 extends StatelessWidget {
-  const Stacked_container2({Key? key}) : super(key: key);
+  const Stacked_container2({Key? key, required this.totalActiveDeals})
+      : super(key: key);
+  final String totalActiveDeals;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +28,8 @@ class Stacked_container2 extends StatelessWidget {
               width: MediaQuery.of(context).size.width - 48,
               lineHeight: 8.0,
               percent: 0.5,
-              progressColor: Color(0xFF9E2DF8),
-              barRadius: Radius.circular(8),
+              progressColor: const Color(0xFF9E2DF8),
+              barRadius: const Radius.circular(8),
             ),
           ],
         ),
@@ -51,7 +53,7 @@ class Stacked_container2 extends StatelessWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Color(0xffD4A8F9),
+                      color: const Color(0xffD4A8F9),
                     ),
                     child: Image.asset(
                       'assets/images/vouch.png',
@@ -65,7 +67,7 @@ class Stacked_container2 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Total Active Orders',
                         style: TextStyle(
                             fontSize: 12,
@@ -74,8 +76,8 @@ class Stacked_container2 extends StatelessWidget {
                             color: Color(0xFF4A4A6A)),
                       ),
                       Text(
-                        '4',
-                        style: TextStyle(
+                        totalActiveDeals,
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                             fontFamily: 'Mulish',
@@ -84,7 +86,7 @@ class Stacked_container2 extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
           ),

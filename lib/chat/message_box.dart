@@ -34,20 +34,20 @@ class MessageItem extends StatelessWidget {
                 left: !send ? 5 : (MediaQuery.of(context).size.width / 2) - 80,
                 right: send ? 5 : (MediaQuery.of(context).size.width / 2) - 80,
               ),
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 10,
                 horizontal: 15,
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+                  topLeft: const Radius.circular(20),
+                  topRight: const Radius.circular(20),
                   bottomLeft: Radius.circular(send ? 20 : 0),
                   bottomRight: Radius.circular(send ? 0 : 20),
                 ),
                 color: send
-                    ? Color(0xff0D9BFF)
-                    : Color(0xFFE9E9E9).withOpacity(0.8),
+                    ? const Color(0xff0D9BFF)
+                    : const Color(0xFFE9E9E9).withOpacity(0.8),
               ),
               child: SelectableText(
                 message,

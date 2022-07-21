@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gigi_app/scanned/scan_details.dart';
 import 'package:gigi_app/screens/QR/qr_scan.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 
 class QR extends StatelessWidget {
-  const QR({Key? key}) : super(key: key);
+  const QR({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +15,8 @@ class QR extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(),
-              Text(
+              const Spacer(),
+              const Text(
                 'Scan the QR of Deal',
                 style: TextStyle(
                     fontFamily: 'DMSans',
@@ -31,7 +29,7 @@ class QR extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 70, bottom: 71),
                 child: Image.asset('assets/images/Content.png'),
               ),
-              Text(
+              const Text(
                 'Please scan the QR Code',
                 style: TextStyle(
                     fontFamily: 'Mulish',
@@ -39,7 +37,7 @@ class QR extends StatelessWidget {
                     color: Color(0xFF8E8EA9),
                     fontWeight: FontWeight.w500),
               ),
-              Spacer(),
+              const Spacer(),
 
               Padding(
                 padding: const EdgeInsets.only(bottom: 38),
@@ -47,7 +45,10 @@ class QR extends StatelessWidget {
                   text: 'Scan Now',
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => QR_scan(title: "QR Scanner")));
+                        builder: (_) => QR_scan(
+                              title: "QR Scanner",
+                              token: token,
+                            )));
                   },
                 ),
               ),

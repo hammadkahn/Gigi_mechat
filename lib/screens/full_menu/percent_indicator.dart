@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/screens/full_menu/percent_ind2.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard({Key? key, required this.totalSale}) : super(key: key);
+  final String totalSale;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class Dashboard extends StatelessWidget {
               lineHeight: 8.0,
               percent: 0.5,
               progressColor: Colors.green,
-              barRadius: Radius.circular(8),
+              barRadius: const Radius.circular(8),
             ),
           ],
         ),
@@ -50,7 +50,7 @@ class Dashboard extends StatelessWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      color: Color(0xffA7E3B8),
+                      color: const Color(0xffA7E3B8),
                     ),
                     child: Image.asset(
                       'assets/images/shop.png',
@@ -64,8 +64,8 @@ class Dashboard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Total Sale: ',
+                      const Text(
+                        'Total Deal Sale: ',
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -73,8 +73,8 @@ class Dashboard extends StatelessWidget {
                             color: Color(0xFF4A4A6A)),
                       ),
                       Text(
-                        '\$ 14,106.98',
-                        style: TextStyle(
+                        '\$ $totalSale',
+                        style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                             fontFamily: 'Mulish',
@@ -83,7 +83,7 @@ class Dashboard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
           ),

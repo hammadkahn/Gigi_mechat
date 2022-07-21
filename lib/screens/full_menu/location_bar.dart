@@ -10,8 +10,8 @@ class location_bar extends StatelessWidget {
     return Row(
       children: [
         Image.asset('assets/images/Vector.png'),
-        Padding(
-          padding: const EdgeInsets.only(left: 10.94),
+        const Padding(
+          padding: EdgeInsets.only(left: 10.94),
           child: Text('Branch 1',
               style: TextStyle(
                 fontFamily: 'Mulish',
@@ -20,7 +20,7 @@ class location_bar extends StatelessWidget {
                 color: Color(0xFF0D9BFF),
               )),
         ),
-        Spacer(),
+        const Spacer(),
         Image.asset('assets/images/drawer.png')
       ],
     );

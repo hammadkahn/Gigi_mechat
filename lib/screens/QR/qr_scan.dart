@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:gigi_app/scanned/scan_details.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 class QR_scan extends StatefulWidget {
-  const QR_scan({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+  const QR_scan({Key? key, required this.title, required this.token})
+      : super(key: key);
+  final String token;
   final String title;
 
   @override
@@ -53,21 +44,27 @@ class _QR_scan extends State<QR_scan> {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Column(
               children: [
                 Center(
                   child: (result != null)
                       ? Text(
                           'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                      : Text('Scan a code'),
+                      : const Text('Scan a code'),
                 ),
                 FloatingActionButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => Scanned_details()));
+                    controller!.pauseCamera();
+                    // Navigator.of(context)
+                    //     .push(MaterialPageRoute(
+                    //         builder: (_) =>
+                    //             Scanned_details(token: widget.token)))
+                    //     .then((value) => setState(() {
+                    //           controller!.resumeCamera();
+                    //         }));
                   },
-                  child: Text('Go'),
+                  child: const Text('Go'),
                 )
               ],
             ),
@@ -77,12 +74,41 @@ class _QR_scan extends State<QR_scan> {
     );
   }
 
+  // void _onQRViewCreated(QRViewController controller) {
+  //   this.controller = controller;
+  //   controller.scannedDataStream.listen((scanData) {
+  //     setState(() {
+  //       result = scanData;
+  //     });
+  //   });
+  // }
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
+    // final expectedCodes = recognisedCodes.map((e) => e.type);
+
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
+      controller.pauseCamera();
+      // if (expectedCodes.any((element) => scanData.code == element)) {
+      result = scanData;
+      if (result!.format == BarcodeFormat.qrcode) {
+        try {
+          // QrModel qrModel = QrModel.fromJson(jsonDecode(result!.code ?? ''));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => Scanned_details(
+                token: widget.token,
+                scannedData: scanData,
+              ),
+            ),
+          );
+        } on FormatException {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('invalid qr code')));
+        } on Exception {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('error')));
+        }
+      }
     });
   }
 

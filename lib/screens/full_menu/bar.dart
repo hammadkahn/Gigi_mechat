@@ -1,33 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/chat/message_list.dart';
 import 'package:gigi_app/screens/QR/qr.dart';
-import 'package:gigi_app/screens/full_menu/chat.dart';
-import 'package:gigi_app/screens/full_menu/contact.dart';
 import 'package:gigi_app/screens/full_menu/menu.dart';
 import 'package:gigi_app/screens/full_menu/profile.dart';
-import 'package:gigi_app/support/contact.dart';
-import 'package:gigi_app/support/support.dart';
+
+import '../../support/contact.dart';
 
 class Bar extends StatefulWidget {
+  const Bar({Key? key, required this.token}) : super(key: key);
+  final String token;
+
   @override
   State<Bar> createState() => _BarState();
 }
 
 class _BarState extends State<Bar> {
+  // String? token;
   int currentIndex = 0;
 
-  final List<Widget> _children = [
-    Menu(),
-    Contact(),
-    QR(),
-    Support(),
-    Profile(),
-  ];
+  List<Widget> _children = List.empty(growable: true);
 
   final PageStorageBucket bucket = PageStorageBucket();
 
-  Widget currentScreen = Menu();
+  late Widget currentScreen;
+
+  @override
+  void initState() {
+    super.initState();
+    currentScreen = Menu(token: widget.token);
+    _children = [
+      Menu(token: widget.token),
+      const Contact(),
+      QR(token: widget.token),
+      const Message(),
+      Profile(
+        token: widget.token,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +46,8 @@ class _BarState extends State<Bar> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (_) => QR()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => QR(token: widget.token)));
           },
           child: Image.asset(
             'assets/images/auth_pic.png',
@@ -46,10 +57,10 @@ class _BarState extends State<Bar> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
-            color: Color(0xFF030381),
-            shape: CircularNotchedRectangle(),
+            color: const Color(0xFF030381),
+            shape: const CircularNotchedRectangle(),
             notchMargin: 0,
-            child: Container(
+            child: SizedBox(
                 height: 64,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,7 +70,7 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 0;
-                          currentScreen = Menu();
+                          currentScreen = Menu(token: widget.token);
                         });
                       },
                       child: Image.asset(
@@ -74,7 +85,7 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 1;
-                          currentScreen = Contact();
+                          currentScreen = const Contact();
                         });
                       },
                       child: Image.asset(
@@ -89,7 +100,7 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 2;
-                          currentScreen = Support();
+                          currentScreen = const Message();
                         });
                       },
                       child: Image.asset(
@@ -104,7 +115,9 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 3;
-                          currentScreen = Profile();
+                          currentScreen = Profile(
+                            token: widget.token,
+                          );
                         });
                       },
                       child: Image.asset(

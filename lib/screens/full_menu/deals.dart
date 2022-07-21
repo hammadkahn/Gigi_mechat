@@ -1,13 +1,20 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gigi_app/constant/size_constants.dart';
-import 'package:gigi_app/screens/authentication/text_feild.dart';
 
 class Deals extends StatelessWidget {
-  const Deals({Key? key}) : super(key: key);
+  const Deals(
+      {Key? key,
+      required this.name,
+      required this.discountPrice,
+      required this.actualPrice,
+      required this.discount,
+      this.imgUrl})
+      : super(key: key);
+  final String name;
+  final String discountPrice;
+  final String actualPrice;
+  final String discount;
+  final String? imgUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,7 @@ class Deals extends StatelessWidget {
       child: Container(
         width: SizeConfig.screenWidth,
         height: 145,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: Color(0xFF030381),
             borderRadius: BorderRadius.all(Radius.circular(16))),
         child: Padding(
@@ -27,8 +34,8 @@ class Deals extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10),
                     child: Text(
                       'Offer of the Week',
                       style: TextStyle(
@@ -41,8 +48,8 @@ class Deals extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
-                        'Avocado Chicken \nSalad',
-                        style: TextStyle(
+                        name,
+                        style: const TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -57,7 +64,7 @@ class Deals extends StatelessWidget {
                             width: 8,
                             height: 8,
                           ),
-                          Text(
+                          const Text(
                             'Cafe Bistrovia - Baku, Azerbaijan',
                             style: TextStyle(
                                 fontFamily: 'Mulish',
@@ -73,7 +80,7 @@ class Deals extends StatelessWidget {
                         children: [
                           Image.asset('assets/images/rating.png',
                               width: 6, height: 6),
-                          Text(
+                          const Text(
                             '4.8',
                             style: TextStyle(
                                 fontFamily: 'Poppins',
@@ -81,7 +88,7 @@ class Deals extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFFFFFFFF)),
                           ),
-                          Text(
+                          const Text(
                             '(30 reviews)',
                             style: TextStyle(
                                 fontFamily: 'Poppins',
@@ -95,7 +102,7 @@ class Deals extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 2.83),
                       child: Row(
                         children: [
-                          Text(
+                          const Text(
                             '\$',
                             style: TextStyle(
                                 fontFamily: 'Mulish',
@@ -104,15 +111,15 @@ class Deals extends StatelessWidget {
                                 color: Color(0xFF0D9BFF)),
                           ),
                           Text(
-                            '10.40',
-                            style: TextStyle(
+                            actualPrice,
+                            style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 fontFamily: 'Mulish',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xFF0D9BFF)),
                           ),
-                          Text(
+                          const Text(
                             '\$',
                             style: TextStyle(
                                 fontFamily: 'Mulish',
@@ -121,8 +128,8 @@ class Deals extends StatelessWidget {
                                 color: Color(0xFFFFFFFF)),
                           ),
                           Text(
-                            '8.40',
-                            style: TextStyle(
+                            discountPrice,
+                            style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -131,14 +138,14 @@ class Deals extends StatelessWidget {
                           Container(
                             width: 28,
                             height: 11,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Colors.white,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(3))),
                             child: Center(
                               child: Text(
-                                '20% OFF',
-                                style: TextStyle(
+                                '$discount % OFF',
+                                style: const TextStyle(
                                     fontSize: 5,
                                     fontFamily: 'Mulish',
                                     fontWeight: FontWeight.w900,
@@ -150,9 +157,22 @@ class Deals extends StatelessWidget {
                       )),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Container(
-                child: Image.asset('assets/images/food.png'),
+                height: 120,
+                width: 150,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: imgUrl == null
+                    ? Image.asset(
+                        'assets/images/food.png',
+                        fit: BoxFit.cover,
+                      )
+                    : Image.network(
+                        'https://gigiapi.zanforthstaging.com/storage/deals/$imgUrl',
+                        fit: BoxFit.cover,
+                      ),
               ),
             ],
           ),
