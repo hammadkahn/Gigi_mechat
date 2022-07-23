@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/shared/search_field.dart';
+import 'package:gigi_app/shared/toggle_button.dart';
+import 'package:gigi_app/user_app/categories/categories.dart';
+
+import '../user_menu/user_menu.dart';
 
 class Virtual_user extends StatelessWidget {
   const Virtual_user({Key? key}) : super(key: key);
@@ -78,6 +83,15 @@ class Virtual_user extends StatelessWidget {
                           SearchField(
                             searchText: 'Search',
                           ),
+                          Toggle_Button(),
+                          Spacer(),
+                          CustomButton(
+                              text: "Continue",
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => User_bar()));
+                              }),
+                          SizedBox(height: 25),
                         ])))));
   }
 }
