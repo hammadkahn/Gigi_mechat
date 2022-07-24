@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/models/merchant_model.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +29,27 @@ class MerchantAuthServices {
     }
   }
 
-  Future<Map<String, dynamic>> merchantLogin(
+  Future<Map<String, dynamic>> userSignUp(
+      {required Map<String, dynamic> data}) async {
+    try {
+      final response = await http.post(
+        ApiUrls.userSignUp,
+        body: data,
+      );
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        return result;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> login(
     String email,
     String password,
   ) async {
@@ -54,6 +75,44 @@ class MerchantAuthServices {
       }
     } catch (e) {
       print('error catch : $e');
+      throw Exception(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> verifyAccount(
+      {required String email, required String code}) async {
+    try {
+      final response = await http.post(
+        ApiUrls.verifyAccount,
+        body: {'email': email, 'code': code},
+      );
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        return result;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> reSendCode({required String email}) async {
+    try {
+      final response = await http.post(
+        ApiUrls.verifyAccount,
+        body: {'email': email},
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+      } else {
+        debugPrint(response.reasonPhrase);
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
       throw Exception(e);
     }
   }

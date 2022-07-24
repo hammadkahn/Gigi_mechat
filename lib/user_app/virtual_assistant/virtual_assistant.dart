@@ -57,16 +57,16 @@ class Virtual_user extends StatelessWidget {
                                     child: Image.asset(
                                         'assets/images/arrow-left.png')),
                               ),
-                              Spacer(),
-                              Text('Skip',
+                              const Spacer(),
+                              const Text('Skip',
                                   style: TextStyle(
                                       fontFamily: 'Mulish',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600)),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 42),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 42),
                             child: Text("Tell us about your prefrences!",
                                 style: TextStyle(
                                     fontFamily: 'DMSans',
@@ -74,24 +74,24 @@ class Virtual_user extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                     color: Color(0xff32324D))),
                           ),
-                          Text("Select all that applies: ",
+                          const Text("Select all that applies: ",
                               style: TextStyle(
                                   fontFamily: 'DMSans',
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xff8E8EA9))),
-                          SearchField(
+                          const SearchField(
                             searchText: 'Search',
                           ),
-                          Toggle_Button(),
-                          Spacer(),
+                          const Toggle_Button(),
+                          const Spacer(),
                           CustomButton(
                               text: "Continue",
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => User_bar()));
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (_) => User_bar()));
                               }),
-                          SizedBox(height: 25),
+                          const SizedBox(height: 25),
                         ])))));
   }
 }

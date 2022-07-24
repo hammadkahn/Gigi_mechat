@@ -4,6 +4,7 @@ import 'package:gigi_app/user_app/email_verification/email_ver.dart';
 
 import '../../constant/size_constants.dart';
 import '../../shared/custom_button.dart';
+import '../create_acc/user_create_acc.dart';
 
 class user_auth extends StatefulWidget {
   const user_auth({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _user_authState extends State<user_auth> {
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 56),
               child: Image.asset('assets/images/auth_pic.png'),
@@ -35,8 +36,8 @@ class _user_authState extends State<user_auth> {
                   fontSize: 26,
                   fontWeight: FontWeight.w500),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 14, bottom: 49),
+            const Padding(
+              padding: EdgeInsets.only(top: 14, bottom: 49),
               child: Text(
                   'Sign up or login into to have a full  digital \nexperience in our restaurant',
                   textAlign: TextAlign.center,
@@ -49,12 +50,12 @@ class _user_authState extends State<user_auth> {
             CustomButton(
                 text: 'Sign In',
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Email_ver()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const Email_ver()));
                 }),
             Padding(
               padding: const EdgeInsets.only(top: 18),
-              child: Row(children: <Widget>[
+              child: Row(children: const <Widget>[
                 Expanded(
                     child: Divider(
                         color: Color(0xFFDCDCE4), thickness: 1, endIndent: 14)),
@@ -73,24 +74,28 @@ class _user_authState extends State<user_auth> {
             EmailButton(
                 text: 'Continue with Apple ID',
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Email_ver()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const Email_ver()));
                 }),
             EmailButton(
                 text: 'Continue with Gmail',
-                onPressed: () { 
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Email_ver()));
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const Email_ver()));
                 }),
             Padding(
               padding: const EdgeInsets.only(bottom: 54),
-              child: Text(
-                'Sign up later',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF8981AE)),
+              child: InkWell(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) => const User_create_acc())),
+                child: const Text(
+                  'Sign up later',
+                  style: TextStyle(
+                      fontFamily: 'Mulish',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF8981AE)),
+                ),
               ),
             )
           ],

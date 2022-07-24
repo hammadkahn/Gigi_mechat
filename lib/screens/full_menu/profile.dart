@@ -4,7 +4,8 @@ import 'package:gigi_app/models/branch_model.dart';
 import 'package:gigi_app/services/branch/branch_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../services/auth/merchant_auth.dart';
+import '../../services/auth/authentication.dart';
+
 import '../../support/support.dart';
 import '../authentication/auth.dart';
 

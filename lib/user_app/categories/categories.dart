@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gigi_app/screens/full_menu/location_bar.dart';
+import 'package:gigi_app/models/category_model.dart';
+import 'package:gigi_app/services/categories/category_services.dart';
 import 'package:gigi_app/shared/loaction_user.dart';
+import 'package:gigi_app/user_app/categories/widget/categories_list.dart';
+
+import 'widget/trending_deals.dart';
 
 class Categories_user extends StatelessWidget {
-  const Categories_user({Key? key}) : super(key: key);
+  const Categories_user({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +19,11 @@ class Categories_user extends StatelessWidget {
         ),
         child: ListView(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 24),
+            const Padding(
+              padding: EdgeInsets.only(right: 24),
               child: Location_bar_user(),
             ),
-            SizedBox(
+            const SizedBox(
               height: 23,
             ),
             const Text('Popular deals in your area',
@@ -32,83 +35,45 @@ class Categories_user extends StatelessWidget {
                 )),
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: new Container(
+              child: SizedBox(
                 height: 131,
-                child:
-                    new ListView(scrollDirection: Axis.horizontal, children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 5,
-                      top: 5,
-                      bottom: 5,
-                    ),
-                    child: Container(
-                      height: 121,
-                      width: 125,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            // changes position of shadow
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      top: 5,
-                      bottom: 5,
-                    ),
-                    child: Container(
-                      height: 121,
-                      width: 125,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            // changes position of shadow
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      top: 5,
-                      bottom: 5,
-                    ),
-                    child: Container(
-                      height: 121,
-                      width: 125,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            // changes position of shadow
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ]),
+                child: FutureBuilder<GetAllCategoriesModel>(
+                    future: CategoryServices().getAllCategories(token),
+                    builder: ((context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        default:
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(snapshot.error.toString()),
+                            );
+                          } else {
+                            // return AllCategoriesWidget(
+                            //   length: 3,
+                            //   direction: Axis.horizontal,
+                            //   categoryList: snapshot.data!.data!,
+                            // );
+                            return ListView.builder(
+                              itemCount: 3,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: ((context, index) {
+                                return TrendingDealsWidget(
+                                  dealName: snapshot.data!.data![index].name!,
+                                );
+                              }),
+                            );
+                          }
+                      }
+                    })),
+                // child: FutureBuilder(builder: ((context, snapshot) {
+
+                // }),)
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 19,
             ),
             Row(
@@ -119,7 +84,7 @@ class Categories_user extends StatelessWidget {
                   width: 8,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Color(0xFFD9D9D9)),
+                      color: const Color(0xFFD9D9D9)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10, left: 10),
@@ -128,7 +93,7 @@ class Categories_user extends StatelessWidget {
                     width: 8,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: Color(0xFFD9D9D9)),
+                        color: const Color(0xFFD9D9D9)),
                   ),
                 ),
                 Container(
@@ -136,141 +101,47 @@ class Categories_user extends StatelessWidget {
                   width: 8,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Color(0xFFD9D9D9)),
+                      color: const Color(0xFFD9D9D9)),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 42,
             ),
-            Text('All Categories',
+            const Text('All Categories',
                 style: TextStyle(
                   fontFamily: 'Mulish',
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF505050),
                 )),
-            SizedBox(
+            const SizedBox(
               height: 24,
             ),
-            Text('Electronics',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
             SizedBox(
-              height: 18,
+              width: double.infinity,
+              child: FutureBuilder<GetAllCategoriesModel>(
+                future: CategoryServices().getAllCategories(token),
+                builder: ((context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const Center(child: CircularProgressIndicator());
+                    default:
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      } else {
+                        return AllCategoriesWidget(
+                          length: snapshot.data!.data!.length,
+                          direction: Axis.vertical,
+                          categoryList: snapshot.data!.data!,
+                        );
+                      }
+                  }
+                }),
+              ),
             ),
-            Divider(
-              color: Color(0xFFE6E6E6),
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 18,
-            ),
-            Text('Automotive',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
-            SizedBox(
-              height: 18,
-            ),
-            Divider(
-              color: Color(0xFFE6E6E6),
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 18,
-            ),
-            Text('Cleaning',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
-            SizedBox(
-              height: 18,
-            ),
-            Divider(
-              color: Color(0xFFE6E6E6),
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 18,
-            ),
-            Text('For Mens',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
-            SizedBox(
-              height: 18,
-            ),
-            Divider(
-              color: Color(0xFFE6E6E6),
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 18,
-            ),
-            Text('For Kids',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
-            SizedBox(
-              height: 18,
-            ),
-            Divider(
-              color: Color(0xFFE6E6E6),
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 18,
-            ),
-            Text('For Womens',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
-            SizedBox(
-              height: 18,
-            ),
-            Divider(
-              color: Color(0xFFE6E6E6),
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 18,
-            ),
-            Text('Accessories',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
-            SizedBox(
-              height: 18,
-            ),
-            Divider(
-              color: Color(0xFFE6E6E6),
-              thickness: 1,
-            ),
-            SizedBox(
-              height: 18,
-            ),
-            Text('Food',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF32324D))),
           ],
         ),
       ),

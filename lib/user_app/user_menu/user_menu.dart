@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gigi_app/user_app/categories/categories.dart';
 import 'package:gigi_app/user_app/user_menu/cart_user.dart';
 import 'package:gigi_app/user_app/user_menu/discont_user.dart';
@@ -8,7 +6,8 @@ import 'package:gigi_app/user_app/user_menu/fav_user.dart';
 import 'package:gigi_app/user_app/user_menu/full_user_meu.dart';
 
 class User_bar extends StatefulWidget {
-  const User_bar({Key? key}) : super(key: key);
+  const User_bar({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   State<User_bar> createState() => _User_barState();
@@ -17,17 +16,25 @@ class User_bar extends StatefulWidget {
 class _User_barState extends State<User_bar> {
   int currentIndex = 0;
 
-  final List<Widget> _children = [
-    Full_menu_user(),
-    Categories_user(),
-    Discount_user(),
-    Fav_user(),
-    Cart_user(),
-  ];
+  List<Widget> _children = [];
 
   final PageStorageBucket bucket = PageStorageBucket();
 
-  Widget currentScreen = Full_menu_user();
+  Widget currentScreen = const Full_menu_user();
+
+  @override
+  void initState() {
+    _children = [
+      const Full_menu_user(),
+      Categories_user(
+        token: widget.token,
+      ),
+      const Discount_user(),
+      const Fav_user(),
+      const Cart_user(),
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,7 @@ class _User_barState extends State<User_bar> {
           backgroundColor: Colors.white,
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => Categories_user(),
+              builder: (_) => Categories_user(token: widget.token),
             ));
           },
           child: Image.asset(
@@ -48,10 +55,10 @@ class _User_barState extends State<User_bar> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
-            color: Color(0xFF030381),
-            shape: CircularNotchedRectangle(),
+            color: const Color(0xFF030381),
+            shape: const CircularNotchedRectangle(),
             notchMargin: 0,
-            child: Container(
+            child: SizedBox(
                 height: 64,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +68,7 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 0;
-                          currentScreen = Discount_user();
+                          currentScreen = const Discount_user();
                         });
                       },
                       child: Image.asset(
@@ -76,7 +83,9 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 1;
-                          currentScreen = Categories_user();
+                          currentScreen = Categories_user(
+                            token: widget.token,
+                          );
                         });
                       },
                       child: Image.asset(
@@ -91,7 +100,7 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 2;
-                          currentScreen = Fav_user();
+                          currentScreen = const Fav_user();
                         });
                       },
                       child: Image.asset(
@@ -106,7 +115,7 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 3;
-                          currentScreen = Cart_user();
+                          currentScreen = const Cart_user();
                         });
                       },
                       child: Image.asset(

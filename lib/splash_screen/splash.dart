@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/screens/onboarding/onboard.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/user_app/splash_screen/splashh.dart';
+import 'package:gigi_app/user_app/user_menu/user_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -17,15 +18,17 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   String? token;
   String? email;
+  String? userType;
   var isChecked = false;
   Future<void> checkLogIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     token = prefs.getString('token');
     email = prefs.getString('email');
+    userType = prefs.getString('user_type');
 
-    print('token $token');
-    print(email);
+    debugPrint('user type: $userType');
+    debugPrint(token);
     setState(() {
       isChecked = true;
     });
@@ -41,7 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return isChecked == true
         ? email != null && token != null
-            ? Bar(token: token!)
+            ? userType == '1'
+                ? User_bar(token: token!)
+                : Bar(token: token!)
             : Scaffold(
                 body: Center(
                   child: Padding(

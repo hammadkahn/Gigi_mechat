@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class loc_dropdown extends StatefulWidget {
   const loc_dropdown({Key? key}) : super(key: key);
@@ -47,7 +45,7 @@ class _loc_dropdownState extends State<loc_dropdown> {
               value: value,
               child: Text(
                 value,
-                style: TextStyle(fontSize: 14, fontFamily: 'Mulish'),
+                style: const TextStyle(fontSize: 14, fontFamily: 'Mulish'),
               ),
             );
           }).toList(),

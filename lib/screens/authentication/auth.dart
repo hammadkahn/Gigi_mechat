@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/services/auth/merchant_auth.dart';
+
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/size_constants.dart';
+import '../../services/auth/authentication.dart';
 import '../full_menu/bar.dart';
 
 class auth_page extends StatefulWidget {
@@ -150,7 +151,7 @@ class _auth_pageState extends State<auth_page> {
 
   Future<void> login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final result = await MerchantAuthServices().merchantLogin(
+    final result = await MerchantAuthServices().login(
       emailCtr.text,
       passwordCtr.text,
     );

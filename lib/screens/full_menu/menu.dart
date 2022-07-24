@@ -3,7 +3,7 @@ import 'package:gigi_app/models/dash_board_model.dart';
 import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/screens/full_menu/location_bar.dart';
 import 'package:gigi_app/services/dashboard_stats/dash_board.dart';
-import 'package:gigi_app/services/deals/deal_services.dart';
+import 'package:gigi_app/services/deals/merchant_deal_services.dart';
 
 import '../../constant/size_constants.dart';
 import 'deals.dart';
