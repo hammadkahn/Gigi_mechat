@@ -45,6 +45,7 @@ dependencies:
   http: ^0.13.4
   toggle_switch: ^2.0.1
   pin_code_fields: ^7.4.0
+  modal_bottom_sheet: ^2.1.0
   
   
 
