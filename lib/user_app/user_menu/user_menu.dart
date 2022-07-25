@@ -71,7 +71,7 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 0;
-                          currentScreen = const Discount_user();
+                          currentScreen = Full_menu_user(token: widget.token);
                         });
                       },
                       child: Image.asset(
