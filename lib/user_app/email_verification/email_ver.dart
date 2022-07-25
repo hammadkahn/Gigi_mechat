@@ -150,6 +150,7 @@ class _Email_verState extends State<Email_ver> {
       prefs.setString('token', result['data']['token']);
       prefs.setString('email', result['data']['email']);
       prefs.setString('user_type', result['data']['type']);
+      prefs.setString('status', result['data']['StatusName']);
       setState(() {
         isLoggedIn = true;
         token = result['data']['token'];

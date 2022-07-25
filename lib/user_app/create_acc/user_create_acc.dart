@@ -156,26 +156,27 @@ class _User_create_accState extends State<User_create_acc> {
                 isLoading: isLoading,
                 text: 'Next',
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) =>
-                          const User_Verification(email: 'user1@gmail.com')));
-                  // if (_key.currentState!.validate()) {
-                  //   setState(() {
-                  //     isLoading = true;
-                  //   });
-                  //   signUp().whenComplete(() {
-                  //     if (msg == 'success') {
-                  //       Navigator.of(context).push(MaterialPageRoute(
-                  //           builder: (_) => User_Verification(email: emailCtr.text)));
-                  //     } else {
-                  //       ScaffoldMessenger.of(context)
-                  //           .showSnackBar(SnackBar(content: Text(msg!)));
-                  //       setState(() {
-                  //         isLoading = false;
-                  //       });
-                  //     }
-                  //   });
-                  // }
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (_) =>
+                  //         const User_Verification(email: 'user1@gmail.com')));
+                  if (_key.currentState!.validate()) {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    signUp().whenComplete(() {
+                      if (msg == 'success') {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) =>
+                                User_Verification(email: emailCtr.text)));
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(msg!)));
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    });
+                  }
                 },
               ),
               const Text(

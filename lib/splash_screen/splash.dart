@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   String? token;
   String? email;
   String? userType;
+  String? status;
   var isChecked = false;
   Future<void> checkLogIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,8 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
     token = prefs.getString('token');
     email = prefs.getString('email');
     userType = prefs.getString('user_type');
+    status = prefs.getString('status');
 
-    debugPrint('user type: $userType');
+    debugPrint('user type: $status');
     debugPrint(token);
     setState(() {
       isChecked = true;
@@ -43,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return isChecked == true
-        ? email != null && token != null
+        ? email != null && token != null && status == 'Active'
             ? userType == '1'
                 ? User_bar(token: token!)
                 : Bar(token: token!)

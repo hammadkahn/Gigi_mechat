@@ -1,12 +1,15 @@
-class ListOfDeals {
+import 'image_model.dart';
+
+class MerchantListOfDeals {
   bool? status;
   int? responseCode;
   String? message;
   List<DealData>? data;
 
-  ListOfDeals({this.status, this.responseCode, this.message, this.data});
+  MerchantListOfDeals(
+      {this.status, this.responseCode, this.message, this.data});
 
-  ListOfDeals.fromJson(Map<String, dynamic> json) {
+  MerchantListOfDeals.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     responseCode = json['responseCode'];
     message = json['message'];
@@ -62,6 +65,38 @@ class TrendingDealsModel {
   }
 }
 
+class UserListOfDeals {
+  bool? status;
+  int? responseCode;
+  String? message;
+  List<DealData>? data;
+
+  UserListOfDeals({this.status, this.responseCode, this.message, this.data});
+
+  UserListOfDeals.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    responseCode = json['responseCode'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <DealData>[];
+      json['data'].forEach((v) {
+        data!.add(DealData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['responseCode'] = responseCode;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
 class DealData {
   int? id;
   String? name;
@@ -83,6 +118,9 @@ class DealData {
   String? createdAt;
   String? updatedAt;
   String? expiry;
+  String? merchantName;
+  String? categoryName;
+  Image? image;
   int? dealIsExpired;
   String? typeName;
 
@@ -107,6 +145,9 @@ class DealData {
       this.createdAt,
       this.updatedAt,
       this.expiry,
+      this.merchantName,
+      this.categoryName,
+      this.image,
       this.dealIsExpired,
       this.typeName});
 
@@ -131,6 +172,9 @@ class DealData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     expiry = json['expiry'];
+    merchantName = json['merchant_name'];
+    categoryName = json['category_name'];
+    image = json['image'] != null ? Image.fromJson(json['image']) : null;
     dealIsExpired = json['dealIsExpired'];
     typeName = json['TypeName'];
   }
@@ -157,6 +201,11 @@ class DealData {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['expiry'] = expiry;
+    data['merchant_name'] = merchantName;
+    data['category_name'] = categoryName;
+    if (image != null) {
+      data['image'] = image!.toJson();
+    }
     data['dealIsExpired'] = dealIsExpired;
     data['TypeName'] = typeName;
     return data;

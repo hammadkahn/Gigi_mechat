@@ -20,12 +20,16 @@ class _User_barState extends State<User_bar> {
 
   final PageStorageBucket bucket = PageStorageBucket();
 
-  Widget currentScreen = const Full_menu_user();
+  late Widget currentScreen;
 
   @override
   void initState() {
+    super.initState();
+    currentScreen = Full_menu_user(token: widget.token);
     _children = [
-      const Full_menu_user(),
+      Full_menu_user(
+        token: widget.token,
+      ),
       Categories_user(
         token: widget.token,
       ),
@@ -33,7 +37,6 @@ class _User_barState extends State<User_bar> {
       const Fav_user(),
       const Cart_user(),
     ];
-    super.initState();
   }
 
   @override

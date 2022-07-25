@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:gigi_app/user_app/set_loc/set_loc.dart';
+import 'package:gigi_app/user_app/email_verification/email_ver.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class User_Verification extends StatefulWidget {
@@ -185,7 +185,7 @@ class _User_VerificationState extends State<User_Verification> {
                         verify().whenComplete(() {
                           if (msg == 'success') {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const Set_user_location()));
+                                builder: (_) => const Email_ver()));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -197,8 +197,6 @@ class _User_VerificationState extends State<User_Verification> {
                             });
                           }
                         });
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (_) => const Set_user_location()));
                       }),
                 ),
               ],

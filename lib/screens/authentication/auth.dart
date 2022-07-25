@@ -161,6 +161,7 @@ class _auth_pageState extends State<auth_page> {
     if (result['message'] == 'success') {
       prefs.setString('token', result['data']['token']);
       prefs.setString('email', result['data']['email']);
+      prefs.setString('status', result['StatusName']);
       setState(() {
         isLoggedIn = true;
         token = result['data']['token'];

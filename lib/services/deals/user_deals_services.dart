@@ -27,4 +27,25 @@ class UserDealServices {
       throw Exception(e);
     }
   }
+
+  Future<UserListOfDeals> getAllUserDeals(String token) async {
+    try {
+      final response = await http.get(
+        ApiUrls.userAllDeals,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      );
+
+      final result = UserListOfDeals.fromJson(jsonDecode(response.body));
+
+      if (response.statusCode == 200) {
+        debugPrint(result.message);
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        return result;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

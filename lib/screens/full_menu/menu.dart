@@ -115,9 +115,9 @@ class _MenuState extends State<Menu> {
         ));
   }
 
-  Future<ListOfDeals> getAllData() async {
+  Future<MerchantListOfDeals> getAllData() async {
     final result = await DealServices().getAllDeals(token: widget.token);
-    final userData = ListOfDeals.fromJson(result);
+    final userData = MerchantListOfDeals.fromJson(result);
     print('userData: ${userData.responseCode}');
     return userData;
   }
