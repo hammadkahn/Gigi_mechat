@@ -1,4 +1,4 @@
-class Image {
+class ImageModel {
   int? id;
   String? dealId;
   String? originalName;
@@ -7,7 +7,7 @@ class Image {
   String? createdAt;
   String? updatedAt;
 
-  Image(
+  ImageModel(
       {this.id,
       this.dealId,
       this.originalName,
@@ -16,7 +16,7 @@ class Image {
       this.createdAt,
       this.updatedAt});
 
-  Image.fromJson(Map<String, dynamic> json) {
+  ImageModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     dealId = json['deal_id'];
     originalName = json['original_name'];

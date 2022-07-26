@@ -1,4 +1,8 @@
+import 'package:gigi_app/models/branch_model.dart';
+
 import 'image_model.dart';
+import 'reviews_model.dart';
+import 'tags_model.dart';
 
 class MerchantListOfDeals {
   bool? status;
@@ -97,6 +101,33 @@ class UserListOfDeals {
   }
 }
 
+class SingleDeal {
+  bool? status;
+  int? responseCode;
+  String? message;
+  DealData? data;
+
+  SingleDeal({this.status, this.responseCode, this.message, this.data});
+
+  SingleDeal.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    responseCode = json['responseCode'];
+    message = json['message'];
+    data = json['data'] != null ? DealData.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['responseCode'] = responseCode;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
 class DealData {
   int? id;
   String? name;
@@ -118,9 +149,10 @@ class DealData {
   String? createdAt;
   String? updatedAt;
   String? expiry;
-  String? merchantName;
-  String? categoryName;
-  Image? image;
+  List<ImageModel>? images;
+  List<Tags>? tags;
+  List<BranchData>? branches;
+  List<Reviews>? reviews;
   int? dealIsExpired;
   String? typeName;
 
@@ -145,9 +177,10 @@ class DealData {
       this.createdAt,
       this.updatedAt,
       this.expiry,
-      this.merchantName,
-      this.categoryName,
-      this.image,
+      this.images,
+      this.tags,
+      this.branches,
+      this.reviews,
       this.dealIsExpired,
       this.typeName});
 
@@ -172,9 +205,30 @@ class DealData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     expiry = json['expiry'];
-    merchantName = json['merchant_name'];
-    categoryName = json['category_name'];
-    image = json['image'] != null ? Image.fromJson(json['image']) : null;
+    if (json['images'] != null) {
+      images = <ImageModel>[];
+      json['images'].forEach((v) {
+        images!.add(ImageModel.fromJson(v));
+      });
+    }
+    if (json['tags'] != null) {
+      tags = <Tags>[];
+      json['tags'].forEach((v) {
+        tags!.add(Tags.fromJson(v));
+      });
+    }
+    if (json['branches'] != null) {
+      branches = <BranchData>[];
+      json['branches'].forEach((v) {
+        branches!.add(BranchData.fromJson(v));
+      });
+    }
+    if (json['reviews'] != null) {
+      reviews = <Reviews>[];
+      json['reviews'].forEach((v) {
+        reviews!.add(Reviews.fromJson(v));
+      });
+    }
     dealIsExpired = json['dealIsExpired'];
     typeName = json['TypeName'];
   }
@@ -201,10 +255,17 @@ class DealData {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['expiry'] = expiry;
-    data['merchant_name'] = merchantName;
-    data['category_name'] = categoryName;
-    if (image != null) {
-      data['image'] = image!.toJson();
+    if (images != null) {
+      data['images'] = images!.map((v) => v.toJson()).toList();
+    }
+    if (tags != null) {
+      data['tags'] = tags!.map((v) => v.toJson()).toList();
+    }
+    if (branches != null) {
+      data['branches'] = branches!.map((v) => v.toJson()).toList();
+    }
+    if (reviews != null) {
+      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
     }
     data['dealIsExpired'] = dealIsExpired;
     data['TypeName'] = typeName;

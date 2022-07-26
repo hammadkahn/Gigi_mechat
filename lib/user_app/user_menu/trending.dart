@@ -1,32 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/models/deal_model.dart';
 
-class trending_user extends StatelessWidget {
-  const trending_user({Key? key}) : super(key: key);
+class trending_user extends StatefulWidget {
+  const trending_user({Key? key, required this.data}) : super(key: key);
+  final DealData data;
+
+  @override
+  State<trending_user> createState() => _trending_userState();
+}
+
+class _trending_userState extends State<trending_user> {
+  double? priceAfterDiscount = 0;
+  double? price;
+  double? percentage;
+
+  static const baseUrl = 'https://gigiapi.zanforthstaging.com/';
+
+  @override
+  void initState() {
+    percentage = int.parse(widget.data.discountOnPrice!) / 100;
+    price = percentage! * int.parse(widget.data.price!);
+    priceAfterDiscount = int.parse(widget.data.price!) - price!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print('percentage${widget.data.discountOnPrice!}');
+    print(percentage);
+    print(priceAfterDiscount);
     return Container(
       height: 217,
       width: 141,
-      decoration: BoxDecoration(
+      margin: const EdgeInsets.only(right: 8),
+      decoration: const BoxDecoration(
         color: Color(0xffFFFFFF),
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            'assets/images/menu.png',
-            height: 120,
-            width: 120,
-          ),
+          // widget.data.images != null
+          //     ? Image.network(
+          //         '$baseUrl${widget.data.images![0].path!}/${widget.data.images![0].image}',
+          //         height: 110,
+          //         width: 120) :
+          Image.asset('assets/images/menu.png', height: 120, width: 120),
           Text(
-            'Eybrows & Eyelash',
-            style: TextStyle(
+            widget.data.name!,
+            style: const TextStyle(
                 fontFamily: 'Mulish',
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w700),
           ),
           Row(
@@ -36,7 +60,7 @@ class trending_user extends StatelessWidget {
                 width: 8,
                 height: 8,
               ),
-              Text(
+              const Text(
                 'Beauty Parlor - Baku, Azerbaijan',
                 style: TextStyle(
                     fontFamily: 'Mulish',
@@ -49,7 +73,7 @@ class trending_user extends StatelessWidget {
           Row(
             children: [
               Image.asset('assets/images/rating.png', width: 6, height: 6),
-              Text(
+              const Text(
                 '4.8',
                 style: TextStyle(
                     fontFamily: 'Poppins',
@@ -57,7 +81,7 @@ class trending_user extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF5F5F5F)),
               ),
-              Text(
+              const Text(
                 '(30 reviews)',
                 style: TextStyle(
                     fontFamily: 'Poppins',
@@ -69,7 +93,7 @@ class trending_user extends StatelessWidget {
           ),
           Row(
             children: [
-              Text(
+              const Text(
                 '\$',
                 style: TextStyle(
                     fontFamily: 'Mulish',
@@ -78,15 +102,15 @@ class trending_user extends StatelessWidget {
                     color: Color(0xFFFF6767)),
               ),
               Text(
-                '10.40',
-                style: TextStyle(
+                widget.data.price!,
+                style: const TextStyle(
                     decoration: TextDecoration.lineThrough,
                     fontFamily: 'Mulish',
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFFFF6767)),
               ),
-              Text(
+              const Text(
                 '\$',
                 style: TextStyle(
                     fontFamily: 'Mulish',
@@ -95,8 +119,8 @@ class trending_user extends StatelessWidget {
                     color: Color(0xFF0D9BFF)),
               ),
               Text(
-                '8.40',
-                style: TextStyle(
+                priceAfterDiscount.toString(),
+                style: const TextStyle(
                     fontFamily: 'Mulish',
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -105,13 +129,13 @@ class trending_user extends StatelessWidget {
               Container(
                 width: 28,
                 height: 11,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.all(Radius.circular(3))),
                 child: Center(
                   child: Text(
-                    '20% OFF',
-                    style: TextStyle(
+                    '${widget.data.discountOnPrice}% OFF',
+                    style: const TextStyle(
                         fontSize: 5,
                         fontFamily: 'Mulish',
                         fontWeight: FontWeight.w900,
@@ -121,7 +145,7 @@ class trending_user extends StatelessWidget {
               ),
             ],
           ),
-          Text(
+          const Text(
             'Coupons Left:  100/100',
             style: TextStyle(
                 fontFamily: 'Mulish',

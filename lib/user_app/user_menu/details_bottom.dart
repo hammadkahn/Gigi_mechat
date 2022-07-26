@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/models/deal_model.dart';
 
 class bottom_detail extends StatelessWidget {
-  const bottom_detail({Key? key}) : super(key: key);
+  const bottom_detail(
+      {Key? key,
+      required this.dealData,
+      required this.price,
+      required this.totalReviews})
+      : super(key: key);
+  final DealData dealData;
+  final String price;
+  final String totalReviews;
 
   @override
   Widget build(BuildContext context) {
-    int _value = 0;
+    int value = 0;
     return Padding(
       padding: const EdgeInsets.only(right: 24, left: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
+          const Padding(
+            padding: EdgeInsets.only(top: 10),
             child: Text(
               'Offer of the Week',
               style: TextStyle(
@@ -29,15 +36,15 @@ class bottom_detail extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    'Avocado Chicken Salad(Medium)',
-                    style: TextStyle(
+                    dealData.name!,
+                    style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF4A4A6A)),
                   ),
-                  Spacer(),
-                  Radio(value: 1, groupValue: _value, onChanged: (value) {})
+                  const Spacer(),
+                  Radio(value: 1, groupValue: value, onChanged: (value) {})
                 ],
               )),
           Padding(
@@ -49,7 +56,7 @@ class bottom_detail extends StatelessWidget {
                     width: 8,
                     height: 8,
                   ),
-                  Text(
+                  const Text(
                     'Cafe Bistrovia - Baku, Azerbaijan',
                     style: TextStyle(
                         fontFamily: 'Mulish',
@@ -65,16 +72,16 @@ class bottom_detail extends StatelessWidget {
                 children: [
                   Image.asset('assets/images/rating.png', width: 6, height: 6),
                   Text(
-                    '4.8',
-                    style: TextStyle(
+                    totalReviews,
+                    style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 7,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF5F5F5F)),
                   ),
                   Text(
-                    '(30 reviews)',
-                    style: TextStyle(
+                    '(${dealData.reviews!.length.toString()} reviews)',
+                    style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 4,
                         fontWeight: FontWeight.w400,
@@ -86,7 +93,7 @@ class bottom_detail extends StatelessWidget {
               padding: const EdgeInsets.only(top: 2.83),
               child: Row(
                 children: [
-                  Text(
+                  const Text(
                     '\$',
                     style: TextStyle(
                         fontFamily: 'Mulish',
@@ -95,15 +102,15 @@ class bottom_detail extends StatelessWidget {
                         color: Color(0xFFFF6767)),
                   ),
                   Text(
-                    '10.40',
-                    style: TextStyle(
+                    dealData.price!,
+                    style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
                         fontFamily: 'Mulish',
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFFFF6767)),
                   ),
-                  Text(
+                  const Text(
                     '\$',
                     style: TextStyle(
                         fontFamily: 'Mulish',
@@ -112,8 +119,8 @@ class bottom_detail extends StatelessWidget {
                         color: Color(0xFF0D9BFF)),
                   ),
                   Text(
-                    '8.40',
-                    style: TextStyle(
+                    price,
+                    style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -122,13 +129,13 @@ class bottom_detail extends StatelessWidget {
                   Container(
                     width: 28,
                     height: 11,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(3))),
                     child: Center(
                       child: Text(
-                        '20% OFF',
-                        style: TextStyle(
+                        '${dealData.discountOnPrice}% OFF',
+                        style: const TextStyle(
                             fontSize: 5,
                             fontFamily: 'Mulish',
                             fontWeight: FontWeight.w900,
@@ -138,7 +145,7 @@ class bottom_detail extends StatelessWidget {
                   )
                 ],
               )),
-          Text(
+          const Text(
             'Coupons Left:  100/100',
             style: TextStyle(
                 fontFamily: 'Mulish',
@@ -146,7 +153,7 @@ class bottom_detail extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF8E8EA9)),
           ),
-          Text(
+          const Text(
             'Description',
             style: TextStyle(
                 fontFamily: 'Mulish',
@@ -155,8 +162,8 @@ class bottom_detail extends StatelessWidget {
                 color: Color(0xFF8E8EA9)),
           ),
           Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet \n, consectetur adipiscing elit.',
-            style: TextStyle(
+            dealData.description!,
+            style: const TextStyle(
                 fontFamily: 'Mulish',
                 fontSize: 8,
                 fontWeight: FontWeight.w400,

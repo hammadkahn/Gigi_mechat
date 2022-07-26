@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/services/deals/user_deals_services.dart';
 import 'package:gigi_app/shared/loaction_user.dart';
 import 'package:gigi_app/user_app/user_menu/details_with_all.dart';
-import 'package:gigi_app/user_app/user_menu/trending.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'deals_details.dart';
 import 'l.dart';
 
 class Full_menu_user extends StatefulWidget {
@@ -17,13 +15,13 @@ class Full_menu_user extends StatefulWidget {
 }
 
 class _Full_menu_userState extends State<Full_menu_user> {
-  @override
-  void didChangeDependencies() {
-    Future.delayed(Duration.zero).then((value) {
-      UserDealServices().getAllUserDeals(widget.token);
-    });
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   Future.delayed(Duration.zero).then((value) {
+  //     UserDealServices().getAllUserDeals(widget.token);
+  //   });
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +33,8 @@ class _Full_menu_userState extends State<Full_menu_user> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Location_bar_user(),
-                Text(
+                const Location_bar_user(),
+                const Text(
                   'GiGi Find out the best deals for you!',
                   style: TextStyle(
                       fontFamily: 'DMSans',
@@ -44,56 +42,82 @@ class _Full_menu_userState extends State<Full_menu_user> {
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF32324D)),
                 ),
-                C_slider(),
-                Text('Trending Deals for You',
-                    style: TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF505050))),
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: (Row(
-                      children: [
-                        all_details(),
-                        all_details(),
-                        all_details(),
-                      ],
-                    ))),
-                Row(
-                  children: [
-                    Text(
-                      "Top Seller in ",
+                const C_slider(),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: const Text('Trending Deals for You',
                       style: TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF505050)),
-                    ),
-                    Text(
-                      "Baku",
-                      style: TextStyle(
-                          fontFamily: 'Mulish',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF0D9BFF)),
-                    ),
-                  ],
+                          color: Color(0xFF505050))),
                 ),
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: (Row(
-                      children: [
-                        all_details(),
-                        all_details(),
-                        all_details(),
-                      ],
-                    ))),
+                SizedBox(
+                  height: 210,
+                  child: userTrendingDeals(),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: const [
+                      Text(
+                        "Top Seller in ",
+                        style: TextStyle(
+                            fontFamily: 'Mulish',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF505050)),
+                      ),
+                      Text(
+                        "Baku",
+                        style: TextStyle(
+                            fontFamily: 'Mulish',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF0D9BFF)),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 210,
+                  child: userTrendingDeals(),
+                )
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  userTrendingDeals() {
+    return FutureBuilder<TrendingDealsModel>(
+      future: UserDealServices().trendingDeals(widget.token),
+      builder: ((context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const Center(child: CircularProgressIndicator());
+          default:
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.data!.length,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemBuilder: ((context, index) {
+                  return all_details(
+                    dealId: snapshot.data!.data![index].id!.toString(),
+                    token: widget.token,
+                  );
+                }),
+              );
+            }
+        }
+      }),
     );
   }
 }

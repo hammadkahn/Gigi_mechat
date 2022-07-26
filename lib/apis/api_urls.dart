@@ -13,7 +13,8 @@ class ApiUrls {
       '${baseUrl}merchant/getDeals?limit=10&page=1&returnType=customPagination&status=1&active=1');
   static var trendingDealsUrl = Uri.parse('${baseUrl}user/getTrendingDeals');
   static var userAllDeals = Uri.parse(
-      '${baseUrl}user/getDeals?limit=10&page=1&returnType=customPagination&priceSort=desc&startingPrice=0&endingPrice=500&timeSort=desc&searchText=Food');
+    '${baseUrl}user/getDeals?limit=10&page=1&returnType=customPagination&priceSort=desc&startingPrice=0&endingPrice=500&timeSort=desc&searchText=Food',
+  );
 
   //branch urls
   static var getAllBranches = Uri.parse(

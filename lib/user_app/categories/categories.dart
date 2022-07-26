@@ -18,7 +18,6 @@ class Categories_user extends StatelessWidget {
           left: 24,
         ),
         child: ListView(
-          physics: const NeverScrollableScrollPhysics(parent: ScrollPhysics()),
           children: <Widget>[
             const Padding(
               padding: EdgeInsets.only(right: 24),

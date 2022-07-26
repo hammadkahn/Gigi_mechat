@@ -48,4 +48,24 @@ class UserDealServices {
       throw Exception(e);
     }
   }
+
+  Future<SingleDeal> getSingleDealInfo(String id, String token) async {
+    try {
+      final url = Uri.parse('${ApiUrls.baseUrl}user/getDeal/$id');
+      final response = await http.get(
+        url,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      );
+      final result = SingleDeal.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        debugPrint(result.message);
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        return result;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
