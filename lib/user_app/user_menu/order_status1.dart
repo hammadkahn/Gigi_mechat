@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:gigi_app/shared/custom_button.dart';
-import 'package:gigi_app/user_app/user_menu/cart_deals.dart';
-import 'package:gigi_app/user_app/user_menu/order_status1.dart';
+import 'package:gigi_app/user_app/user_menu/order_details.dart';
+import 'package:gigi_app/user_app/user_menu/status3.dart';
 
-class Cart_user extends StatelessWidget {
-  const Cart_user({Key? key}) : super(key: key);
+import '../../shared/custom_button.dart';
+import 'cart_deals.dart';
+
+class status_1 extends StatelessWidget {
+  const status_1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,50 +72,17 @@ class Cart_user extends StatelessWidget {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 24),
-                        child: Slidable(
-                          endActionPane:
-                              ActionPane(motion: ScrollMotion(), children: [
-                            SlidableAction(
-                              onPressed: (context) => {},
-                              backgroundColor: Colors.red,
-                              icon: Icons.delete,
-                            )
-                          ]),
-                          child: cart_deals(),
-                        ),
+                        padding: const EdgeInsets.only(top: 15),
+                        child: order_details(),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 54,
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add,
-                                color: Color(0xff0D9BFF),
-                                size: 20,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text('Add More Offers',
-                                    style: TextStyle(
-                                        fontFamily: 'Mulish',
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xff0D9BFF))),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      Spacer(),
                       CustomButton(
-                          text: 'Get this Offer ➔',
+                          text: "Get this Offer ➔",
                           onPressed: () {
                             Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => status_1()));
-                          })
+                                MaterialPageRoute(builder: (_) => stats3()));
+                          }),
+                      SizedBox(height: 20),
                     ]))));
   }
 }
