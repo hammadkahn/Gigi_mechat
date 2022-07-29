@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/user_app/user_menu/cart_deals.dart';
+import 'package:gigi_app/user_app/user_menu/order_status3.dart';
 
 class Cart_user extends StatelessWidget {
   const Cart_user({Key? key}) : super(key: key);
@@ -80,7 +82,38 @@ class Cart_user extends StatelessWidget {
                           ]),
                           child: cart_deals(),
                         ),
-                      )
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 54,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                color: Color(0xff0D9BFF),
+                                size: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text('Add More Offers',
+                                    style: TextStyle(
+                                        fontFamily: 'Mulish',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff0D9BFF))),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      CustomButton(
+                          text: 'Get this Offer',
+                          onPressed: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => status_3()));
+                          })
                     ]))));
   }
 }
