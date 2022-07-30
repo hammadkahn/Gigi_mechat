@@ -3,6 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 
+import '../create_acc/user_create_acc.dart';
+
 class stats3 extends StatelessWidget {
   const stats3({Key? key}) : super(key: key);
 
@@ -67,8 +69,12 @@ class stats3 extends StatelessWidget {
           child: Column(
             children: [
               CustomButton(
-                onPressed: () {},
                 text: 'Go to My Discounts',
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => stats3()),
+                  );
+                },
               ),
             ],
           ),

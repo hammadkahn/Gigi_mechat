@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/shared/custom_button.dart';
-
+import 'package:intl/intl.dart';
 import '../verify _code/user_verification.dart';
 
 class User_create_acc extends StatefulWidget {
@@ -99,20 +99,30 @@ class _User_create_accState extends State<User_create_acc> {
                   return null;
                 },
               ),
-              TextFormField(
+              TextField(
                 controller: dobCtr,
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'DOB',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter your Date of birth';
+                    icon: Icon(Icons.calendar_today_rounded),
+                    labelText: 'Date of Birth',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    )),
+                onTap: () async {
+                  DateTime? pickdate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1970),
+                      lastDate: DateTime(2030));
+                  if (pickdate != null) {
+                    setState(() {
+                      dobCtr.text = DateFormat('dd-MM-yyyy').format(pickdate);
+                    });
                   }
-                  return null;
                 },
               ),
               TextFormField(
