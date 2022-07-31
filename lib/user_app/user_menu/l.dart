@@ -19,18 +19,21 @@ class _C_sliderState extends State<C_slider> {
   DateTime? now_1w;
   List<DealData> weekDeals = [];
   String? reviews;
+  CarouselController? controller = CarouselController();
 
   getDealsDate(DateTime now, DateTime nowW1) {
     int lenght = nowW1.day;
     int current = now.day;
 
-    for (int i = current; i >= lenght; i--) {
-      debugPrint(i.toString());
-      for (int j = 0; j < widget.merchantList.length; j++) {
-        DateTime? createdDate =
-            DateTime.parse(widget.merchantList[j].createdAt!);
-        if (createdDate.day <= i && createdDate.day >= lenght) {
-          weekDeals.add(widget.merchantList[j]);
+    if (mounted) {
+      for (int i = current; i >= lenght; i--) {
+        debugPrint(i.toString());
+        for (int j = 0; j < widget.merchantList.length; j++) {
+          DateTime? createdDate =
+              DateTime.parse(widget.merchantList[j].createdAt!);
+          if (createdDate.day <= i && createdDate.day >= lenght) {
+            weekDeals.add(widget.merchantList[j]);
+          }
         }
       }
     }
@@ -38,9 +41,18 @@ class _C_sliderState extends State<C_slider> {
 
   @override
   void initState() {
-    now_1w = now.subtract(const Duration(days: 7));
+    if (mounted) {
+      now_1w = now.subtract(const Duration(days: 7));
+      getDealsDate(now, now_1w!);
+    }
     super.initState();
+  }
+
+  @override
+  void dispose() {
     getDealsDate(now, now_1w!);
+    controller!.stopAutoPlay();
+    super.dispose();
   }
 
   int activeIndex = 0;
@@ -81,11 +93,14 @@ class _C_sliderState extends State<C_slider> {
           reverse: false,
           scrollDirection: Axis.horizontal,
           onPageChanged: (index, reason) {
-            setState(() {
-              activeIndex = index;
-            });
+            if (mounted) {
+              setState(() {
+                activeIndex = index;
+              });
+            }
           },
         ),
+        carouselController: controller,
       ),
     );
   }

@@ -95,7 +95,6 @@ class DealProvider extends ChangeNotifier {
         _cartData = result.data!;
         return result;
       } else {
-        debugPrint(response.reasonPhrase);
         throw Exception(result.message);
       }
     } catch (e) {
@@ -137,7 +136,6 @@ class DealProvider extends ChangeNotifier {
         _dealData = result.data;
         notifyListeners();
       } else {
-        debugPrint(response.reasonPhrase);
         throw Exception(response.statusCode);
       }
     } catch (e) {

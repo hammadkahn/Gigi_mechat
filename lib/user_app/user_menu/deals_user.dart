@@ -7,7 +7,7 @@ import '../../constant/size_constants.dart';
 import '../../models/reviews_model.dart';
 import 'deals_details.dart';
 
-class dealsUser extends StatelessWidget {
+class dealsUser extends StatefulWidget {
   const dealsUser({Key? key, required this.dealData, required this.token})
       : super(key: key);
   final String dealData;
@@ -16,14 +16,52 @@ class dealsUser extends StatelessWidget {
   static const url = 'https://gigiapi.zanforthstaging.com/';
 
   @override
+  State<dealsUser> createState() => _dealsUserState();
+}
+
+class _dealsUserState extends State<dealsUser> {
+  final key = GlobalKey<ScaffoldState>();
+  DealProvider? dealProvider;
+  bool isLoaded = false;
+
+  @override
+  void initState() {
+    if (mounted) {}
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (mounted) {
+      dealProvider = Provider.of<DealProvider>(context, listen: false);
+      dealProvider!
+          .singleDealDetails(widget.token, widget.dealData)
+          .whenComplete(() {
+        if (mounted) {
+          setState(() {
+            isLoaded = true;
+          });
+        }
+      });
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    dealProvider!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final key = GlobalKey<ScaffoldState>();
-    final dealProvider = Provider.of<DealProvider>(context, listen: false);
-
     SizeConfig.init(context);
-    dealProvider.singleDealDetails(token, dealData);
-
-    return dealProvider.dealData.id == null
+    if (!mounted) {
+      return const SizedBox(
+        child: Text('wait to load the page'),
+      );
+    }
+    return isLoaded == false
         ? const Center(child: CircularProgressIndicator())
         : Padding(
             padding: const EdgeInsets.only(top: 10),
@@ -35,7 +73,7 @@ class dealsUser extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(16))),
               child: InkWell(
                 onTap: () {
-                  debugPrint(dealData);
+                  debugPrint(widget.dealData);
                   showModalBottomSheet(
                     shape: const RoundedRectangleBorder(
                         borderRadius:
@@ -48,8 +86,8 @@ class dealsUser extends StatelessWidget {
                       body: SingleChildScrollView(
                         controller: ModalScrollController.of(ct),
                         child: Details_deals(
-                          data: dealProvider.dealData,
-                          token: token,
+                          data: dealProvider!.dealData,
+                          token: widget.token,
                         ),
                       ),
                     ),
@@ -76,7 +114,7 @@ class dealsUser extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.only(top: 4),
                               child: Text(
-                                dealProvider.dealData.name!,
+                                dealProvider!.dealData.name!,
                                 style: const TextStyle(
                                     fontFamily: 'Mulish',
                                     fontSize: 16,
@@ -110,7 +148,7 @@ class dealsUser extends StatelessWidget {
                                       width: 6, height: 6),
                                   Text(
                                     Reviews().getRating(
-                                        dealProvider.dealData.reviews),
+                                        dealProvider!.dealData.reviews),
                                     style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 7,
@@ -118,7 +156,7 @@ class dealsUser extends StatelessWidget {
                                         color: Color(0xFFFFFFFF)),
                                   ),
                                   Text(
-                                    '(${dealProvider.dealData.reviews!.length} reviews)',
+                                    '(${dealProvider!.dealData.reviews!.length} reviews)',
                                     style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 4,
@@ -140,7 +178,7 @@ class dealsUser extends StatelessWidget {
                                       color: Color(0xFF0D9BFF)),
                                 ),
                                 Text(
-                                  dealProvider.dealData.price!,
+                                  dealProvider!.dealData.price!,
                                   style: const TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       fontFamily: 'Mulish',
@@ -157,9 +195,9 @@ class dealsUser extends StatelessWidget {
                                       color: Color(0xFFFFFFFF)),
                                 ),
                                 Text(
-                                  dealProvider.calculateDiscount(
-                                    dealProvider.dealData.discountOnPrice!,
-                                    dealProvider.dealData.price!,
+                                  dealProvider!.calculateDiscount(
+                                    dealProvider!.dealData.discountOnPrice!,
+                                    dealProvider!.dealData.price!,
                                   ),
                                   style: const TextStyle(
                                       fontFamily: 'Mulish',
@@ -176,7 +214,7 @@ class dealsUser extends StatelessWidget {
                                           BorderRadius.all(Radius.circular(3))),
                                   child: Center(
                                     child: Text(
-                                      '${dealProvider.dealData.discountOnPrice}% OFF',
+                                      '${dealProvider!.dealData.discountOnPrice}% OFF',
                                       style: const TextStyle(
                                           fontSize: 5,
                                           fontFamily: 'Mulish',
@@ -191,12 +229,12 @@ class dealsUser extends StatelessWidget {
                         ],
                       ),
                       const Spacer(),
-                      SizedBox(
-                        child: dealProvider.dealData.images == null ||
-                                dealProvider.dealData.images!.isEmpty
+                      Expanded(
+                        child: dealProvider!.dealData.images == null ||
+                                dealProvider!.dealData.images!.isEmpty
                             ? Image.asset('assets/images/food.png')
                             : Image.network(
-                                '$url${dealProvider.dealData.images![0].path}/${dealProvider.dealData.images![0].image}',
+                                '${dealsUser.url}${dealProvider!.dealData.images![0].path}/${dealProvider!.dealData.images![0].image}',
                               ),
                       ),
                     ],

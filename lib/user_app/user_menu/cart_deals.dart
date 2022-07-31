@@ -25,6 +25,7 @@ class cart_deals extends StatelessWidget {
   Widget build(BuildContext context) {
     int? currentIndex;
     final dealProvider = Provider.of<DealProvider>(context, listen: false);
+
     SizeConfig.init(context);
     return Container(
       width: SizeConfig.screenWidth,

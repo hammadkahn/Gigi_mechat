@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +26,10 @@ class Wishlist extends StatelessWidget {
                   'assets/images/cart_deal.png',
                   height: 119,
                 )
-              : Image.network(
-                  '$url${wishData.image!.path}/${wishData.image!.image}'),
+              : Expanded(
+                  child: Image.network(
+                      '$url${wishData.image!.path}/${wishData.image!.image}'),
+                ),
           Padding(
             padding: const EdgeInsets.only(left: 21),
             child: Column(

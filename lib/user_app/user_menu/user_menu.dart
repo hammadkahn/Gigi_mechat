@@ -37,6 +37,11 @@ class _User_barState extends State<User_bar> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: PageStorage(bucket: bucket, child: currentScreen),

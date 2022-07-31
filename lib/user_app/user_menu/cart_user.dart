@@ -7,14 +7,32 @@ import 'package:gigi_app/user_app/user_menu/cart_deals.dart';
 import 'package:gigi_app/user_app/user_menu/order_status1.dart';
 import 'package:provider/provider.dart';
 
-class Cart_user extends StatelessWidget {
+class Cart_user extends StatefulWidget {
   const Cart_user({Key? key, required this.token}) : super(key: key);
   final String token;
 
   @override
-  Widget build(BuildContext context) {
-    final dealProvider = Provider.of<DealProvider>(context, listen: false);
+  State<Cart_user> createState() => _Cart_userState();
+}
 
+class _Cart_userState extends State<Cart_user> {
+  DealProvider? dealProvider;
+  @override
+  void didChangeDependencies() {
+    if (mounted) {
+      dealProvider = Provider.of<DealProvider>(context, listen: false);
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    dealProvider!.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -76,7 +94,7 @@ class Cart_user extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 24),
                   child: FutureBuilder<CartListModel>(
-                    future: dealProvider.getCartItemsList(token),
+                    future: dealProvider!.getCartItemsList(widget.token),
                     builder: ((context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
@@ -113,7 +131,7 @@ class Cart_user extends StatelessWidget {
                                   child: cart_deals(
                                     afterDiscount:
                                         priceAfterDiscount.toString(),
-                                    token: token,
+                                    token: widget.token,
                                     dealId: snapshot.data!.data![index].id
                                         .toString(),
                                     purchaseId: snapshot
@@ -159,8 +177,8 @@ class Cart_user extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => status_1(
-                            token: token,
-                            qty: dealProvider.qty.toString(),
+                            token: widget.token,
+                            qty: dealProvider!.qty.toString(),
                           )));
                 },
               ),
