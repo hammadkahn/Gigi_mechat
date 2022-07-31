@@ -29,6 +29,8 @@ class _all_detailsState extends State<all_details> {
     });
   }
 
+  final _key = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     getDealData();
@@ -49,9 +51,16 @@ class _all_detailsState extends State<all_details> {
                         BorderRadius.vertical(top: Radius.circular(26))),
                 isScrollControlled: true,
                 context: context,
-                builder: (context) => SingleChildScrollView(
-                  controller: ModalScrollController.of(context),
-                  child: Details_deals(data: dealData!),
+                builder: (ct) => Scaffold(
+                  key: _key,
+                  extendBody: false,
+                  body: SingleChildScrollView(
+                    controller: ModalScrollController.of(ct),
+                    child: Details_deals(
+                      data: dealData!,
+                      token: widget.token,
+                    ),
+                  ),
                 ),
               );
             });

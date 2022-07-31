@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/size_constants.dart';
 import '../../services/auth/authentication.dart';
+import '../../user_app/verify _code/user_verification.dart';
 import '../full_menu/bar.dart';
 
 class auth_page extends StatefulWidget {
@@ -99,37 +99,7 @@ class _auth_pageState extends State<auth_page> {
                 child: CustomButton(
                     isLoading: isLoading,
                     text: 'Sign In',
-                    onPressed: () {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      if (_formKey.currentState!.validate()) {
-                        login().whenComplete(() {
-                          if (isLoggedIn == true) {
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                                    builder: (_) => Bar(
-                                          token: token!,
-                                        )));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(msg!),
-                                backgroundColor:
-                                    const Color.fromARGB(255, 219, 47, 47),
-                              ),
-                            );
-                            setState(() {
-                              isLoading = false;
-                            });
-                          }
-                        });
-                      } else {
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }
-                    }),
+                    onPressed: loginUsers),
               ),
               const Text(
                 'Registered as a Merchant',
@@ -146,30 +116,78 @@ class _auth_pageState extends State<auth_page> {
     );
   }
 
-  String? msg;
-  String? token;
-
-  Future<void> login() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final result = await MerchantAuthServices().login(
-      emailCtr.text,
-      passwordCtr.text,
-    );
-
-    print(result);
-
-    if (result['message'] == 'success') {
-      prefs.setString('token', result['data']['token']);
-      prefs.setString('email', result['data']['email']);
-      prefs.setString('status', result['StatusName']);
+  Future<void> loginUsers() async {
+    if (_formKey.currentState!.validate()) {
+      //show snackbar to indicate loading
       setState(() {
-        isLoggedIn = true;
-        token = result['data']['token'];
-        msg = result['message'];
+        isLoading = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Processing Data'),
+        backgroundColor: Colors.green.shade300,
+      ));
+
+      //get response from ApiClient
+      dynamic res =
+          await MerchantAuthServices().login(emailCtr.text, passwordCtr.text);
+      checkLoginResult(res);
+    }
+  }
+
+  void checkLoginResult(dynamic res) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    //if there is no error, get the user's accesstoken and pass it to HomeScreen
+    if (res['message'] == 'success') {
+      String accessToken = res['data']['token'];
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Bar(token: accessToken),
+        ),
+      );
+    } else {
+      //if an error occurs, show snackbar with error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Message: ${res['error']}'),
+        backgroundColor: Colors.red.shade300,
+        action: SnackBarAction(
+          label: res['error'] ==
+                  'Your account is not verified. Please verify your account'
+              ? 'Verify'
+              : 'Close',
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        User_Verification(email: emailCtr.text)));
+          },
+        ),
+      ));
+      setState(() {
+        isLoading = false;
       });
     }
-    setState(() {
-      msg = result['error'];
-    });
   }
+
+  // Future<void> login() async {
+  //   final result = await MerchantAuthServices().login(
+  //     emailCtr.text,
+  //     passwordCtr.text,
+  //   );
+
+  //   print(result);
+
+  //   if (result['message'] == 'success') {
+  //     setState(() {
+  //       isLoggedIn = true;
+  //       token = result['data']['token'];
+  //       msg = result['message'];
+  //     });
+  //   }
+  //   setState(() {
+  //     msg = result['error'];
+  //   });
+  // }
 }

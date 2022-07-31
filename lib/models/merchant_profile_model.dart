@@ -36,14 +36,14 @@ class MerchantProfileData {
   String? email;
   String? phone;
   String? dateOfBirth;
-  DateTime? emailVerifiedAt;
+  String? emailVerifiedAt;
   String? profilePicture;
   String? type;
   String? status;
   String? createdAt;
   String? updatedAt;
   List<BranchData>? branches;
-  int? averageRating;
+  double? averageRating;
   List? reviews;
   int? activeOffers;
   int? dealRadeems;

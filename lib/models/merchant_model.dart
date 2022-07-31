@@ -1,8 +1,12 @@
+import 'package:gigi_app/models/branch_model.dart';
+
+import 'reviews_model.dart';
+
 class MerchantSignUp {
   bool? status;
   int? responseCode;
   String? message;
-  Data? data;
+  MerchantData? data;
 
   MerchantSignUp({this.status, this.responseCode, this.message, this.data});
 
@@ -10,7 +14,7 @@ class MerchantSignUp {
     status = json['status'];
     responseCode = json['responseCode'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? MerchantData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -25,72 +29,51 @@ class MerchantSignUp {
   }
 }
 
-class Data {
-  String? name;
-  String? email;
-  String? phone;
-  String? dateOfBirth;
-  int? type;
-  int? status;
-  String? updatedAt;
-  String? createdAt;
-  int? id;
-  String? profilePicturePath;
-
-  Data(
-      {this.name,
-      this.email,
-      this.phone,
-      this.dateOfBirth,
-      this.type,
-      this.status,
-      this.updatedAt,
-      this.createdAt,
-      this.id,
-      this.profilePicturePath});
-
-  Data.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    email = json['email'];
-    phone = json['phone'];
-    dateOfBirth = json['date_of_birth'];
-    type = json['type'];
-    status = json['status'];
-    updatedAt = json['updated_at'];
-    createdAt = json['created_at'];
-    id = json['id'];
-    profilePicturePath = json['profilePicturePath'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['date_of_birth'] = dateOfBirth;
-    data['type'] = type;
-    data['status'] = status;
-    data['updated_at'] = updatedAt;
-    data['created_at'] = createdAt;
-    data['id'] = id;
-    data['profilePicturePath'] = profilePicturePath;
-    return data;
-  }
-}
-
-class LoginModel {
+class MerchantList {
   bool? status;
   int? responseCode;
   String? message;
-  Data? data;
+  List<MerchantData>? data;
 
-  LoginModel({this.status, this.responseCode, this.message, this.data});
+  MerchantList({this.status, this.responseCode, this.message, this.data});
 
-  LoginModel.fromJson(Map<String, dynamic> json) {
+  MerchantList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     responseCode = json['responseCode'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <MerchantData>[];
+      json['data'].forEach((v) {
+        data!.add(MerchantData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['responseCode'] = responseCode;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class SingleMerchant {
+  bool? status;
+  int? responseCode;
+  String? message;
+  MerchantData? data;
+
+  SingleMerchant({this.status, this.responseCode, this.message, this.data});
+
+  SingleMerchant.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    responseCode = json['responseCode'];
+    message = json['message'];
+    data = json['data'] != null ? MerchantData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -105,24 +88,117 @@ class LoginModel {
   }
 }
 
-class LoginError {
-  bool? status;
-  int? responseCode;
-  String? error;
+class MerchantData {
+  int? id;
+  String? name;
+  String? gender;
+  String? age;
+  String? email;
+  String? phone;
+  String? dateOfBirth;
+  String? emailVerifiedAt;
+  String? profilePicture;
+  String? type;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  int? activeOffers;
+  int? dealRadeems;
+  int? totalDealPurchase;
+  int? totalCategories;
+  List<BranchData>? branches;
+  int? averageRating;
+  List<Reviews>? reviews;
+  String? profilePicturePath;
+  String? statusName;
 
-  LoginError({this.status, this.responseCode, this.error});
+  MerchantData(
+      {this.id,
+      this.name,
+      this.gender,
+      this.age,
+      this.email,
+      this.phone,
+      this.dateOfBirth,
+      this.emailVerifiedAt,
+      this.profilePicture,
+      this.type,
+      this.status,
+      this.createdAt,
+      this.updatedAt,
+      this.activeOffers,
+      this.dealRadeems,
+      this.totalDealPurchase,
+      this.totalCategories,
+      this.branches,
+      this.averageRating,
+      this.reviews,
+      this.profilePicturePath,
+      this.statusName});
 
-  LoginError.fromJson(Map<String, dynamic> json) {
+  MerchantData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    gender = json['gender'];
+    age = json['age'];
+    email = json['email'];
+    phone = json['phone'];
+    dateOfBirth = json['date_of_birth'];
+    emailVerifiedAt = json['email_verified_at'];
+    profilePicture = json['profile_picture'];
+    type = json['type'];
     status = json['status'];
-    responseCode = json['responseCode'];
-    error = json['error'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    activeOffers = json['activeOffers'];
+    dealRadeems = json['dealRadeems'];
+    totalDealPurchase = json['totalDealPurchase'];
+    totalCategories = json['totalCategories'];
+    if (json['branches'] != null) {
+      branches = <BranchData>[];
+      json['branches'].forEach((v) {
+        branches!.add(BranchData.fromJson(v));
+      });
+    }
+    averageRating = json['averageRating'];
+    if (json['reviews'] != null) {
+      reviews = <Reviews>[];
+      json['reviews'].forEach((v) {
+        reviews!.add(Reviews.fromJson(v));
+      });
+    }
+    profilePicturePath = json['profilePicturePath'];
+    statusName = json['StatusName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['gender'] = gender;
+    data['age'] = age;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['date_of_birth'] = dateOfBirth;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['profile_picture'] = profilePicture;
+    data['type'] = type;
     data['status'] = status;
-    data['responseCode'] = responseCode;
-    data['error'] = error;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['activeOffers'] = activeOffers;
+    data['dealRadeems'] = dealRadeems;
+    data['totalDealPurchase'] = totalDealPurchase;
+    data['totalCategories'] = totalCategories;
+    if (branches != null) {
+      data['branches'] = branches!.map((v) => v.toJson()).toList();
+    }
+    data['averageRating'] = averageRating;
+    if (reviews != null) {
+      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
+    }
+    data['profilePicturePath'] = profilePicturePath;
+    data['StatusName'] = statusName;
     return data;
   }
 }

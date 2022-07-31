@@ -28,16 +28,17 @@ class _User_barState extends State<User_bar> {
     debugPrint('build...');
     currentScreen = Full_menu_user(token: widget.token);
     _children = [
-      Full_menu_user(
-        token: widget.token,
-      ),
-      Categories_user(
-        token: widget.token,
-      ),
+      Full_menu_user(token: widget.token),
+      Categories_user(token: widget.token),
       const Discount_user(),
-      const Fav_user(),
-      const Cart_user(),
+      Fav_user(token: widget.token),
+      Cart_user(token: widget.token),
     ];
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -104,7 +105,7 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 2;
-                          currentScreen = const Fav_user();
+                          currentScreen = Fav_user(token: widget.token);
                         });
                       },
                       child: Image.asset(
@@ -119,7 +120,7 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 3;
-                          currentScreen = const Cart_user();
+                          currentScreen = Cart_user(token: widget.token);
                         });
                       },
                       child: Image.asset(

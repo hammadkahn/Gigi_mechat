@@ -47,7 +47,13 @@ dependencies:
   pin_code_fields: ^7.4.0
   modal_bottom_sheet: ^2.1.0
   flutter_slidable: ^2.0.0
+<<<<<<< HEAD
+  provider: ^6.0.3
   expandable: ^5.0.1
+  intl: ^0.17.0
+=======
+  expandable: ^5.0.1
+>>>>>>> adcec233bd91225932230a07976921e794992cd8
   # pusher_channels_flutter: ^2.0.0
   
   

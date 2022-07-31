@@ -162,7 +162,7 @@ class bottom_detail extends StatelessWidget {
                 color: Color(0xFF8E8EA9)),
           ),
           Text(
-            dealData.description!,
+            dealData.description ?? 'no description provided',
             style: const TextStyle(
                 fontFamily: 'Mulish',
                 fontSize: 8,

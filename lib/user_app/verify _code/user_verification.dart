@@ -148,19 +148,7 @@ class _User_VerificationState extends State<User_Verification> {
                             fontWeight: FontWeight.w600,
                             color: Color(0xff8E8EA9))),
                     InkWell(
-                      onTap: () {
-                        MerchantAuthServices()
-                            .reSendCode(email: widget.email)
-                            .whenComplete(
-                              () => ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    'Code resend to the ${widget.email}',
-                                  ),
-                                ),
-                              ),
-                            );
-                      },
+                      onTap: reSendVerificationCode,
                       child: const Text(
                         "Resend Code",
                         style: TextStyle(
@@ -208,6 +196,7 @@ class _User_VerificationState extends State<User_Verification> {
   }
 
   String? msg;
+  String? token;
 
   Future<void> verify() async {
     final result = await MerchantAuthServices().verifyAccount(
@@ -218,11 +207,41 @@ class _User_VerificationState extends State<User_Verification> {
     if (result['message'] == 'success') {
       setState(() {
         msg = result['message'];
+        token = result['data']['token'];
       });
     } else {
       setState(() {
         msg = result['error'];
       });
+    }
+  }
+
+  Future<void> reSendVerificationCode() async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Processing Data'),
+      backgroundColor: Colors.green.shade300,
+    ));
+
+    //get response from ApiClient
+    dynamic res = await MerchantAuthServices().reSendCode(email: widget.email);
+    checkReSendResult(res);
+  }
+
+  void checkReSendResult(dynamic res) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    //if there is no error, get the user's accesstoken and pass it to HomeScreen
+    if (res['message'] == 'success') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Message: code sent to ${widget.email}'),
+        backgroundColor: Colors.red.shade300,
+      ));
+    } else {
+      //if an error occurs, show snackbar with error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Message: ${res['error']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
     }
   }
 }
