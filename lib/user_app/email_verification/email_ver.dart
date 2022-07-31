@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/user_app/user_menu/user_menu.dart';
+import 'package:gigi_app/user_app/verify%20_code/user_verification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/auth/authentication.dart';
@@ -126,6 +127,19 @@ class _Email_verState extends State<Email_ver> {
             SnackBar(
               content: Text(msg!),
               backgroundColor: const Color.fromARGB(255, 219, 47, 47),
+              action: SnackBarAction(
+                label: msg!.contains('Your account is not verified')
+                    ? 'Verify'
+                    : '',
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          User_Verification(email: emailCtr.text),
+                    ),
+                  );
+                },
+              ),
             ),
           );
           setState(() {

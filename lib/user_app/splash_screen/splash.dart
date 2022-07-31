@@ -5,8 +5,7 @@ import 'package:gigi_app/user_app/splash_screen/splashh.dart';
 import 'package:gigi_app/user_app/user_menu/user_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../screens/full_menu/bar.dart';
+import '../../screens/full_menu/bar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -31,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     debugPrint('user type: $status');
     debugPrint(token);
+    debugPrint(email);
+    debugPrint(userType);
     setState(() {
       isChecked = true;
     });

@@ -14,9 +14,10 @@ class UserInformation {
         ApiUrls.getMerchantProfile,
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
+      print(response.statusCode);
       if (response.statusCode == 200) {
-        print(response.body);
         final result = ProfileModel.fromJson(jsonDecode(response.body));
+        print(result);
         return result;
       } else {
         debugPrint(response.reasonPhrase);

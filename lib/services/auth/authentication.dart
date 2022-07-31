@@ -37,14 +37,16 @@ class MerchantAuthServices {
         body: data,
       );
       final result = jsonDecode(response.body) as Map<String, dynamic>;
+      print(response.body);
       if (response.statusCode == 200) {
         debugPrint(response.body);
         return result;
       } else {
-        debugPrint(response.reasonPhrase);
+        print(response.reasonPhrase);
         return result;
       }
     } catch (e) {
+      print('object: $e');
       throw Exception(e);
     }
   }
@@ -63,10 +65,10 @@ class MerchantAuthServices {
       if (response.statusCode == 200) {
         print('result : ${result['data']['token']}');
 
-        preferences.setString('username', result['data']['name']);
+        preferences.setString('token', result['data']['token']);
         preferences.setString('email', result['data']['email']);
-        preferences.setString('phone_number', result['data']['phone']);
-
+        preferences.setString('status', result['data']['StatusName']);
+        preferences.setString('user_type', result['data']['type']);
         return result;
       } else {
         print(response.statusCode);
@@ -81,6 +83,7 @@ class MerchantAuthServices {
 
   Future<Map<String, dynamic>> verifyAccount(
       {required String email, required String code}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final response = await http.post(
         ApiUrls.verifyAccount,
@@ -89,6 +92,10 @@ class MerchantAuthServices {
       final result = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
         debugPrint(response.body);
+        prefs.setString('token', result['data']['token']);
+        prefs.setString('email', result['data']['email']);
+        prefs.setString('status', result['data']['StatusName']);
+        prefs.setString('user_type', result['data']['type']);
         return result;
       } else {
         debugPrint(response.reasonPhrase);
@@ -99,18 +106,20 @@ class MerchantAuthServices {
     }
   }
 
-  Future<void> reSendCode({required String email}) async {
+  Future<Map<String, dynamic>> reSendCode({required String email}) async {
     try {
       final response = await http.post(
-        ApiUrls.verifyAccount,
+        ApiUrls.reSendCode,
         body: {'email': email},
       );
-
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      print(result);
       if (response.statusCode == 200) {
         debugPrint(response.body);
+        return result;
       } else {
         debugPrint(response.reasonPhrase);
-        throw Exception(response.statusCode);
+        return result;
       }
     } catch (e) {
       throw Exception(e);
@@ -128,6 +137,7 @@ class MerchantAuthServices {
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {
+      debugPrint(e.toString());
       throw Exception(e);
     }
   }

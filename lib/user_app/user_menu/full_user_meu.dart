@@ -3,26 +3,15 @@ import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/services/deals/user_deals_services.dart';
 import 'package:gigi_app/shared/loaction_user.dart';
 import 'package:gigi_app/user_app/user_menu/details_with_all.dart';
+import 'package:gigi_app/user_app/user_menu/merchant_card_widgets/merchant_details.dart';
 
 import 'l.dart';
 
-class Full_menu_user extends StatefulWidget {
+class Full_menu_user extends StatelessWidget {
   const Full_menu_user({Key? key, required this.token}) : super(key: key);
   final String token;
 
   @override
-  State<Full_menu_user> createState() => _Full_menu_userState();
-}
-
-class _Full_menu_userState extends State<Full_menu_user> {
-  // @override
-  // void didChangeDependencies() {
-  //   Future.delayed(Duration.zero).then((value) {
-  //     UserDealServices().getAllUserDeals(widget.token);
-  //   });
-  //   super.didChangeDependencies();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -42,7 +31,29 @@ class _Full_menu_userState extends State<Full_menu_user> {
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF32324D)),
                 ),
-                const C_slider(),
+                SizedBox(
+                  child: FutureBuilder<UserListOfDeals>(
+                    future: UserDealServices().getAllUserDeals(token),
+                    builder: ((context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        default:
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(snapshot.error.toString()),
+                            );
+                          } else {
+                            return C_slider(
+                              token: token,
+                              merchantList: snapshot.data!.data!,
+                            );
+                          }
+                      }
+                    }),
+                  ),
+                ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: const Text('Trending Deals for You',
@@ -80,8 +91,8 @@ class _Full_menu_userState extends State<Full_menu_user> {
                   ),
                 ),
                 SizedBox(
-                  height: 210,
-                  child: userTrendingDeals(),
+                  height: 190,
+                  child: MerchantDetails(token: token),
                 )
               ],
             ),
@@ -93,7 +104,7 @@ class _Full_menu_userState extends State<Full_menu_user> {
 
   userTrendingDeals() {
     return FutureBuilder<TrendingDealsModel>(
-      future: UserDealServices().trendingDeals(widget.token),
+      future: UserDealServices().trendingDeals(token),
       builder: ((context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -111,7 +122,7 @@ class _Full_menu_userState extends State<Full_menu_user> {
                 itemBuilder: ((context, index) {
                   return all_details(
                     dealId: snapshot.data!.data![index].id!.toString(),
-                    token: widget.token,
+                    token: token,
                   );
                 }),
               );

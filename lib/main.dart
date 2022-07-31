@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-
-import '../splash_screen/splash.dart';
+import 'package:gigi_app/providers/deal_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'constant/theme.dart';
+import 'user_app/splash_screen/splash.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -14,10 +16,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: theme(),
-      home: const SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DealProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: theme(),
+        home: const SplashScreen(),
+      ),
     );
   }
 }

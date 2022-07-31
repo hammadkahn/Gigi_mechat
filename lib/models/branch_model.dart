@@ -36,8 +36,8 @@ class BranchData {
   String? address;
   String? country;
   String? city;
-  double? lat;
-  double? long;
+  String? lat;
+  String? long;
   String? description;
   String? logo;
   String? status;
@@ -46,6 +46,7 @@ class BranchData {
   String? createdBy;
   String? createdAt;
   String? updatedAt;
+  String? logoPath;
 
   BranchData(
       {this.id,
@@ -62,7 +63,8 @@ class BranchData {
       this.merchantId,
       this.createdBy,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.logoPath});
 
   BranchData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -80,6 +82,7 @@ class BranchData {
     createdBy = json['created_by'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    logoPath = json['logoPath'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +102,7 @@ class BranchData {
     data['created_by'] = createdBy;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['logoPath'] = logoPath;
     return data;
   }
 }

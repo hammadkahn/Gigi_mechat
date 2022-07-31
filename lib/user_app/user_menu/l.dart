@@ -1,18 +1,48 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/user_app/user_menu/deals_user.dart';
 
-
 class C_slider extends StatefulWidget {
-  const C_slider({Key? key}) : super(key: key);
+  const C_slider({Key? key, required this.merchantList, required this.token})
+      : super(key: key);
+  // final String token;
+  final List<DealData> merchantList;
+  final String token;
 
   @override
   State<C_slider> createState() => _C_sliderState();
 }
 
 class _C_sliderState extends State<C_slider> {
+  DateTime now = DateTime.now();
+  DateTime? now_1w;
+  List<DealData> weekDeals = [];
+  String? reviews;
+
+  getDealsDate(DateTime now, DateTime nowW1) {
+    int lenght = nowW1.day;
+    int current = now.day;
+
+    for (int i = current; i >= lenght; i--) {
+      debugPrint(i.toString());
+      for (int j = 0; j < widget.merchantList.length; j++) {
+        DateTime? createdDate =
+            DateTime.parse(widget.merchantList[j].createdAt!);
+        if (createdDate.day <= i && createdDate.day >= lenght) {
+          weekDeals.add(widget.merchantList[j]);
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    now_1w = now.subtract(const Duration(days: 7));
+    super.initState();
+    getDealsDate(now, now_1w!);
+  }
+
   int activeIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -20,29 +50,43 @@ class _C_sliderState extends State<C_slider> {
     double carouselheight = carouselwidth * 145 / 327;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: CarouselSlider(
-          items: [dealsUser(), dealsUser(), dealsUser()],
-          options: CarouselOptions(
-            aspectRatio: 2.0,
-            height: carouselheight,
+      child: CarouselSlider.builder(
+        itemCount: weekDeals.length,
+        itemBuilder: ((context, index, realIndex) {
+          return weekDeals.isEmpty
+              ? const Center(
+                  child: Text(
+                    'No week offers available',
+                    textScaleFactor: 1.1,
+                  ),
+                )
+              : dealsUser(
+                  token: widget.token,
+                  dealData: weekDeals[index].id.toString(),
+                );
+        }),
+        options: CarouselOptions(
+          aspectRatio: 2.0,
+          height: carouselheight,
 
-            // width: MediaQuery.of(context).size.width,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 3),
-            autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enlargeCenterPage: true,
-            viewportFraction: 1,
-            initialPage: 0,
-            enableInfiniteScroll: true,
-            reverse: false,
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (index, reason) {
-              setState(() {
-                activeIndex = index;
-              });
-            },
-          )),
+          // width: MediaQuery.of(context).size.width,
+          autoPlay: true,
+          autoPlayInterval: const Duration(seconds: 3),
+          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enlargeCenterPage: true,
+          viewportFraction: 1,
+          initialPage: 0,
+          enableInfiniteScroll: true,
+          reverse: false,
+          scrollDirection: Axis.horizontal,
+          onPageChanged: (index, reason) {
+            setState(() {
+              activeIndex = index;
+            });
+          },
+        ),
+      ),
     );
   }
 }

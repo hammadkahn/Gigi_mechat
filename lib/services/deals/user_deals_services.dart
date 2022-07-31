@@ -38,7 +38,6 @@ class UserDealServices {
       final result = UserListOfDeals.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
-        debugPrint(result.message);
         return result;
       } else {
         debugPrint(response.reasonPhrase);

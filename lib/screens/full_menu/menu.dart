@@ -11,20 +11,9 @@ import 'percent_ind2.dart';
 import 'percent_ind3.dart';
 import 'percent_indicator.dart';
 
-class Menu extends StatefulWidget {
+class Menu extends StatelessWidget {
   const Menu({Key? key, required this.token}) : super(key: key);
   final String token;
-
-  @override
-  State<Menu> createState() => _MenuState();
-}
-
-class _MenuState extends State<Menu> {
-  @override
-  void initState() {
-    getDashData();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,32 +27,66 @@ class _MenuState extends State<Menu> {
               children: [
                 const location_bar(),
                 const SizedBox(height: 10),
-                dashBoardModel == null
-                    ? const CircularProgressIndicator()
-                    : Dashboard(
-                        totalSale:
-                            dashBoardModel!.data!.totalDealSale.toString(),
-                      ),
-                const SizedBox(height: 10),
-                dashBoardModel == null
-                    ? const CircularProgressIndicator()
-                    : Stacked_container(
-                        discountAvailed:
-                            dashBoardModel!.data!.totalDealRadeem.toString(),
-                      ),
-                const SizedBox(height: 10),
-                dashBoardModel == null
-                    ? const CircularProgressIndicator()
-                    : Stacked_container2(
-                        totalActiveDeals:
-                            dashBoardModel!.data!.totalActiveDeals.toString(),
-                      ),
+                SizedBox(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: FutureBuilder<DashBoardModel>(
+                    future: DashBoardStats().getDashBoardStats(token),
+                    builder: (context, snapshot) {
+                      List<Widget> children;
+                      if (snapshot.hasData) {
+                        children = [
+                          Dashboard(
+                            totalSale:
+                                snapshot.data!.data!.totalDealSale.toString(),
+                          ),
+                          const SizedBox(height: 10),
+                          Stacked_container(
+                            discountAvailed:
+                                snapshot.data!.data!.totalDealRadeem.toString(),
+                          ),
+                          const SizedBox(height: 10),
+                          Stacked_container2(
+                            totalActiveDeals: snapshot
+                                .data!.data!.totalActiveDeals
+                                .toString(),
+                          ),
+                        ];
+                      } else if (snapshot.hasError) {
+                        children = <Widget>[
+                          const Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: 60,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16),
+                            child: Text('Error: ${snapshot.error}'),
+                          )
+                        ];
+                      } else {
+                        children = const <Widget>[
+                          SizedBox(
+                            width: 60,
+                            height: 60,
+                            child: CircularProgressIndicator(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text('Awaiting result...'),
+                          )
+                        ];
+                      }
+                      return Column(children: children);
+                    },
+                  ),
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height / 2,
                   child: FutureBuilder<Map<String, dynamic>>(
-                    future: DealServices().getAllDeals(token: widget.token),
+                    future: DealServices().getAllDeals(token: token),
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
@@ -89,7 +112,7 @@ class _MenuState extends State<Menu> {
                                   onTap: () {
                                     DealServices().getSingleDeal(
                                       dealId: data['id'].toString(),
-                                      token: widget.token,
+                                      token: token,
                                     );
                                   },
                                   child: Deals(
@@ -116,19 +139,19 @@ class _MenuState extends State<Menu> {
   }
 
   Future<MerchantListOfDeals> getAllData() async {
-    final result = await DealServices().getAllDeals(token: widget.token);
+    final result = await DealServices().getAllDeals(token: token);
     final userData = MerchantListOfDeals.fromJson(result);
     print('userData: ${userData.responseCode}');
     return userData;
   }
 
-  DashBoardModel? dashBoardModel;
+  // Map<String, dynamic>? dashBoardModel;
 
-  Future<void> getDashData() async {
-    final result = await DashBoardStats().getDashBoardStats(widget.token);
-    setState(() {
-      dashBoardModel = result;
-    });
-    print(result.responseCode);
-  }
+  // Future<void> getDashData() async {
+  //   final result = await DashBoardStats().getDashBoardStats(token);
+  //   setState(() {
+  //     dashBoardModel = result;
+  //   });
+  //   print(result['responseCode']);
+  // }
 }
