@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/user_app/user_menu/support_user.dart';
+
+import '../user_app/user_menu/ham_user.dart';
 
 class Location_bar_user extends StatelessWidget {
   const Location_bar_user({Key? key}) : super(key: key);
@@ -21,7 +24,12 @@ class Location_bar_user extends StatelessWidget {
               )),
         ),
         Spacer(),
-        Image.asset('assets/images/drawer.png'),
+        GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => ham_user()));
+            },
+            child: Image.asset('assets/images/drawer.png')),
         SizedBox(width: 13),
         Image.asset(
           'assets/images/notification.png',

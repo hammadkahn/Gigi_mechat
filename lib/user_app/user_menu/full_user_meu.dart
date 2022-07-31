@@ -4,6 +4,8 @@ import 'package:gigi_app/services/deals/user_deals_services.dart';
 import 'package:gigi_app/shared/loaction_user.dart';
 import 'package:gigi_app/user_app/user_menu/details_with_all.dart';
 
+import '../../constant/size_constants.dart';
+import '../../shared/search_field.dart';
 import 'l.dart';
 
 class Full_menu_user extends StatefulWidget {
@@ -25,6 +27,7 @@ class _Full_menu_userState extends State<Full_menu_user> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -41,6 +44,9 @@ class _Full_menu_userState extends State<Full_menu_user> {
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF32324D)),
+                ),
+                SearchField(
+                  searchText: 'Search',
                 ),
                 const C_slider(),
                 Container(
