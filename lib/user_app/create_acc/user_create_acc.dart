@@ -107,32 +107,32 @@ class _User_create_accState extends State<User_create_acc> {
                   return null;
                 },
               ),
-              TextFormField(
-                  controller: dobCtr,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                      suffixIcon: const Icon(Icons.calendar_today_rounded),
-                      labelText: 'Date of Birth',
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                        borderRadius: BorderRadius.circular(16),
-                      )),
-                  onTap: () async {
-                    DateTime? pickdate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1970),
-                        lastDate: DateTime(2030));
-                    if (pickdate != null) {
-                      setState(() {
-                        dobCtr.text = DateFormat('yyyy-MM-dd').format(pickdate);
-                      });
-                    }
-                  }),
+              TextField(
+                controller: dobCtr,
+                decoration: InputDecoration(
+                    icon: const Icon(Icons.calendar_today_rounded),
+                    labelText: 'Date of Birth',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    )),
+                onTap: () async {
+                  DateTime? pickdate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1970),
+                      lastDate: DateTime(2030));
+                  if (pickdate != null) {
+                    setState(() {
+                      dobCtr.text = DateFormat('dd-MM-yyyy').format(pickdate);
+                    });
+                  }
+                },
+              ),
               TextFormField(
                 controller: emailCtr,
                 decoration: InputDecoration(

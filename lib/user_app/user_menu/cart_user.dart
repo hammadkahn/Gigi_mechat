@@ -5,7 +5,10 @@ import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/user_app/user_menu/cart_deals.dart';
 import 'package:gigi_app/user_app/user_menu/order_status1.dart';
+<<<<<<< HEAD
 import 'package:provider/provider.dart';
+=======
+>>>>>>> adcec233bd91225932230a07976921e794992cd8
 
 class Cart_user extends StatefulWidget {
   const Cart_user({Key? key, required this.token}) : super(key: key);
@@ -168,6 +171,7 @@ class _Cart_userState extends State<Cart_user> {
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff0D9BFF))),
                       ),
+<<<<<<< HEAD
                     ],
                   ),
                 ),
@@ -188,5 +192,39 @@ class _Cart_userState extends State<Cart_user> {
         ),
       ),
     );
+=======
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 54,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                color: Color(0xff0D9BFF),
+                                size: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text('Add More Offers',
+                                    style: TextStyle(
+                                        fontFamily: 'Mulish',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff0D9BFF))),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      CustomButton(
+                          text: 'Get this Offer ➔',
+                          onPressed: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => status_1()));
+                          })
+                    ]))));
+>>>>>>> adcec233bd91225932230a07976921e794992cd8
   }
 }
