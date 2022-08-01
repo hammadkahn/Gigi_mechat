@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/category_model.dart';
 import 'package:gigi_app/services/categories/category_services.dart';
 import 'package:gigi_app/shared/search_result.dart';
+import 'package:gigi_app/user_app/user_menu/filter.dart';
 
 import '../constant/size_constants.dart';
 
@@ -38,17 +39,26 @@ class _SearchFieldState extends State<SearchField> {
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
           suffixIcon: IconButton(
-            icon: const Icon(Icons.search, color: Color(0xFFC0C0CF)),
-            onPressed: () {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text('searching...')));
-              searchData().whenComplete(() {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SearchResult(
-                          searchModel: searchModel!,
-                        )));
-              });
+              icon: const Icon(Icons.search, color: Color(0xFFC0C0CF)),
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('searching...')));
+                searchData().whenComplete(() {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SearchResult(
+                            searchModel: searchModel!,
+                          )));
+                });
+              }),
+          prefixIcon: GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const filter_list()));
             },
+            child: const Icon(
+              Icons.filter_list,
+              color: Color(0xFFC0C0CF),
+            ),
           ),
           hintText: widget.searchText,
         ),

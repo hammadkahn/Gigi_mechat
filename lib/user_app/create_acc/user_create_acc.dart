@@ -38,185 +38,201 @@ class _User_create_accState extends State<User_create_acc> {
         key: _key,
         child: Padding(
           padding: const EdgeInsets.only(right: 24, left: 24, top: 116),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text(
-                'Getting started! ✌️',
-                style: TextStyle(
-                    fontFamily: 'Dmsans',
-                    fontSize: 30,
-                    fontWeight: FontWeight.w500),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 14, bottom: 49),
-                child: Text(
-                    'Look like you are new to us! Create an account for a complete experience.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF8E8EA9))),
-              ),
-              TextFormField(
-                controller: nameCtr,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'Fullname',
+          child: SingleChildScrollView(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text(
+                  'Getting started! ✌️',
+                  style: TextStyle(
+                      fontFamily: 'Dmsans',
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: phoneNumberCtr,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'Phone Number',
+                const Padding(
+                  padding: EdgeInsets.only(top: 14, bottom: 40),
+                  child: Text(
+                      'Look like you are new to us! Create an account for a complete experience.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'Mulish',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF8E8EA9))),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter phone number';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: genderCtr,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'gender',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please speicify your gender';
-                  }
-                  return null;
-                },
-              ),
-              TextField(
-                controller: dobCtr,
-                decoration: InputDecoration(
-                    icon: const Icon(Icons.calendar_today_rounded),
-                    labelText: 'Date of Birth',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                      borderRadius: BorderRadius.circular(16),
-                    )),
-                onTap: () async {
-                  DateTime? pickdate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1970),
-                      lastDate: DateTime(2030));
-                  if (pickdate != null) {
-                    setState(() {
-                      dobCtr.text = DateFormat('dd-MM-yyyy').format(pickdate);
-                    });
-                  }
-                },
-              ),
-              TextFormField(
-                controller: emailCtr,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'Email',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'email is required';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: countryCtr,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'country',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'country field is required';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: cityCtr,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'City',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'city field required';
-                  }
-                  return null;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 22, bottom: 26),
-                child: TextFormField(
-                  controller: passCtr,
+                TextFormField(
+                  controller: nameCtr,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    hintText: 'Password',
-                    // suffix: Icon(Icons.visibility)
+                    hintText: 'Fullname',
                   ),
-                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please a strong password';
+                      return 'Please enter your name';
                     }
                     return null;
                   },
                 ),
-              ),
-              CustomButton(
-                isLoading: isLoading,
-                text: 'Next',
-                onPressed: _handleRegister,
-              ),
-              const Text(
-                'Forgot Password?',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF0096FF)),
-              ),
-              const Spacer(),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: TextFormField(
+                    controller: phoneNumberCtr,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      hintText: 'Phone Number',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter phone number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                TextFormField(
+                  controller: genderCtr,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    hintText: 'gender',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please speicify your gender';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: TextField(
+                    controller: dobCtr,
+                    decoration: InputDecoration(
+                        icon: const Icon(Icons.calendar_today_rounded),
+                        labelText: 'Date of Birth',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Color(0xFFEAEAEF)),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Color(0xFFEAEAEF)),
+                          borderRadius: BorderRadius.circular(16),
+                        )),
+                    onTap: () async {
+                      DateTime? pickdate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1970),
+                          lastDate: DateTime(2030));
+                      if (pickdate != null) {
+                        setState(() {
+                          dobCtr.text =
+                              DateFormat('dd-MM-yyyy').format(pickdate);
+                        });
+                      }
+                    },
+                  ),
+                ),
+                TextFormField(
+                  controller: emailCtr,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    hintText: 'Email',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'email is required';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: TextFormField(
+                    controller: countryCtr,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      hintText: 'country',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'country field is required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                TextFormField(
+                  controller: cityCtr,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    hintText: 'City',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'city field required';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 26),
+                  child: TextFormField(
+                    controller: passCtr,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      hintText: 'Password',
+                      // suffix: Icon(Icons.visibility)
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please a strong password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                CustomButton(
+                  isLoading: isLoading,
+                  text: 'Next',
+                  onPressed: _handleRegister,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                        fontFamily: 'Mulish',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0096FF)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
