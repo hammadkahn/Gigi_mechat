@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/user_app/categories/categories.dart';
 import 'package:gigi_app/user_app/user_menu/cart_user.dart';
-import 'package:gigi_app/user_app/user_menu/discont_user.dart';
+import 'package:gigi_app/user_app/user_menu/my_qrs.dart';
 import 'package:gigi_app/user_app/user_menu/fav_user.dart';
 import 'package:gigi_app/user_app/user_menu/full_user_meu.dart';
 
@@ -30,7 +30,7 @@ class _User_barState extends State<User_bar> {
     _children = [
       Full_menu_user(token: widget.token),
       Categories_user(token: widget.token),
-      const Discount_user(),
+      const My_Qrs(),
       Fav_user(token: widget.token),
       Cart_user(token: widget.token),
     ];
@@ -50,7 +50,7 @@ class _User_barState extends State<User_bar> {
           backgroundColor: Colors.white,
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => Categories_user(token: widget.token),
+              builder: (_) => My_Qrs(),
             ));
           },
           child: Image.asset(
