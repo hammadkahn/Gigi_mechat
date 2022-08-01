@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/user_app/user_menu/review.dart';
 
 class qr_cont extends StatelessWidget {
   const qr_cont({Key? key}) : super(key: key);
@@ -64,13 +65,14 @@ class qr_cont extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF848484)),
                   ),
+                  Spacer(),
                   Text(
-                    'Available',
+                    'Redeemed',
                     style: TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF12FF0D)),
+                        color: Color(0xFFFF0D0D)),
                   ),
                 ],
               ),
@@ -101,20 +103,27 @@ class qr_cont extends StatelessWidget {
                         fontSize: 7,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF0D9BFF))),
+                Spacer(),
                 Container(
-                  width: 28,
+                  width: 55,
                   height: 11,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     color: Color(0xFF0D9BFF),
                   ),
                   child: Center(
-                    child: Text('View',
-                        style: TextStyle(
-                            fontFamily: 'Mulish',
-                            fontSize: 5,
-                            fontWeight: FontWeight.w900,
-                            color: Color(0xFFFFFFFF))),
+                    child: GestureDetector(
+                      onTap: () => showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) => review()),
+                      child: Text('★ Write a Review',
+                          style: TextStyle(
+                              fontFamily: 'Mulish',
+                              fontSize: 5,
+                              fontWeight: FontWeight.w900,
+                              color: Color(0xFFFFFFFF))),
+                    ),
                   ),
                 ),
               ]),
