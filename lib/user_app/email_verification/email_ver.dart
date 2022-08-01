@@ -101,7 +101,6 @@ class _Email_verState extends State<Email_ver> {
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF0096FF)),
                 ),
-                const Spacer(),
               ],
             ),
           ),
