@@ -19,9 +19,11 @@ class Categories_user extends StatelessWidget {
         ),
         child: ListView(
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.only(right: 24),
-              child: Location_bar_user(),
+            Padding(
+              padding: const EdgeInsets.only(right: 24),
+              child: Location_bar_user(
+                token: token,
+              ),
             ),
             const SizedBox(
               height: 23,

@@ -49,7 +49,6 @@ class _dealsUserState extends State<dealsUser> {
 
   @override
   void dispose() {
-    dealProvider!.dispose();
     super.dispose();
   }
 

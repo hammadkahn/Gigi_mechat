@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/models/reviews_model.dart';
-import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/order.dart';
 import 'details_bottom.dart';
 
 class Details_deals extends StatefulWidget {
@@ -84,7 +84,7 @@ class _Details_dealsState extends State<Details_deals> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: const Color(0xFFE6E6E6), width: 1)),
-            child: Consumer<DealProvider>(
+            child: Consumer<Cart>(
               builder: ((context, value, child) {
                 return Container(
                   height: 52,
@@ -145,40 +145,33 @@ class _Details_dealsState extends State<Details_deals> {
                               onTap: value.qty <= 0
                                   ? null
                                   : () {
-                                      Map<String, dynamic> data = {
-                                        "deals[0][id]":
-                                            widget.data!.id.toString(),
-                                        "deals[0][quantity]":
-                                            value.qty.toString(),
-                                        "deals[0][price]":
-                                            widget.data!.price.toString(),
-                                        "deals[0][total_price]":
-                                            priceAfterDiscount.toString(),
-                                        "deals[0][discount]": widget
-                                            .data!.discountOnPrice
-                                            .toString(),
-                                      };
-                                      value
-                                          .addToCart(widget.token, data)
-                                          .whenComplete(
-                                            () => ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(value.msg),
-                                              ),
-                                            ),
-                                          );
+                                      value.addTCart(
+                                          id: widget.data!.id.toString(),
+                                          price: widget.data!.price!,
+                                          discountOnPrice:
+                                              widget.data!.discountOnPrice!,
+                                          title: widget.data!.name!,
+                                          reviews: Reviews()
+                                              .getRating(widget.data!.reviews),
+                                          image: widget.data!.images!.isEmpty
+                                              ? ''
+                                              : widget.data!.images![0].image!,
+                                          reviewsCount: widget
+                                              .data!.reviews!.length
+                                              .toString(),
+                                          path: widget.data!.images!.isEmpty
+                                              ? ''
+                                              : widget.data!.images![0].path!);
+                                      value.checkIsAddedToCart(context);
                                     },
-                              child: isLaoding
-                                  ? const CircularProgressIndicator()
-                                  : const Text(
-                                      'Add to Cart',
-                                      style: TextStyle(
-                                          fontFamily: 'Mulish',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFFFFFFFF)),
-                                    )),
+                              child: const Text(
+                                'Add to Cart',
+                                style: TextStyle(
+                                    fontFamily: 'Mulish',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFFFFFFFF)),
+                              )),
                         ),
                       )
                     ],

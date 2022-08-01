@@ -45,4 +45,65 @@ class UserInformation {
       throw Exception(e);
     }
   }
+
+  Future<UserProfileModel> updateUserProfile(
+    String token,
+    Map<String, dynamic> data,
+  ) async {
+    try {
+      final response = await http.post(ApiUrls.updateUserProfile,
+          body: data,
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      final userProfile = UserProfileModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        debugPrint(userProfile.message);
+        return userProfile;
+      } else {
+        debugPrint(userProfile.message);
+        return userProfile;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> updatePreferences(
+    String token,
+    Map<String, dynamic> data,
+  ) async {
+    try {
+      final response = await http.post(ApiUrls.updatePreferences,
+          body: data,
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+      } else {
+        debugPrint(response.body);
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> updatePassword(
+    String token,
+    Map<String, dynamic> data,
+  ) async {
+    try {
+      final response = await http.post(ApiUrls.updateUserProfile,
+          body: data,
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+      } else {
+        debugPrint(response.body);
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

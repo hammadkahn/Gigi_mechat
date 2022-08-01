@@ -12,8 +12,6 @@ import 'l.dart';
 class Full_menu_user extends StatelessWidget {
   const Full_menu_user({Key? key, required this.token}) : super(key: key);
   final String token;
-
-  @override
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
@@ -25,7 +23,9 @@ class Full_menu_user extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Location_bar_user(),
+                Location_bar_user(
+                  token: token,
+                ),
                 const Text(
                   'GiGi Find out the best deals for you!',
                   style: TextStyle(
@@ -34,12 +34,9 @@ class Full_menu_user extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF32324D)),
                 ),
-<<<<<<< HEAD
-                SearchField(
+                const SearchField(
                   searchText: 'Search',
                 ),
-                const C_slider(),
-=======
                 SizedBox(
                   child: FutureBuilder<UserListOfDeals>(
                     future: UserDealServices().getAllUserDeals(token),
@@ -63,7 +60,6 @@ class Full_menu_user extends StatelessWidget {
                     }),
                   ),
                 ),
->>>>>>> 34a2817ac67a05243186ca3e9bd0f30567b1b791
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: const Text('Trending Deals for You',

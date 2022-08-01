@@ -27,7 +27,6 @@ class _C_sliderState extends State<C_slider> {
 
     if (mounted) {
       for (int i = current; i >= lenght; i--) {
-        debugPrint(i.toString());
         for (int j = 0; j < widget.merchantList.length; j++) {
           DateTime? createdDate =
               DateTime.parse(widget.merchantList[j].createdAt!);
@@ -62,46 +61,46 @@ class _C_sliderState extends State<C_slider> {
     double carouselheight = carouselwidth * 145 / 327;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: CarouselSlider.builder(
-        itemCount: weekDeals.length,
-        itemBuilder: ((context, index, realIndex) {
-          return weekDeals.isEmpty
-              ? const Center(
-                  child: Text(
-                    'No week offers available',
-                    textScaleFactor: 1.1,
-                  ),
-                )
-              : dealsUser(
+      child: weekDeals.isEmpty
+          ? const Center(
+              child: Text(
+                'No week offers available',
+                textScaleFactor: 1.1,
+              ),
+            )
+          : CarouselSlider.builder(
+              itemCount: weekDeals.length,
+              itemBuilder: ((context, index, realIndex) {
+                return dealsUser(
                   token: widget.token,
                   dealData: weekDeals[index].id.toString(),
                 );
-        }),
-        options: CarouselOptions(
-          aspectRatio: 2.0,
-          height: carouselheight,
+              }),
+              options: CarouselOptions(
+                aspectRatio: 2.0,
+                height: carouselheight,
 
-          // width: MediaQuery.of(context).size.width,
-          autoPlay: true,
-          autoPlayInterval: const Duration(seconds: 3),
-          autoPlayAnimationDuration: const Duration(milliseconds: 800),
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enlargeCenterPage: true,
-          viewportFraction: 1,
-          initialPage: 0,
-          enableInfiniteScroll: true,
-          reverse: false,
-          scrollDirection: Axis.horizontal,
-          onPageChanged: (index, reason) {
-            if (mounted) {
-              setState(() {
-                activeIndex = index;
-              });
-            }
-          },
-        ),
-        carouselController: controller,
-      ),
+                // width: MediaQuery.of(context).size.width,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeCenterPage: true,
+                viewportFraction: 1,
+                initialPage: 0,
+                enableInfiniteScroll: true,
+                reverse: false,
+                scrollDirection: Axis.horizontal,
+                onPageChanged: (index, reason) {
+                  if (mounted) {
+                    setState(() {
+                      activeIndex = index;
+                    });
+                  }
+                },
+              ),
+              carouselController: controller,
+            ),
     );
   }
 }

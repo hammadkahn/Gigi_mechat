@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
+import 'package:gigi_app/providers/order.dart';
 import 'package:provider/provider.dart';
 
 import 'constant/theme.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DealProvider()),
+        ChangeNotifierProvider(create: (_) => Cart()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

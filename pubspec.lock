@@ -150,11 +150,7 @@ packages:
     source: hosted
     version: "4.0.1"
   intl:
-<<<<<<< HEAD
     dependency: "direct main"
-=======
-    dependency: "direct dev"
->>>>>>> adcec233bd91225932230a07976921e794992cd8
     description:
       name: intl
       url: "https://pub.dartlang.org"

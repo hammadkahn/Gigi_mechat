@@ -52,16 +52,16 @@ class contact_user extends StatelessWidget {
                                     child: Image.asset(
                                         'assets/images/arrow-left.png')),
                               ),
-                              Spacer(),
-                              Text('Support',
+                              const Spacer(),
+                              const Text('Support',
                                   style: TextStyle(
                                       fontFamily: 'Mulish',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600)),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 42),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 42),
                             child: Text("Contact :",
                                 style: TextStyle(
                                     fontFamily: 'Mulish',
@@ -69,8 +69,8 @@ class contact_user extends StatelessWidget {
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xff32324D))),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 30),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 30),
                             child: Text("+98712212121212",
                                 style: TextStyle(
                                     fontFamily: 'Mulish',

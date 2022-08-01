@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:gigi_app/models/cart_model.dart';
 import 'package:gigi_app/models/puchase_model.dart';
 import 'package:gigi_app/models/wish_list_model.dart';
@@ -9,13 +9,13 @@ import 'package:http/http.dart' as http;
 import '../apis/api_urls.dart';
 import '../models/deal_model.dart';
 
-class DealProvider extends ChangeNotifier {
+class DealProvider with ChangeNotifier {
   TrendingDealsModel? dealsDataList;
   DealData? _dealData;
   CartData? _purchaseData;
 
   List<CartData> _cartData = [];
-  int _qty = 0;
+
   String _msg = 'purchase fail';
 
   TrendingDealsModel get deals => dealsDataList!;
@@ -24,7 +24,6 @@ class DealProvider extends ChangeNotifier {
 
   List<CartData> get cartData => _cartData;
 
-  int get qty => _qty;
   String get msg => _msg;
 
   Future<void> tryCatch(String token, dynamic url,
@@ -42,10 +41,8 @@ class DealProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         debugPrint(response.body);
         _msg = '${result['message']}fully added to the cart';
-        debugPrint('$msg : $_msg');
         notifyListeners();
       } else {
-        debugPrint(response.reasonPhrase);
         _msg = result['message'];
         notifyListeners();
         throw Exception(response.statusCode);
@@ -116,7 +113,6 @@ class DealProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         return result;
       } else {
-        debugPrint(response.reasonPhrase);
         throw Exception(result.message);
       }
     } catch (e) {
@@ -144,7 +140,6 @@ class DealProvider extends ChangeNotifier {
   }
 
   Future<SinglePurchaseModel> purchaseDetails(String token, String id) async {
-    debugPrint(token);
     try {
       final url = Uri.parse('${ApiUrls.baseUrl}user/getPurchaseDeal/$id');
       final response = await http.get(
@@ -155,11 +150,9 @@ class DealProvider extends ChangeNotifier {
       final result = SinglePurchaseModel.fromJson(jsonDecode(response.body));
       final mapResult = jsonDecode(response.body);
 
-      print(mapResult);
       if (response.statusCode == 200) {
         debugPrint('single deal : ${result.message}');
-        _qty = int.parse(result.data!.purchaseQuantity!);
-        debugPrint(_qty.toString());
+
         notifyListeners();
         return result;
       } else {
@@ -171,18 +164,24 @@ class DealProvider extends ChangeNotifier {
     }
   }
 
-  void increaseQty() {
-    _qty += 1;
-    debugPrint(_qty.toString());
-    debugPrint(qty.toString());
-    notifyListeners();
-  }
+  Future<void> removeFromWishList(String id, String token) async {
+    try {
+      final url = Uri.parse('${ApiUrls.baseUrl}user/deleteFromWishlist/$id');
+      final response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        _msg = 'removed from wish list ${result['message']}fully';
+        notifyListeners();
+      } else {
+        _msg = result['message'];
+        debugPrint(response.reasonPhrase);
 
-  void decreaseQty() {
-    _qty -= 1;
-    if (_qty <= 0) _qty = 0;
-    debugPrint(qty.toString());
-    notifyListeners();
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   String calculateDiscount(

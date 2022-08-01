@@ -24,16 +24,20 @@ class _all_detailsState extends State<all_details> {
       widget.dealId,
       widget.token,
     );
-    setState(() {
-      dealData = result.data;
-    });
+    if (mounted) {
+      setState(() {
+        dealData = result.data;
+      });
+    }
   }
 
   final _key = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    getDealData();
+    if (mounted) {
+      getDealData();
+    }
     super.initState();
   }
 

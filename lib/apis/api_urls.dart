@@ -34,6 +34,9 @@ class ApiUrls {
   //user profile urls
   static final getUserProf = Uri.parse('${baseUrl}user/getCurrentUser');
   static final userSignUp = Uri.parse('${baseUrl}userRegister');
+  static final updateUserProfile = Uri.parse('${baseUrl}user/updateProfile');
+  static final updatePreferences = Uri.parse('${baseUrl}user/updatePreference');
+  static final updateUserPass = Uri.parse('${baseUrl}user/updatePassword');
 
   //verify account urls
   static final verifyAccount = Uri.parse('${baseUrl}verifyAccount');

@@ -6,8 +6,8 @@ import '../../chat/message_list.dart';
 import '../../support/contact.dart';
 
 class support_user extends StatelessWidget {
-  const support_user({Key? key}) : super(key: key);
-
+  const support_user({Key? key, required this.phoneNumber}) : super(key: key);
+  final String phoneNumber;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,8 +54,8 @@ class support_user extends StatelessWidget {
                                   child: Image.asset(
                                       'assets/images/arrow-left.png')),
                             ),
-                            Spacer(),
-                            Text('Support',
+                            const Spacer(),
+                            const Text('Support',
                                 style: TextStyle(
                                     fontFamily: 'Mulish',
                                     fontSize: 14,
@@ -69,9 +69,9 @@ class support_user extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Contact()));
+                                      builder: (context) => const Contact()));
                             },
-                            child: Text("Contact Support",
+                            child: const Text("Contact Support",
                                 style: TextStyle(
                                     fontFamily: 'Mulish',
                                     fontSize: 12,
@@ -79,8 +79,8 @@ class support_user extends StatelessWidget {
                                     color: Color(0xff32324D))),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18, bottom: 18),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 18, bottom: 18),
                           child: Divider(
                             color: Color(0xFFE6E6E6),
                             thickness: 1,
@@ -94,9 +94,9 @@ class support_user extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Message()));
+                                    builder: (context) => const Message()));
                           },
-                          child: Text("Chat Support",
+                          child: const Text("Chat Support",
                               style: TextStyle(
                                   fontFamily: 'Mulish',
                                   fontSize: 12,

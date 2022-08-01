@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/models/puchase_model.dart';
-import 'package:gigi_app/models/reviews_model.dart';
-import 'package:gigi_app/providers/deal_provider.dart';
+import 'package:gigi_app/providers/order.dart';
 import 'package:provider/provider.dart';
 
 import '../../constant/size_constants.dart';
 
 class cart_deals extends StatelessWidget {
-  const cart_deals(
-      {Key? key,
-      required this.token,
-      required this.dealId,
-      required this.afterDiscount,
-      required this.purchaseId})
-      : super(key: key);
+  const cart_deals({
+    Key? key,
+    required this.token,
+    required this.dealId,
+    required this.cart,
+  }) : super(key: key);
   final String token;
   final String dealId;
-  final String afterDiscount;
-  final String purchaseId;
+  final CartItems cart;
 
   static const String baseUrl = 'https://gigiapi.zanforthstaging.com/';
 
   @override
   Widget build(BuildContext context) {
-    int? currentIndex;
-    final dealProvider = Provider.of<DealProvider>(context, listen: false);
+    // final dealProvider = Provider.of<DealProvider>(context, listen: false);
 
     SizeConfig.init(context);
     return Container(
@@ -62,7 +57,7 @@ class cart_deals extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
-                        dealProvider.dealData.name!,
+                        cart.title,
                         style: const TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 14,
@@ -95,7 +90,7 @@ class cart_deals extends StatelessWidget {
                           Image.asset('assets/images/rating.png',
                               width: 6, height: 6),
                           Text(
-                            Reviews().getRating(dealProvider.dealData.reviews),
+                            cart.reviews,
                             style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 7,
@@ -103,7 +98,7 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFF5F5F5F)),
                           ),
                           Text(
-                            '(${dealProvider.dealData.reviews!.length} reviews)',
+                            '(${cart.reviewsCount} reviews)',
                             style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 4,
@@ -125,7 +120,7 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFFFF6767)),
                           ),
                           Text(
-                            dealProvider.dealData.price!,
+                            cart.price,
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 fontFamily: 'Mulish',
@@ -142,7 +137,7 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFF0D9BFF)),
                           ),
                           Text(
-                            afterDiscount,
+                            cart.priceAfterDiscount,
                             style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 16,
@@ -158,7 +153,7 @@ class cart_deals extends StatelessWidget {
                                     BorderRadius.all(Radius.circular(3))),
                             child: Center(
                               child: Text(
-                                '${dealProvider.dealData.discountOnPrice}% OFF',
+                                '${cart.discountOnPrice}% OFF',
                                 style: const TextStyle(
                                     fontSize: 5,
                                     fontFamily: 'Mulish',
@@ -175,75 +170,58 @@ class cart_deals extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                    onTap: () => dealProvider.decreaseQty(),
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xFFEAFFFA)),
-                      child: const Icon(
-                        Icons.remove,
-                        color: Color(0xFF0D9BFF),
-                        size: 16,
-                      ),
-                    )),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: FutureBuilder<SinglePurchaseModel>(
-                    future: dealProvider.purchaseDetails(token, purchaseId),
-                    builder: ((context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text(
-                          'Loading...',
-                          style: TextStyle(
+            child: Consumer<Cart>(
+              builder: ((__, value, _) => Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () => value.decreaseQty(),
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFEAFFFA)),
+                            child: const Icon(
+                              Icons.remove,
+                              color: Color(0xFF0D9BFF),
+                              size: 16,
+                            ),
+                          )),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 14),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: Text(
+                          value.qty <= 0 ? '0' : value.qty.toString(),
+                          style: const TextStyle(
                               color: Color(0xff666687),
-                              fontSize: 11,
+                              fontSize: 14,
                               fontFamily: 'Mulish',
                               fontWeight: FontWeight.w600),
-                        );
-                      } else if (snapshot.hasError) {
-                        debugPrint(snapshot.error.toString());
-                        return const Text('error');
-                      } else {
-                        return Consumer<DealProvider>(
-                          builder: ((__, value, _) => Text(
-                                value.qty <= 0 ? '0' : value.qty.toString(),
-                                style: const TextStyle(
-                                    color: Color(0xff666687),
-                                    fontSize: 14,
-                                    fontFamily: 'Mulish',
-                                    fontWeight: FontWeight.w600),
-                              )),
-                        );
-                      }
-                    }),
-                  ),
-                ),
-                InkWell(
-                    onTap: () {
-                      dealProvider.increaseQty();
-                    },
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xFFEAFFFA)),
-                      child: const Icon(
-                        Icons.add,
-                        color: Color(0xFF0D9BFF),
-                        size: 16,
+                        ),
                       ),
-                    )),
-              ],
+                      InkWell(
+                          onTap: () {
+                            value.increaseQty();
+                          },
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFEAFFFA)),
+                            child: const Icon(
+                              Icons.add,
+                              color: Color(0xFF0D9BFF),
+                              size: 16,
+                            ),
+                          )),
+                    ],
+                  )),
             ),
           ),
         ],

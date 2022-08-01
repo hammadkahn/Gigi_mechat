@@ -40,6 +40,7 @@ class UserProfileData {
   String? createdAt;
   String? updatedAt;
   String? token;
+  List<Perference>? perference;
   String? profilePicturePath;
   String? statusName;
 
@@ -58,6 +59,7 @@ class UserProfileData {
       this.createdAt,
       this.updatedAt,
       this.token,
+      this.perference,
       this.profilePicturePath,
       this.statusName});
 
@@ -76,6 +78,12 @@ class UserProfileData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     token = json['token'];
+    if (json['perference'] != null) {
+      perference = <Perference>[];
+      json['perference'].forEach((v) {
+        perference!.add(Perference.fromJson(v));
+      });
+    }
     profilePicturePath = json['profilePicturePath'];
     statusName = json['StatusName'];
   }
@@ -96,8 +104,48 @@ class UserProfileData {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['token'] = token;
+    if (perference != null) {
+      data['perference'] = perference!.map((v) => v.toJson()).toList();
+    }
     data['profilePicturePath'] = profilePicturePath;
     data['StatusName'] = statusName;
+    return data;
+  }
+}
+
+class Perference {
+  int? id;
+  String? userId;
+  String? categoryId;
+  String? categoryName;
+  String? createdAt;
+  String? updatedAt;
+
+  Perference(
+      {this.id,
+      this.userId,
+      this.categoryId,
+      this.categoryName,
+      this.createdAt,
+      this.updatedAt});
+
+  Perference.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    categoryId = json['category_id'];
+    categoryName = json['category_name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
