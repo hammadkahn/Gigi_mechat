@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/user_app/user_menu/filter.dart';
 
 import '../constant/size_constants.dart';
 
@@ -24,9 +25,15 @@ class SearchField extends StatelessWidget {
           border: InputBorder.none,
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,
-          suffixIcon: Icon(
-            Icons.search,
-            color: Color(0xFFC0C0CF),
+          suffixIcon: GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => filter_list()));
+            },
+            child: Icon(
+              Icons.filter_list,
+              color: Color(0xFFC0C0CF),
+            ),
           ),
           hintText: searchText,
         ),

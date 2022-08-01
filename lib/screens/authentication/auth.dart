@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gigi_app/shared/custom_button.dart';
+import 'package:gigi_app/user_app/create_acc/user_create_acc.dart';
 
 import '../../constant/size_constants.dart';
 import '../../services/auth/authentication.dart';
@@ -101,13 +102,19 @@ class _auth_pageState extends State<auth_page> {
                     text: 'Sign In',
                     onPressed: loginUsers),
               ),
-              const Text(
-                'Registered as a Merchant',
-                style: TextStyle(
-                    fontFamily: 'Mulish',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF8981AE)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => User_create_acc()));
+                },
+                child: const Text(
+                  'Registered as a Merchant',
+                  style: TextStyle(
+                      fontFamily: 'Mulish',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF8981AE)),
+                ),
               )
             ],
           ),
