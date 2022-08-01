@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/screens/full_menu/profile.dart';
 
 class location_bar extends StatelessWidget {
-  const location_bar({Key? key}) : super(key: key);
+  const location_bar({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,16 @@ class location_bar extends StatelessWidget {
               )),
         ),
         const Spacer(),
-        Image.asset('assets/images/drawer.png')
+        InkWell(
+          child: Image.asset('assets/images/drawer.png'),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Profile(
+                      token: token,
+                      isLeadingIcon: true,
+                    )));
+          },
+        )
       ],
     );
   }

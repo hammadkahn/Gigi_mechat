@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 
 class CartItems {
-  String id;
-  String price;
-  String discountOnPrice;
-  String title;
-  String reviews;
-  String image;
-  String qty;
-  String priceAfterDiscount;
-  String reviewsCount;
-  String path;
+  String? id;
+  String? price;
+  String? discountOnPrice;
+  String? title;
+  String? reviews;
+  String? image;
+  String? qty;
+  String? priceAfterDiscount;
+  String? reviewsCount;
+  String? path;
 
   CartItems({
-    required this.id,
-    required this.reviewsCount,
-    required this.priceAfterDiscount,
-    required this.qty,
-    required this.price,
-    required this.discountOnPrice,
-    required this.reviews,
-    required this.title,
-    required this.image,
-    required this.path,
+    this.id,
+    this.reviewsCount,
+    this.priceAfterDiscount,
+    this.qty,
+    this.price,
+    this.discountOnPrice,
+    this.reviews,
+    this.title,
+    this.image,
+    this.path,
   });
 }
 
 class Cart with ChangeNotifier {
-  final List<CartItems> _cartItemsList = [];
+  List<CartItems> _cartItemsList = [];
   int _qty = 0;
 
   List<CartItems> get cartItems => _cartItemsList;
@@ -40,7 +40,7 @@ class Cart with ChangeNotifier {
     required String? image,
     required String? reviews,
     required String? discountOnPrice,
-    required String path,
+    required String? path,
     String? afterDiscount = '0',
     String? reviewsCount = '0',
   }) {
@@ -50,7 +50,7 @@ class Cart with ChangeNotifier {
         priceAfterDiscount: calculateDiscount(discountOnPrice!, price!),
         qty: qty.toString(),
         id: id!,
-        path: path,
+        path: path!,
         image: image ?? '',
         price: price,
         reviews: reviews ?? '0',
@@ -83,10 +83,14 @@ class Cart with ChangeNotifier {
     }
   }
 
+  void clearCart() {
+    _cartItemsList = [];
+    notifyListeners();
+  }
+
   void increaseQty() {
     _qty += 1;
-    debugPrint(_qty.toString());
-    debugPrint(qty.toString());
+
     notifyListeners();
   }
 

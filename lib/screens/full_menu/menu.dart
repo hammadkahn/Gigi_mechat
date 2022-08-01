@@ -25,11 +25,13 @@ class Menu extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const location_bar(),
+                location_bar(
+                  token: token,
+                ),
                 const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.50,
                   child: FutureBuilder<DashBoardModel>(
                     future: DashBoardStats().getDashBoardStats(token),
                     builder: (context, snapshot) {
@@ -85,7 +87,7 @@ class Menu extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height / 2,
-                  child: FutureBuilder<Map<String, dynamic>>(
+                  child: FutureBuilder<MerchantListOfDeals>(
                     future: DealServices().getAllDeals(token: token),
                     builder: (context, snapshot) {
                       switch (snapshot.connectionState) {
@@ -98,31 +100,25 @@ class Menu extends StatelessWidget {
                             return Center(
                               child: Text(snapshot.error.toString()),
                             );
-                          } else if (snapshot.data!['data']!.isEmpty) {
+                          } else if (snapshot.data!.data!.isEmpty) {
                             return const Center(
                                 child: Text('No deals available'));
                           } else {
-                            print(snapshot.data!['data'].length);
+                            print(snapshot.data!.data!.length);
                             return ListView.builder(
-                              itemCount: snapshot.data!['data'].length,
+                              itemCount: snapshot.data!.data!.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                var data = snapshot.data!['data'][index];
+                                var data = snapshot.data!.data![index];
                                 return InkWell(
                                   onTap: () {
                                     DealServices().getSingleDeal(
-                                      dealId: data['id'].toString(),
+                                      dealId: data.id.toString(),
                                       token: token,
                                     );
                                   },
                                   child: Deals(
-                                    discount: data['discount_on_price'],
-                                    actualPrice: data['actual_price'],
-                                    discountPrice: data['after_discount'],
-                                    name: data['name'],
-                                    imgUrl: data['image'] == null
-                                        ? data['image']
-                                        : data['image']['image'],
+                                    merchantListOfDeals: data,
                                   ),
                                 );
                               },
@@ -136,13 +132,6 @@ class Menu extends StatelessWidget {
             ),
           ),
         ));
-  }
-
-  Future<MerchantListOfDeals> getAllData() async {
-    final result = await DealServices().getAllDeals(token: token);
-    final userData = MerchantListOfDeals.fromJson(result);
-    print('userData: ${userData.responseCode}');
-    return userData;
   }
 
   // Map<String, dynamic>? dashBoardModel;

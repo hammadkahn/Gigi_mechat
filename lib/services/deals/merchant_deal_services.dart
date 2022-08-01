@@ -3,10 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:gigi_app/apis/api_urls.dart';
+import 'package:gigi_app/models/deal_model.dart';
 import 'package:http/http.dart' as http;
 
 class DealServices {
-  Future<Map<String, dynamic>> getAllDeals({required String token}) async {
+  Future<MerchantListOfDeals> getAllDeals({required String token}) async {
     final response = await http.get(
       ApiUrls.allDeals,
       headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
@@ -16,7 +17,7 @@ class DealServices {
       if (kDebugMode) {
         print(response.body);
       }
-      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      final result = MerchantListOfDeals.fromJson(jsonDecode(response.body));
       return result;
     } else {
       if (kDebugMode) {

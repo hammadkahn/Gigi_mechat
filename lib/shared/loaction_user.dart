@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/user_app/notification_screen.dart';
 
 import '../user_app/user_menu/ham_user.dart';
 
@@ -31,10 +32,16 @@ class Location_bar_user extends StatelessWidget {
             },
             child: Image.asset('assets/images/drawer.png')),
         const SizedBox(width: 13),
-        Image.asset(
-          'assets/images/notification.png',
-          height: 24,
-          width: 24,
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: ((context) => NotificationScreen(token: token))));
+          },
+          child: Image.asset(
+            'assets/images/notification.png',
+            height: 24,
+            width: 24,
+          ),
         )
       ],
     );

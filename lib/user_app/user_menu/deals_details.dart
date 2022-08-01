@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/models/reviews_model.dart';
+import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/order.dart';
@@ -55,17 +56,52 @@ class _Details_dealsState extends State<Details_deals> {
             indent: 120,
             endIndent: 120,
           ),
-          widget.data!.images == null || widget.data!.images!.isEmpty
-              ? Image.asset(
-                  'assets/images/detail.png',
-                  height: 248,
-                  width: MediaQuery.of(context).size.width,
+          SizedBox(
+            width: double.infinity,
+            height: 250,
+            child: Stack(
+              children: [
+                widget.data!.images == null || widget.data!.images!.isEmpty
+                    ? Image.asset(
+                        'assets/images/detail.png',
+                        height: 248,
+                        width: MediaQuery.of(context).size.width,
+                      )
+                    : Image.network(
+                        '$baseUrl${widget.data!.images![0].path!}/${widget.data!.images![0].image}',
+                        height: 248,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.all(5),
+                    decoration: const BoxDecoration(
+                        color: Colors.white, shape: BoxShape.circle),
+                    child: IconButton(
+                      icon: Icon(
+                        isLaoding == false
+                            ? Icons.favorite_border
+                            : Icons.favorite,
+                        color: isLaoding == false ? Colors.black : Colors.red,
+                      ),
+                      onPressed: () {
+                        Provider.of<DealProvider>(context, listen: false)
+                            .wishList(widget.token, {
+                          "deals[0]": widget.data!.id.toString()
+                        }).whenComplete(() {
+                          setState(() {
+                            isLaoding = true;
+                          });
+                        });
+                      },
+                    ),
+                  ),
                 )
-              : Image.network(
-                  '$baseUrl${widget.data!.images![0].path!}/${widget.data!.images![0].image}',
-                  height: 248,
-                  width: MediaQuery.of(context).size.width,
-                ),
+              ],
+            ),
+          ),
           bottom_detail(
             totalReviews: totalReviews.toString(),
             dealData: widget.data!,
@@ -143,7 +179,12 @@ class _Details_dealsState extends State<Details_deals> {
                         child: Center(
                           child: InkWell(
                               onTap: value.qty <= 0
-                                  ? null
+                                  ? () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Please add at least one quantity')));
+                                    }
                                   : () {
                                       value.addTCart(
                                           id: widget.data!.id.toString(),

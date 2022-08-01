@@ -40,13 +40,13 @@ class DealProvider with ChangeNotifier {
       final result = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
         debugPrint(response.body);
-        _msg = '${result['message']}fully added to the cart';
-        notifyListeners();
+        _msg = '${result['message']}';
       } else {
         _msg = result['message'];
-        notifyListeners();
+
         throw Exception(response.statusCode);
       }
+      notifyListeners();
     } catch (e) {
       throw Exception(e);
     }
