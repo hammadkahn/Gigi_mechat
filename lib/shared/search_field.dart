@@ -51,10 +51,10 @@ class _SearchFieldState extends State<SearchField> {
                 });
               }),
           prefixIcon: GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => const filter_list()));
-            },
+            onTap: () => showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) => filter_list()),
             child: const Icon(
               Icons.filter_list,
               color: Color(0xFFC0C0CF),
