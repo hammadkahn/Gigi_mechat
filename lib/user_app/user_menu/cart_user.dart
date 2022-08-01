@@ -13,10 +13,10 @@ class Cart_user extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context, listen: false);
-
+    final key = GlobalKey<ScaffoldState>();
     return SafeArea(
       child: Scaffold(
+        key: key,
         body: Padding(
           padding: const EdgeInsets.only(left: 24, right: 32, top: 17),
           child: Column(
@@ -84,26 +84,22 @@ class Cart_user extends StatelessWidget {
                             : ListView.builder(
                                 itemCount: value.cartItems.length,
                                 itemBuilder: ((context, index) {
-                                  debugPrint(
-                                      'item count : ${value.cartItems.length}');
-
                                   return Slidable(
-                                    endActionPane: ActionPane(
-                                        motion: const ScrollMotion(),
-                                        children: [
-                                          SlidableAction(
-                                            onPressed: (context) =>
-                                                {value.removeItem(index)},
-                                            backgroundColor: Colors.red,
-                                            icon: Icons.delete,
-                                          )
-                                        ]),
-                                    child: cart_deals(
+                                      endActionPane: ActionPane(
+                                          motion: const ScrollMotion(),
+                                          children: [
+                                            SlidableAction(
+                                              onPressed: (context) =>
+                                                  {value.removeItem(index)},
+                                              backgroundColor: Colors.red,
+                                              icon: Icons.delete,
+                                            )
+                                          ]),
+                                      child: cart_deals(
                                         cart: value.cartItems[index],
                                         token: token,
-                                        dealId: value.cartItems[index].id
-                                            .toString()),
-                                  );
+                                        index: index,
+                                      ));
                                 }),
                               );
                       }),
@@ -134,15 +130,27 @@ class Cart_user extends StatelessWidget {
                   ),
                 ),
               ),
-              CustomButton(
-                text: 'Get this Offer',
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => status_1(
-                            token: token,
-                          )));
-                },
-              ),
+              Consumer<Cart>(builder: (__, value, _) {
+                return CustomButton(
+                  text: 'Get this Offer',
+                  onPressed: value.qty <= 0
+                      ? () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('Please add a deal to the cart first'),
+                            ),
+                          );
+                        }
+                      : () {
+                          Navigator.of(key.currentContext!)
+                              .push(MaterialPageRoute(
+                                  builder: (currentContext) => status_1(
+                                        token: token,
+                                      )));
+                        },
+                );
+              }),
               const SizedBox(height: 30)
             ],
           ),

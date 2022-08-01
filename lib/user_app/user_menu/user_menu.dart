@@ -19,7 +19,7 @@ class _User_barState extends State<User_bar> {
   List<Widget> _children = [];
 
   final PageStorageBucket bucket = PageStorageBucket();
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late Widget currentScreen;
 
   @override
@@ -44,6 +44,7 @@ class _User_barState extends State<User_bar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         body: PageStorage(bucket: bucket, child: currentScreen),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,

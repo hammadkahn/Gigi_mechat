@@ -8,11 +8,11 @@ class cart_deals extends StatelessWidget {
   const cart_deals({
     Key? key,
     required this.token,
-    required this.dealId,
+    required this.index,
     required this.cart,
   }) : super(key: key);
   final String token;
-  final String dealId;
+  final int index;
   final CartItems cart;
 
   static const String baseUrl = 'https://gigiapi.zanforthstaging.com/';
@@ -57,7 +57,7 @@ class cart_deals extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
-                        cart.title,
+                        cart.title!,
                         style: const TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 14,
@@ -90,7 +90,7 @@ class cart_deals extends StatelessWidget {
                           Image.asset('assets/images/rating.png',
                               width: 6, height: 6),
                           Text(
-                            cart.reviews,
+                            cart.reviews!,
                             style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 7,
@@ -120,7 +120,7 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFFFF6767)),
                           ),
                           Text(
-                            cart.price,
+                            cart.price!,
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 fontFamily: 'Mulish',
@@ -137,7 +137,7 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFF0D9BFF)),
                           ),
                           Text(
-                            cart.priceAfterDiscount,
+                            cart.priceAfterDiscount!,
                             style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 16,
@@ -196,7 +196,7 @@ class cart_deals extends StatelessWidget {
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Text(
-                          value.qty <= 0 ? '0' : value.qty.toString(),
+                          value.qty.toString(),
                           style: const TextStyle(
                               color: Color(0xff666687),
                               fontSize: 14,

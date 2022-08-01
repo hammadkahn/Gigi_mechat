@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/branch_model.dart';
 import 'package:gigi_app/models/merchant_profile_model.dart';
+import 'package:gigi_app/screens/active_deals.dart';
 import 'package:gigi_app/services/branch/branch_services.dart';
 import 'package:gigi_app/services/get_profile/get_user_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,10 +10,13 @@ import '../../services/auth/authentication.dart';
 
 import '../../support/support.dart';
 import '../authentication/auth.dart';
+import '../my_branches.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key, required this.token}) : super(key: key);
+  const Profile({Key? key, required this.token, this.isLeadingIcon = false})
+      : super(key: key);
   final String token;
+  final bool isLeadingIcon;
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -24,6 +28,7 @@ class _ProfileState extends State<Profile> {
     super.initState();
   }
 
+  String? title;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,6 +51,19 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  if (widget.isLeadingIcon == true)
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(
+                          Icons.keyboard_arrow_left,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   SizedBox(
                     child: FutureBuilder<ProfileModel>(
                       future: UserInformation()
@@ -54,6 +72,7 @@ class _ProfileState extends State<Profile> {
                         List<Widget> children;
                         if (snapshot.hasData) {
                           var data = snapshot.data!.data!;
+                          title = data.name;
                           children = <Widget>[
                             data.profilePicture == null ||
                                     data.profilePicture!.isEmpty
@@ -109,8 +128,13 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   const Spacer(),
-                  const ListTile(
-                    title: Text("Active Offers",
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              ActiveMerchantDeals(token: widget.token)));
+                    },
+                    title: const Text("Active Offers",
                         style: TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 12,
@@ -119,10 +143,13 @@ class _ProfileState extends State<Profile> {
                   ),
                   ListTile(
                     onTap: () {
-                      branches().whenComplete(() =>
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  'number of branches: ${allBranches!.data!.length}'))));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              MyBranches(token: widget.token, title: title!)));
+                      // branches().whenComplete(() =>
+                      //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      //         content: Text(
+                      //             'number of branches: ${allBranches!.data!.length}'))));
                     },
                     leading: const Text("My Branches",
                         style: TextStyle(

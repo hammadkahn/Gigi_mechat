@@ -16,6 +16,13 @@ class order_details extends StatelessWidget {
         shrinkWrap: true,
         itemCount: cart.cartItems.length,
         itemBuilder: ((context, index) {
+          int quantity;
+          int.parse(cart.cartItems[index].qty!) < cart.qty
+              ? quantity = cart.qty
+              : quantity = int.parse(cart.cartItems[index].qty!);
+          double discount =
+              double.parse('0.${cart.cartItems[index].discountOnPrice}') *
+                  int.parse(cart.cartItems[index].price!);
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
             child: Padding(
@@ -48,7 +55,7 @@ class order_details extends StatelessWidget {
                               width: 40,
                             ),
                       Text(
-                        cart.cartItems[index].title,
+                        cart.cartItems[index].title!,
                         style: const TextStyle(
                             fontFamily: "Mulish",
                             fontSize: 14,
@@ -57,7 +64,7 @@ class order_details extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        "${cart.cartItems[index].qty} x",
+                        "$quantity x",
                         style: const TextStyle(
                             fontFamily: "Mulish",
                             fontSize: 14,
@@ -86,7 +93,7 @@ class order_details extends StatelessWidget {
                           width: 40,
                         ),
                         Text(
-                          cart.cartItems[index].title,
+                          cart.cartItems[index].title!,
                           style: const TextStyle(
                               fontFamily: "Mulish",
                               fontSize: 14,
@@ -95,7 +102,7 @@ class order_details extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          "${cart.cartItems[index].qty} x",
+                          "$quantity x",
                           style: const TextStyle(
                               fontFamily: "Mulish",
                               fontSize: 14,
@@ -131,7 +138,7 @@ class order_details extends StatelessWidget {
                                   color: Color(0xFF666687))),
                           const Spacer(),
                           Text(
-                              " \$${int.parse(cart.cartItems[index].qty) * double.parse(cart.cartItems[index].price)} ",
+                              " \$${quantity * double.parse(cart.cartItems[index].price!)} ",
                               style: const TextStyle(
                                   fontFamily: "Mulish",
                                   fontSize: 14,
@@ -149,7 +156,7 @@ class order_details extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xFF666687))),
                         const Spacer(),
-                        Text(" \$ ${cart.cartItems[index].discountOnPrice}",
+                        Text(" \$ ${discount * quantity}",
                             style: const TextStyle(
                                 fontFamily: "Mulish",
                                 fontSize: 14,
@@ -174,7 +181,7 @@ class order_details extends StatelessWidget {
                                 color: Color(0xFF4A4A6A))),
                         const Spacer(),
                         Text(
-                            " \$ ${cart.calculateRealPrice(int.parse(cart.cartItems[index].qty), cart.cartItems[index].discountOnPrice, cart.cartItems[index].price)}",
+                            " \$ ${cart.calculateRealPrice(quantity, cart.cartItems[index].discountOnPrice!, cart.cartItems[index].price!)}",
                             style: const TextStyle(
                                 fontFamily: "Mulish",
                                 fontSize: 16,

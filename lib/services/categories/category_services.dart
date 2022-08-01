@@ -24,4 +24,23 @@ class CategoryServices {
       throw Exception(e);
     }
   }
+
+  Future<SearchModel> searchDeal(String token, String search) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${ApiUrls.baseUrl}categoryAutoComplete?search=$search'),
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      );
+      final result = SearchModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        return result;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
