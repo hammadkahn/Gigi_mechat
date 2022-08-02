@@ -51,6 +51,10 @@ dependencies:
   expandable: ^5.0.1
   intl: ^0.17.0
   pusher_channels_flutter: ^2.0.0
+  dropdown_button2: ^1.7.1
+  chips_choice_null_safety: ^2.0.6
+  
+  # pusher_channels_flutter: ^2.0.0
   
   
 

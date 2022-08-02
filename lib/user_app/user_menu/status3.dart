@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/shared/custom_button.dart';
+import 'package:gigi_app/user_app/user_menu/scan_qr.dart';
 
 class stats3 extends StatelessWidget {
   const stats3({Key? key}) : super(key: key);
@@ -49,30 +50,16 @@ class stats3 extends StatelessWidget {
                   height: 369,
                   width: 327,
                 )),
+                CustomButton(
+                  text: 'Go to My Discounts',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const scan_qr()),
+                    );
+                  },
+                ),
               ],
             ),
-          ),
-        ),
-        bottomNavigationBar: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 90,
-          decoration: const BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(26),
-                topRight: Radius.circular(26),
-              )),
-          child: Column(
-            children: [
-              CustomButton(
-                text: 'Go to My Discounts',
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const stats3()),
-                  );
-                },
-              ),
-            ],
           ),
         ),
       ),

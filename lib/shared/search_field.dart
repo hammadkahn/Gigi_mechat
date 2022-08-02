@@ -54,11 +54,11 @@ class _SearchFieldState extends State<SearchField> {
                   );
                 });
               }),
-          prefixIcon: InkWell(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => const filter_list()));
-            },
+          prefixIcon: GestureDetector(
+            onTap: () => showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) => const filter_list()),
             child: const Icon(
               Icons.filter_list,
               color: Color(0xFFC0C0CF),

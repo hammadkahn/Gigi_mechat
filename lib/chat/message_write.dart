@@ -247,6 +247,7 @@ class _Message_writeState extends State<Message_write> {
                     msgController.text,
                     widget.id,
                   );
+                  msgController.clear();
                 },
                 icon: Icon(
                   Icons.send,
