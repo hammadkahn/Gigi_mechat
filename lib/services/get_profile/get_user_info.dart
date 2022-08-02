@@ -10,18 +10,16 @@ import 'package:http/http.dart' as http;
 class UserInformation {
   Future<ProfileModel> getMerchantInformation(String token) async {
     try {
-      final response = await http.get(
-        ApiUrls.getMerchantProfile,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
-      );
-      print(response.statusCode);
+      final response = await http.get(ApiUrls.getMerchantProfile, headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      });
+      final result = ProfileModel.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        final result = ProfileModel.fromJson(jsonDecode(response.body));
-        print(result);
+        debugPrint(result.data!.name);
         return result;
       } else {
         debugPrint(response.reasonPhrase);
-        throw Exception(response.statusCode);
+        return result;
       }
     } catch (e) {
       throw Exception(e);

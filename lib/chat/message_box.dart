@@ -10,7 +10,8 @@ class MessageItem extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.only(right: 13, left: 13),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,

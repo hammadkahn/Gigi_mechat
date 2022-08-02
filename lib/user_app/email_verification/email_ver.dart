@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/user_app/user_menu/user_menu.dart';
 import 'package:gigi_app/user_app/verify%20_code/user_verification.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../constant/size_constants.dart';
 import '../../services/auth/authentication.dart';
 import '../../shared/custom_button.dart';
 
 class Email_ver extends StatefulWidget {
   const Email_ver({Key? key}) : super(key: key);
+  static String routeName = "/auth";
 
   @override
   State<Email_ver> createState() => _Email_verState();
@@ -16,94 +17,86 @@ class Email_ver extends StatefulWidget {
 class _Email_verState extends State<Email_ver> {
   final _formKey = GlobalKey<FormState>();
   final emailCtr = TextEditingController();
-  final passCtr = TextEditingController();
+  final passwordCtr = TextEditingController();
 
   var isLoading = false;
+  var isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(right: 24, left: 24, top: 116),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text(
-                  'What’s your email? 📨',
-                  style: TextStyle(
-                      fontFamily: 'Dmsans',
-                      fontSize: 36,
-                      fontWeight: FontWeight.w500),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 24, left: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'What’s your email? 📨',
+                style: TextStyle(
+                    fontFamily: 'Dmsans',
+                    fontSize: 36,
+                    fontWeight: FontWeight.w500),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 14, bottom: 49),
+                child: Text(
+                    'Sign up or login into to have a full  digital \nexperience in our restaurant',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: 'Mulish',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF8E8EA9))),
+              ),
+              TextFormField(
+                controller: emailCtr,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  hintText: 'Email',
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 14, bottom: 49),
-                  child: Text(
-                      'We need it to search after your account or create a new one',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: 'Mulish',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF8E8EA9))),
-                ),
-                TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 22, bottom: 26),
+                child: TextFormField(
+                  controller: passwordCtr,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    hintText: 'Email',
+                    hintText: 'Password',
+                    // suffix: Icon(Icons.visibility)
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  controller: emailCtr,
+                  obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Email required';
+                      return 'Please enter your password';
                     }
                     return null;
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 22, bottom: 26),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      hintText: 'Password',
-                      // suffix: Icon(Icons.visibility)
-                    ),
-                    obscureText: true,
-                    keyboardType: TextInputType.visiblePassword,
-                    controller: passCtr,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please your password';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                CustomButton(
-                  text: 'Next',
-                  onPressed: isSignedIn,
-                  isLoading: isLoading,
-                ),
-                const Text(
-                  'Forgot Password?',
-                  style: TextStyle(
-                      fontFamily: 'Mulish',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF0096FF)),
-                ),
-                const Spacer(),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 121),
+                child: CustomButton(
+                    isLoading: isLoading,
+                    text: 'Sign In',
+                    onPressed: loginUsers),
+              ),
+            ],
           ),
         ),
       ),
@@ -113,68 +106,68 @@ class _Email_verState extends State<Email_ver> {
   String? msg;
   String? token;
 
-  var isLoggedIn = false;
+  Future<void> loginUsers() async {
+    try {
+      if (_formKey.currentState!.validate()) {
+        //show snackbar to indicate loading
+        setState(() {
+          isLoading = true;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text('Processing Data'),
+          backgroundColor: Colors.green.shade300,
+        ));
 
-  void isSignedIn() {
-    if (_formKey.currentState!.validate()) {
+        //get response from ApiClient
+        dynamic res =
+            await MerchantAuthServices().login(emailCtr.text, passwordCtr.text);
+        checkLoginResult(res);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    } finally {
       setState(() {
-        isLoading = true;
-      });
-      login().whenComplete(() {
-        if (isLoggedIn == true) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => User_bar(token: token!)));
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(msg!),
-              backgroundColor: const Color.fromARGB(255, 219, 47, 47),
-              action: SnackBarAction(
-                label: msg!.contains('Your account is not verified')
-                    ? 'Verify'
-                    : '',
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          User_Verification(email: emailCtr.text),
-                    ),
-                  );
-                },
-              ),
-            ),
-          );
-          setState(() {
-            isLoading = false;
-            isLoggedIn = false;
-          });
-        }
+        isLoading = false;
       });
     }
   }
 
-  Future<void> login() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final result = await MerchantAuthServices().login(
-      emailCtr.text,
-      passCtr.text,
-    );
+  void checkLoginResult(dynamic res) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    print(result);
+    //if there is no error, get the user's accesstoken and pass it to HomeScreen
+    if (res['message'] == 'success') {
+      String accessToken = res['data']['token'];
 
-    if (result['message'] == 'success') {
-      prefs.setString('token', result['data']['token']);
-      prefs.setString('email', result['data']['email']);
-      prefs.setString('user_type', result['data']['type']);
-      prefs.setString('status', result['data']['StatusName']);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => User_bar(token: accessToken),
+        ),
+      );
+    } else {
+      //if an error occurs, show snackbar with error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Message: ${res['error']}'),
+        backgroundColor: Colors.red.shade300,
+        action: SnackBarAction(
+          label: res['error'] ==
+                  'Your account is not verified. Please verify your account'
+              ? 'Verify'
+              : 'Close',
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        User_Verification(email: emailCtr.text)));
+          },
+        ),
+      ));
       setState(() {
-        isLoggedIn = true;
-        token = result['data']['token'];
-        msg = result['message'];
+        isLoading = false;
       });
     }
-    setState(() {
-      msg = result['error'];
-    });
   }
 }

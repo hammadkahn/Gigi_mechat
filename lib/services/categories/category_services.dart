@@ -32,8 +32,10 @@ class CategoryServices {
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       final result = SearchModel.fromJson(jsonDecode(response.body));
+
       if (response.statusCode == 200) {
         debugPrint(response.body);
+        debugPrint(result.responseCode.toString());
         return result;
       } else {
         debugPrint(response.reasonPhrase);

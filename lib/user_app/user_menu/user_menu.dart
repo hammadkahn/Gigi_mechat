@@ -26,7 +26,9 @@ class _User_barState extends State<User_bar> {
   void initState() {
     super.initState();
     debugPrint('build...');
-    currentScreen = Full_menu_user(token: widget.token);
+    currentScreen = Full_menu_user(
+      token: widget.token,
+    );
     _children = [
       Full_menu_user(token: widget.token),
       Categories_user(token: widget.token),
@@ -74,7 +76,9 @@ class _User_barState extends State<User_bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 0;
-                          currentScreen = Full_menu_user(token: widget.token);
+                          currentScreen = Full_menu_user(
+                            token: widget.token,
+                          );
                         });
                       },
                       child: Image.asset(

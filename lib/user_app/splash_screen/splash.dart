@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   String? email;
   String? userType;
   String? status;
+
   var isChecked = false;
   Future<void> checkLogIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -48,7 +49,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return isChecked == true
         ? email != null && token != null && status == 'Active'
             ? userType == '1'
-                ? User_bar(token: token!)
+                ? User_bar(
+                    token: token!,
+                  )
                 : Bar(token: token!)
             : Scaffold(
                 body: Center(

@@ -12,6 +12,7 @@ import 'l.dart';
 class Full_menu_user extends StatelessWidget {
   const Full_menu_user({Key? key, required this.token}) : super(key: key);
   final String token;
+
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);

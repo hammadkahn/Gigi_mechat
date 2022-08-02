@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/user_model.dart';
+import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/services/get_profile/get_user_info.dart';
 import 'package:gigi_app/user_app/user_auth/user_auth.dart';
 import 'package:gigi_app/user_app/user_menu/support_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ham_user extends StatelessWidget {
+class ham_user extends StatefulWidget {
   const ham_user({Key? key, required this.token}) : super(key: key);
   final String token;
 
+  @override
+  State<ham_user> createState() => _ham_userState();
+}
+
+class _ham_userState extends State<ham_user> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,205 +37,228 @@ class ham_user extends StatelessWidget {
             backgroundColor: Colors.transparent,
           ),
           body: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 29, left: 29),
-              child: SingleChildScrollView(
-                  child: FutureBuilder<UserProfileModel>(
-                future: UserInformation().getUserProfile(token),
-                builder: ((context, snapshot) {
-                  List<Widget> children;
-                  if (snapshot.hasData) {
-                    var data = snapshot.data!.data!;
-                    children = [
-                      data.profilePicture!.isEmpty ||
-                              data.profilePicture == null
-                          ? Image.asset(
-                              'assets/images/slt.png',
-                              height: 100,
-                              width: 100,
-                            )
-                          : Image.network(
-                              '${data.profilePicturePath}/${data.profilePicture}',
-                              height: 100,
-                              width: 100,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 29, left: 29),
+                    child: SingleChildScrollView(
+                        child: FutureBuilder<UserProfileModel>(
+                      future: UserInformation().getUserProfile(widget.token),
+                      builder: ((context, snapshot) {
+                        List<Widget> children;
+                        if (snapshot.hasData) {
+                          var data = snapshot.data!.data!;
+                          children = [
+                            data.profilePicture!.isEmpty ||
+                                    data.profilePicture == null
+                                ? Image.asset(
+                                    'assets/images/slt.png',
+                                    height: 100,
+                                    width: 100,
+                                  )
+                                : Image.network(
+                                    '${data.profilePicturePath}/${data.profilePicture}',
+                                    height: 100,
+                                    width: 100,
+                                  ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 13, bottom: 10),
+                              child: Text(data.name!,
+                                  style: const TextStyle(
+                                      fontFamily: 'DMSans',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff32324D))),
                             ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 13, bottom: 10),
-                        child: Text(data.name!,
-                            style: const TextStyle(
-                                fontFamily: 'DMSans',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff32324D))),
-                      ),
-                      Text('California, US\n${data.phone!}  |   ${data.email}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontFamily: 'DMSans',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffC5C5C5))),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                              padding: EdgeInsets.only(top: 22, bottom: 25),
-                              child: Divider(
-                                color: Color(0xFFE6E6E6),
-                                thickness: 0.5,
-                                // height: 214,
-                                indent: 82,
-                                endIndent: 79,
-                              )),
-                          InkWell(
-                            onTap: () {},
-                            child: const Text("My Offers",
-                                style: TextStyle(
-                                    fontFamily: 'Mulish',
+                            Text(
+                                'California, US\n${data.phone!}  |   ${data.email}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontFamily: 'DMSans',
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff32324D))),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 18, bottom: 18),
-                            child: Divider(
-                              color: Color(0xFFE6E6E6),
-                              thickness: 0.5,
-                              // height: 214,
-                              indent: 26,
-                              endIndent: 26,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              showSnackBar(
-                                  data.perference!.isNotEmpty
-                                      ? data.perference![0].categoryName!
-                                      : 'no preferences added yet',
-                                  context);
-                            },
-                            child: const Text("My Prefrences",
-                                style: TextStyle(
-                                    fontFamily: 'Mulish',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff32324D))),
-                          ),
-                          const Padding(
-                              padding: EdgeInsets.only(top: 18, bottom: 18),
-                              child: Divider(
-                                color: Color(0xFFE6E6E6),
-                                thickness: 0.5,
-                                // height: 214,
-                                indent: 26,
-                                endIndent: 26,
-                              )),
-                          InkWell(
-                            onTap: () {
-                              alertBox(data, context);
-                            },
-                            child: const Text("My Account",
-                                style: TextStyle(
-                                    fontFamily: 'Mulish',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff32324D))),
-                          ),
-                          const Padding(
-                              padding: EdgeInsets.only(top: 18, bottom: 18),
-                              child: Divider(
-                                color: Color(0xFFE6E6E6),
-                                thickness: 0.5,
-                                // height: 214,
-                                indent: 26,
-                                endIndent: 26,
-                              )),
-                          const Text("My Insights",
-                              style: TextStyle(
-                                  fontFamily: 'Mulish',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff32324D))),
-                          const Padding(
-                              padding: EdgeInsets.only(top: 18, bottom: 18),
-                              child: Divider(
-                                color: Color(0xFFE6E6E6),
-                                thickness: 0.5,
-                                // height: 214,
-                                indent: 26,
-                                endIndent: 26,
-                              )),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => support_user(
-                                    phoneNumber: data.phone!,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xffC5C5C5))),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 22, bottom: 25),
+                                    child: Divider(
+                                      color: Color(0xFFE6E6E6),
+                                      thickness: 0.5,
+                                      // height: 214,
+                                      indent: 82,
+                                      endIndent: 79,
+                                    )),
+                                InkWell(
+                                  onTap: () {},
+                                  child: const Text("My Offers",
+                                      style: TextStyle(
+                                          fontFamily: 'Mulish',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff32324D))),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 18, bottom: 18),
+                                  child: Divider(
+                                    color: Color(0xFFE6E6E6),
+                                    thickness: 0.5,
+                                    // height: 214,
+                                    indent: 26,
+                                    endIndent: 26,
                                   ),
                                 ),
-                              );
-                            },
-                            child: const Text("Support",
-                                style: TextStyle(
-                                    fontFamily: 'Mulish',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff32324D))),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 100, bottom: 56),
-                            child: GestureDetector(
-                              onTap: () {
-                                showSnackBar('Logging out...', context);
-                                isLogOut().whenComplete(() =>
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (_) => const user_auth()),
-                                        (route) => false));
-                              },
-                              child: const Text('Log out',
-                                  style: TextStyle(
-                                      fontFamily: 'Mulish',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff9E9E9E))),
+                                InkWell(
+                                  onTap: () {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                            content: Text(
+                                      data.perference!.isNotEmpty
+                                          ? data.perference![0].categoryName!
+                                          : 'no preferences added yet',
+                                    )));
+                                  },
+                                  child: const Text("My Prefrences",
+                                      style: TextStyle(
+                                          fontFamily: 'Mulish',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff32324D))),
+                                ),
+                                const Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 18, bottom: 18),
+                                    child: Divider(
+                                      color: Color(0xFFE6E6E6),
+                                      thickness: 0.5,
+                                      // height: 214,
+                                      indent: 26,
+                                      endIndent: 26,
+                                    )),
+                                InkWell(
+                                  onTap: () {
+                                    alertBox(data, context);
+                                  },
+                                  child: const Text("My Account",
+                                      style: TextStyle(
+                                          fontFamily: 'Mulish',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff32324D))),
+                                ),
+                                const Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 18, bottom: 18),
+                                    child: Divider(
+                                      color: Color(0xFFE6E6E6),
+                                      thickness: 0.5,
+                                      // height: 214,
+                                      indent: 26,
+                                      endIndent: 26,
+                                    )),
+                                const Text("My Insights",
+                                    style: TextStyle(
+                                        fontFamily: 'Mulish',
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff32324D))),
+                                const Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 18, bottom: 18),
+                                    child: Divider(
+                                      color: Color(0xFFE6E6E6),
+                                      thickness: 0.5,
+                                      // height: 214,
+                                      indent: 26,
+                                      endIndent: 26,
+                                    )),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => support_user(
+                                          phoneNumber: data.phone!,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text("Support",
+                                      style: TextStyle(
+                                          fontFamily: 'Mulish',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xff32324D))),
+                                ),
+                              ],
+                            )
+                          ];
+                        } else if (snapshot.hasError) {
+                          children = <Widget>[
+                            const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 60,
                             ),
-                          )
-                        ],
-                      )
-                    ];
-                  } else if (snapshot.hasError) {
-                    children = <Widget>[
-                      const Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 60,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text('Error: ${snapshot.error}'),
-                      )
-                    ];
-                  } else {
-                    children = const <Widget>[
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: CircularProgressIndicator(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16),
-                        child: Text('Awaiting result...'),
-                      )
-                    ];
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: children,
-                  );
-                }),
-              )),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Text('Error: ${snapshot.error}'),
+                            )
+                          ];
+                        } else {
+                          children = const <Widget>[
+                            SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting result...'),
+                            )
+                          ];
+                        }
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: children,
+                        );
+                      }),
+                    )),
+                  ),
+                ),
+                Expanded(
+                    child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 35, top: 100, bottom: 56),
+                  child: GestureDetector(
+                    onTap: () {
+                      MerchantAuthServices().logOut(widget.token).then((value) {
+                        if (value == 'success') {
+                          isLogOut();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const user_auth()),
+                              (route) => false);
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(value)));
+                        }
+                      });
+                    },
+                    child: const Text('Log out',
+                        style: TextStyle(
+                            fontFamily: 'Mulish',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff9E9E9E))),
+                  ),
+                ))
+              ],
             ),
           ),
         ),
@@ -240,10 +269,6 @@ class ham_user extends StatelessWidget {
   Future<void> isLogOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
-  }
-
-  void showSnackBar(String msg, BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   void alertBox(UserProfileData userProfileData, BuildContext context) {

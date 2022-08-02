@@ -18,6 +18,7 @@ class SearchField extends StatefulWidget {
 
 class _SearchFieldState extends State<SearchField> {
   final TextEditingController controller = TextEditingController();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +45,16 @@ class _SearchFieldState extends State<SearchField> {
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('searching...')));
                 searchData().whenComplete(() {
-                  Navigator.of(context).push(MaterialPageRoute(
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
                       builder: (context) => SearchResult(
-                            searchModel: searchModel!,
-                          )));
+                        searchModel: searchModel!,
+                      ),
+                    ),
+                  );
                 });
               }),
-          prefixIcon: GestureDetector(
+          prefixIcon: InkWell(
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => const filter_list()));
@@ -75,6 +79,7 @@ class _SearchFieldState extends State<SearchField> {
       debugPrint(result.message);
       setState(() {
         searchModel = result;
+        print(searchModel!.data![0].name);
       });
     } else {
       debugPrint(result.message);

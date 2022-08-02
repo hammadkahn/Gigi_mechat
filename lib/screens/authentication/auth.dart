@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/screens/authentication/sign_up_screen.dart';
 
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:gigi_app/user_app/create_acc/user_create_acc.dart';
 
 import '../../constant/size_constants.dart';
 import '../../services/auth/authentication.dart';
@@ -105,7 +105,7 @@ class _auth_pageState extends State<auth_page> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => User_create_acc()));
+                      MaterialPageRoute(builder: (_) => const SignUpScreen()));
                 },
                 child: const Text(
                   'Registered as a Merchant',
@@ -124,20 +124,30 @@ class _auth_pageState extends State<auth_page> {
   }
 
   Future<void> loginUsers() async {
-    if (_formKey.currentState!.validate()) {
-      //show snackbar to indicate loading
-      setState(() {
-        isLoading = true;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Processing Data'),
-        backgroundColor: Colors.green.shade300,
-      ));
+    try {
+      if (_formKey.currentState!.validate()) {
+        //show snackbar to indicate loading
+        setState(() {
+          isLoading = true;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text('Processing Data'),
+          backgroundColor: Colors.green.shade300,
+        ));
 
-      //get response from ApiClient
-      dynamic res =
-          await MerchantAuthServices().login(emailCtr.text, passwordCtr.text);
-      checkLoginResult(res);
+        //get response from ApiClient
+        dynamic res =
+            await MerchantAuthServices().login(emailCtr.text, passwordCtr.text);
+        checkLoginResult(res);
+      }
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -147,6 +157,7 @@ class _auth_pageState extends State<auth_page> {
     //if there is no error, get the user's accesstoken and pass it to HomeScreen
     if (res['message'] == 'success') {
       String accessToken = res['data']['token'];
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -177,24 +188,4 @@ class _auth_pageState extends State<auth_page> {
       });
     }
   }
-
-  // Future<void> login() async {
-  //   final result = await MerchantAuthServices().login(
-  //     emailCtr.text,
-  //     passwordCtr.text,
-  //   );
-
-  //   print(result);
-
-  //   if (result['message'] == 'success') {
-  //     setState(() {
-  //       isLoggedIn = true;
-  //       token = result['data']['token'];
-  //       msg = result['message'];
-  //     });
-  //   }
-  //   setState(() {
-  //     msg = result['error'];
-  //   });
-  // }
 }

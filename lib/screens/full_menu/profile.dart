@@ -72,7 +72,8 @@ class _ProfileState extends State<Profile> {
                         List<Widget> children;
                         if (snapshot.hasData) {
                           var data = snapshot.data!.data!;
-                          title = data.name;
+
+                          print(data.averageRating);
                           children = <Widget>[
                             data.profilePicture == null ||
                                     data.profilePicture!.isEmpty

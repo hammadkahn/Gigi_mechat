@@ -3,28 +3,28 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:gigi_app/apis/api_urls.dart';
-import 'package:gigi_app/models/merchant_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MerchantAuthServices {
-  Future<MerchantSignUp> merchantRegisteration(
+  Future<Map<String, dynamic>> merchantRegisteration(
       {required Map<String, dynamic> data}) async {
     try {
       final response = await http.post(
         ApiUrls.merchantSignUp,
         body: data,
       );
-
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      print(response.body);
       if (response.statusCode == 200) {
-        print(response.body);
-        return MerchantSignUp.fromJson(jsonDecode(response.body));
+        debugPrint(response.body);
+        return result;
       } else {
-        print(response.statusCode);
-        return MerchantSignUp.fromJson(jsonDecode(response.body));
+        print(response.reasonPhrase);
+        return result;
       }
     } catch (e) {
-      print(e);
+      print('object: $e');
       throw Exception(e);
     }
   }
@@ -69,6 +69,7 @@ class MerchantAuthServices {
         preferences.setString('email', result['data']['email']);
         preferences.setString('status', result['data']['StatusName']);
         preferences.setString('user_type', result['data']['type']);
+
         return result;
       } else {
         print(response.statusCode);
@@ -131,9 +132,11 @@ class MerchantAuthServices {
       final response = await http.post(ApiUrls.logOut,
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
       final result = jsonDecode(response.body) as Map<String, dynamic>;
+      print(result);
       if (response.statusCode == 200) {
         return result['message'];
       } else {
+        debugPrint(response.statusCode.toString());
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {

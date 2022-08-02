@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/screens/full_menu/profile.dart';
 
 class location_bar extends StatelessWidget {
-  const location_bar({Key? key, required this.token}) : super(key: key);
+  const location_bar({Key? key, required this.token, this.city})
+      : super(key: key);
   final String token;
+  final String? city;
 
   @override
   Widget build(BuildContext context) {
