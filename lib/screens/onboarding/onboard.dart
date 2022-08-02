@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/screens/authentication/auth.dart';
+import 'package:gigi_app/screens/authentication/sign_up_screen.dart';
 import 'package:gigi_app/screens/onboarding/onboard_carousel.dart';
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:gigi_app/user_app/create_acc/user_create_acc.dart';
 
 import '../../constant/size_constants.dart';
 
@@ -62,7 +62,7 @@ class onBoard extends StatelessWidget {
             CustomButton(
               onPressed: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const User_create_acc()));
+                    MaterialPageRoute(builder: (_) => const SignUpScreen()));
               },
               text: 'Get Started',
             ),

@@ -43,7 +43,7 @@ class MerchantProfileData {
   String? createdAt;
   String? updatedAt;
   List<BranchData>? branches;
-  double? averageRating;
+  int? averageRating;
   List? reviews;
   int? activeOffers;
   int? dealRadeems;

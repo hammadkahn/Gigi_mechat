@@ -43,7 +43,7 @@ class Message extends StatelessWidget {
                                   Image.asset('assets/images/arrow-left.png')),
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Center(
                             child: Text('G.Mamedoff',
                                 style: TextStyle(
@@ -53,49 +53,49 @@ class Message extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Spacer(),
-                  Text('1 FEB 12:00',
+                  const Spacer(),
+                  const Text('1 FEB 12:00',
                       style: TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 12,
                           fontWeight: FontWeight.w400)),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  MessageItem(
+                  const MessageItem(
                     send: false,
                     message:
                         'I commented on Figma, I want to add some fancy icons. Do you have any icon set?',
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  MessageItem(
+                  const MessageItem(
                     send: true,
                     message:
                         'I am in a process of designing some. When do you need them?',
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  MessageItem(
+                  const MessageItem(
                     send: false,
                     message: 'Next month?',
                   ),
-                  Text('08:12',
+                  const Text('08:12',
                       style: TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 12,
                           fontWeight: FontWeight.w400)),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  MessageItem(
+                  const MessageItem(
                     send: true,
                     message:
                         'I am almost finish. Please give me your email, I will ZIP them and send you as son as im finish.',
                   ),
-                  Message_write()
+                  // Message_write()
                 ],
               ),
             )));

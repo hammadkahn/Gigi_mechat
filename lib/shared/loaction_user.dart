@@ -4,18 +4,20 @@ import 'package:gigi_app/user_app/notification_screen.dart';
 import '../user_app/user_menu/ham_user.dart';
 
 class Location_bar_user extends StatelessWidget {
-  const Location_bar_user({Key? key, required this.token}) : super(key: key);
+  const Location_bar_user({Key? key, required this.token, this.city})
+      : super(key: key);
   final String token;
+  final String? city;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Image.asset('assets/images/Vector.png'),
-        const Padding(
-          padding: EdgeInsets.only(left: 10.94),
-          child: Text('Baku, Azerbaijan',
-              style: TextStyle(
+        Padding(
+          padding: const EdgeInsets.only(left: 10.94),
+          child: Text(city ?? 'Baku, Azerbaijan',
+              style: const TextStyle(
                 fontFamily: 'Mulish',
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
