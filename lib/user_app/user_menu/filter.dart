@@ -15,11 +15,12 @@ class filter_list extends StatefulWidget {
 }
 
 class _filter_listState extends State<filter_list> {
+  final List<String> items = ['High', 'Mid', 'Low'];
+  String? selectedValue;
+  RangeValues values = RangeValues(3, 20);
+  RangeValues valuess = RangeValues(3, 20);
   @override
   Widget build(BuildContext context) {
-    final List<String> items = ['High', 'Mid', 'Low'];
-    String? selectedValue;
-    RangeValues values = RangeValues(3, 20);
     return Container(
       child: Padding(
         padding: const EdgeInsets.only(right: 25, left: 25),
@@ -174,16 +175,16 @@ class _filter_listState extends State<filter_list> {
                 height: 30,
               ),
               RangeSlider(
-                values: values,
-                onChanged: (RangeValues newRange) {
-                  setState(() => values = newRange);
+                values: valuess,
+                onChanged: (newRange) {
+                  setState(() => valuess = newRange);
                 },
                 min: 3,
                 max: 20,
                 divisions: 5,
                 labels: RangeLabels(
-                  values.start.round().toString(),
-                  values.end.round().toString(),
+                  valuess.start.round().toString(),
+                  valuess.end.round().toString(),
                 ),
               ),
               SizedBox(
