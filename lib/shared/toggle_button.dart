@@ -1,3 +1,4 @@
+import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -10,34 +11,41 @@ class Toggle_Button extends StatefulWidget {
 }
 
 class _Toggle_ButtonState extends State<Toggle_Button> {
-  final List<bool> isSelected = List.generate(4, (_) => false);
+  List<String> tags = [];
+
+  // list of string options
+  List<String> options = [
+    'News',
+    'Entertainment',
+    'Politics',
+    'Automotive',
+    'Sports',
+    'Education',
+    'Fashion',
+    'Travel',
+    'Food',
+    'Tech',
+    'Science',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(
-      direction: Axis.vertical,
-      color: Color(0xffA5A5BA),
-      fillColor: Colors.blue,
-      renderBorder: false,
-      selectedColor: Colors.blue,
-      children: <Widget>[
-        Container(
-          width: 100,
-          color: Colors.white,
-          // margin: const EdgeInsets.symmetric(horizontal: 40.0),
-          child: Column(
-            children: const [Icon(Icons.circle), Text('Cash')],
-          ),
-        ),
-        Text('ELECTRONICS'),
-        Text('MENS'),
-        Text('KIDS'),
-      ],
-      onPressed: (int index) {
-        setState(() {
-          isSelected[index] = !isSelected[index];
-        });
-      },
-      isSelected: isSelected,
+    // TODO: implement build
+    return ChipsChoice<String>.multiple(
+      value: tags,
+      onChanged: (val) => {setState(() => tags = val)},
+      choiceItems: C2Choice.listFrom<String, String>(
+        source: options,
+        value: (i, v) => v,
+        label: (i, v) => v,
+      ),
+      choiceStyle: C2ChoiceStyle(
+        backgroundColor: Colors.white,
+        color: Color(0xFFA5A5BA),
+        borderColor: Color(0xFFDCDCE4),
+      ),
+      wrapped: true,
+      textDirection: TextDirection.rtl,
     );
   }
 }
