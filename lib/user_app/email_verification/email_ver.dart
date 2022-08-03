@@ -140,7 +140,7 @@ class _Email_verState extends State<Email_ver> {
     if (res['message'] == 'success') {
       String accessToken = res['data']['token'];
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => User_bar(token: accessToken),
@@ -165,9 +165,6 @@ class _Email_verState extends State<Email_ver> {
           },
         ),
       ));
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 }

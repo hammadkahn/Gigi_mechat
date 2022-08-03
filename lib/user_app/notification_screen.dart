@@ -43,20 +43,23 @@ class NotificationScreen extends StatelessWidget {
                       var data = snapshot.data!.data![index];
                       return InkWell(
                           onTap: () {},
-                          child: ListTile(
-                            title: Text(data.subject!),
-                            subtitle: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data.message!),
-                                Text(data.type!),
-                                Text(data.seen == '0' ? 'Not seen' : 'Seen'),
-                                const Divider(
-                                  thickness: 1,
-                                  height: 1,
-                                ),
-                              ],
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 15),
+                            child: ListTile(
+                              title: Text(data.subject!),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(data.message!),
+                                  Text(data.type!),
+                                  Text(data.seen == '0' ? 'Not seen' : 'Seen'),
+                                  const Divider(
+                                    thickness: 1,
+                                    height: 1,
+                                  ),
+                                ],
+                              ),
                             ),
                           ));
                     },

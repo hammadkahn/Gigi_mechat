@@ -5,15 +5,25 @@ import 'package:provider/provider.dart';
 
 import '../../models/wish_list_model.dart';
 
-class Fav_user extends StatelessWidget {
+class Fav_user extends StatefulWidget {
   const Fav_user({Key? key, required this.token}) : super(key: key);
   final String token;
 
+  @override
+  State<Fav_user> createState() => _Fav_userState();
+}
+
+class _Fav_userState extends State<Fav_user> {
   static const url = 'https://gigiapi.zanforthstaging.com/';
+  final _key = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final dealProvider = Provider.of<DealProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -60,9 +70,9 @@ class Fav_user extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.only(top: 24),
                   child: Consumer<DealProvider>(
-                    builder: ((context, value, child) {
+                    builder: ((__, value, _) {
                       return FutureBuilder<WishListModel>(
-                        future: value.getWishList(token),
+                        future: value.getWishList(widget.token),
                         builder: ((context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.waiting:
@@ -97,9 +107,9 @@ class Fav_user extends StatelessWidget {
                                                 data[index]
                                                     .wishlistId
                                                     .toString(),
-                                                token)
-                                            .whenComplete(() => showSnackBar(
-                                                value.msg, context));
+                                                widget.token)
+                                            .whenComplete(
+                                                () => showSnackBar(value.msg));
                                       },
                                       direction: DismissDirection.endToStart,
                                       background: Container(
@@ -110,7 +120,8 @@ class Fav_user extends StatelessWidget {
                                         ),
                                       ),
                                       child: Wishlist(
-                                          wishData: data[index], token: token),
+                                          wishData: data[index],
+                                          token: widget.token),
                                     );
                                   }),
                                 );
@@ -127,7 +138,7 @@ class Fav_user extends StatelessWidget {
     );
   }
 
-  showSnackBar(String msg, BuildContext context) {
+  showSnackBar(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),

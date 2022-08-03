@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/user_model.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/services/get_profile/get_user_info.dart';
-import 'package:gigi_app/user_app/user_auth/user_auth.dart';
 import 'package:gigi_app/user_app/user_menu/support_user.dart';
+import 'package:gigi_app/user_app/user_onboarding/user-onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ham_user extends StatefulWidget {
@@ -240,19 +240,17 @@ class _ham_userState extends State<ham_user> {
                           const EdgeInsets.only(left: 35, top: 100, bottom: 56),
                       child: GestureDetector(
                         onTap: () {
-                          MerchantAuthServices()
-                              .logOut(widget.token)
-                              .then((value) {
-                            if (value == 'success') {
+                          signOut().whenComplete(() {
+                            if (message == 'success') {
                               isLogOut();
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const user_auth()),
-                                  (route) => false);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const User_onboard()),
+                              );
                             } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text(value)));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(message!)));
                             }
                           });
                         },
@@ -275,6 +273,15 @@ class _ham_userState extends State<ham_user> {
   Future<void> isLogOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
+  }
+
+  String? message;
+  Future<void> signOut() async {
+    final msg = await MerchantAuthServices().logOut(widget.token);
+
+    setState(() {
+      message = msg;
+    });
   }
 
   void alertBox(UserProfileData userProfileData, BuildContext context) {

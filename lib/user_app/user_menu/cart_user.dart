@@ -7,16 +7,19 @@ import 'package:provider/provider.dart';
 import '../../providers/order.dart';
 import 'cart_deals.dart';
 
-class Cart_user extends StatelessWidget {
+class Cart_user extends StatefulWidget {
   const Cart_user({Key? key, required this.token}) : super(key: key);
   final String token;
 
   @override
+  State<Cart_user> createState() => _Cart_userState();
+}
+
+class _Cart_userState extends State<Cart_user> {
+  @override
   Widget build(BuildContext context) {
-    final key = GlobalKey<ScaffoldState>();
     return SafeArea(
       child: Scaffold(
-        key: key,
         body: Padding(
           padding: const EdgeInsets.only(left: 24, right: 32, top: 17),
           child: Column(
@@ -76,28 +79,34 @@ class Cart_user extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.only(top: 24),
                     child: Consumer<Cart>(
-                      builder: ((context, value, child) {
-                        return value.cartItems.isEmpty
+                      builder: ((__, value, _) {
+                        return value.cartMap.isEmpty
                             ? const Center(
                                 child: Text('Your cart is empty'),
                               )
                             : ListView.builder(
-                                itemCount: value.cartItems.length,
+                                itemCount: value.cartMap.length,
                                 itemBuilder: ((context, index) {
+                                  print(value.cartMap.values.toList()[index]);
                                   return Slidable(
                                       endActionPane: ActionPane(
                                           motion: const ScrollMotion(),
                                           children: [
                                             SlidableAction(
-                                              onPressed: (context) =>
-                                                  {value.removeItem(index)},
+                                              onPressed: (context) => {
+                                                value.removeItem(value
+                                                    .cartMap.values
+                                                    .toList()[index]
+                                                    .id!)
+                                              },
                                               backgroundColor: Colors.red,
                                               icon: Icons.delete,
                                             )
                                           ]),
                                       child: cart_deals(
-                                        cart: value.cartItems[index],
-                                        token: token,
+                                        cart: value.cartMap.values
+                                            .toList()[index],
+                                        token: widget.token,
                                         index: index,
                                       ));
                                 }),
@@ -133,7 +142,7 @@ class Cart_user extends StatelessWidget {
               Consumer<Cart>(builder: (__, value, _) {
                 return CustomButton(
                   text: 'Get this Offer',
-                  onPressed: value.qty <= 0
+                  onPressed: value.cartMap.isEmpty
                       ? () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -143,11 +152,10 @@ class Cart_user extends StatelessWidget {
                           );
                         }
                       : () {
-                          Navigator.of(key.currentContext!)
-                              .push(MaterialPageRoute(
-                                  builder: (currentContext) => status_1(
-                                        token: token,
-                                      )));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (currentContext) => status_1(
+                                    token: widget.token,
+                                  )));
                         },
                 );
               }),

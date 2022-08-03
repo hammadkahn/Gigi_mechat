@@ -158,7 +158,7 @@ class _auth_pageState extends State<auth_page> {
     if (res['message'] == 'success') {
       String accessToken = res['data']['token'];
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => Bar(token: accessToken),
@@ -183,9 +183,6 @@ class _auth_pageState extends State<auth_page> {
           },
         ),
       ));
-      setState(() {
-        isLoading = false;
-      });
     }
   }
 }

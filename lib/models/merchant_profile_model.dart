@@ -1,10 +1,12 @@
+import 'package:gigi_app/models/reviews_model.dart';
+
 import 'branch_model.dart';
 
 class ProfileModel {
   bool? status;
   int? responseCode;
   String? message;
-  MerchantProfileData? data;
+  Data? data;
 
   ProfileModel({this.status, this.responseCode, this.message, this.data});
 
@@ -12,9 +14,7 @@ class ProfileModel {
     status = json['status'];
     responseCode = json['responseCode'];
     message = json['message'];
-    data = json['data'] != null
-        ? MerchantProfileData.fromJson(json['data'])
-        : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,10 +29,11 @@ class ProfileModel {
   }
 }
 
-class MerchantProfileData {
+class Data {
   int? id;
   String? name;
   String? gender;
+  String? age;
   String? email;
   String? phone;
   String? dateOfBirth;
@@ -43,8 +44,8 @@ class MerchantProfileData {
   String? createdAt;
   String? updatedAt;
   List<BranchData>? branches;
-  double? averageRating;
-  List? reviews;
+  int? averageRating;
+  List<Reviews>? reviews;
   int? activeOffers;
   int? dealRadeems;
   int? totalDealPurchase;
@@ -52,10 +53,11 @@ class MerchantProfileData {
   String? profilePicturePath;
   String? statusName;
 
-  MerchantProfileData(
+  Data(
       {this.id,
       this.name,
       this.gender,
+      this.age,
       this.email,
       this.phone,
       this.dateOfBirth,
@@ -75,10 +77,11 @@ class MerchantProfileData {
       this.profilePicturePath,
       this.statusName});
 
-  MerchantProfileData.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     gender = json['gender'];
+    age = json['age'];
     email = json['email'];
     phone = json['phone'];
     dateOfBirth = json['date_of_birth'];
@@ -95,13 +98,12 @@ class MerchantProfileData {
       });
     }
     averageRating = json['averageRating'];
-    reviews = null;
-    // if (json['reviews'] != null) {
-    //   reviews = <Null>[];
-    //   json['reviews'].forEach((v) {
-    //     reviews!.add(.fromJson(v));
-    //   });
-    // }
+    if (json['reviews'] != null) {
+      reviews = <Reviews>[];
+      json['reviews'].forEach((v) {
+        reviews!.add(Reviews.fromJson(v));
+      });
+    }
     activeOffers = json['activeOffers'];
     dealRadeems = json['dealRadeems'];
     totalDealPurchase = json['totalDealPurchase'];
@@ -115,6 +117,7 @@ class MerchantProfileData {
     data['id'] = id;
     data['name'] = name;
     data['gender'] = gender;
+    data['age'] = age;
     data['email'] = email;
     data['phone'] = phone;
     data['date_of_birth'] = dateOfBirth;

@@ -155,6 +155,7 @@ class Wishlist extends StatelessWidget {
                     )),
                 const SizedBox(height: 10),
                 CustomButton(
+                    padding: true,
                     text: 'Add to Cart ➔',
                     onPressed: () {
                       Provider.of<Cart>(context, listen: false).addTCart(
@@ -166,8 +167,10 @@ class Wishlist extends StatelessWidget {
                         discountOnPrice: wishData.discountOnPrice,
                         path: wishData.image!.path ?? '',
                       );
+                      Provider.of<DealProvider>(context, listen: false)
+                          .removeFromWishList(wishData.wishlistId!, token);
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => Cart_user(token: token)));
+                          builder: (context) => Cart_user(token: token)));
                     })
               ],
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/models/dash_board_model.dart';
 import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/screens/full_menu/location_bar.dart';
 import 'package:gigi_app/services/dashboard_stats/dash_board.dart';
@@ -32,25 +31,26 @@ class Menu extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.50,
-                  child: FutureBuilder<DashBoardModel>(
+                  child: FutureBuilder<Map<String, dynamic>>(
                     future: DashBoardStats().getDashBoardStats(token),
                     builder: (context, snapshot) {
                       List<Widget> children;
                       if (snapshot.hasData) {
                         children = [
                           Dashboard(
-                            totalSale:
-                                snapshot.data!.data!.totalDealSale.toString(),
+                            totalSale: snapshot.data!['data']['totalDealSale']
+                                .toString(),
                           ),
                           const SizedBox(height: 10),
                           Stacked_container(
-                            discountAvailed:
-                                snapshot.data!.data!.totalDealRadeem.toString(),
+                            discountAvailed: snapshot.data!['data']
+                                    ['totalDealRadeem']
+                                .toString(),
                           ),
                           const SizedBox(height: 10),
                           Stacked_container2(
-                            totalActiveDeals: snapshot
-                                .data!.data!.totalActiveDeals
+                            totalActiveDeals: snapshot.data!['data']
+                                    ['totalActiveDeals']
                                 .toString(),
                           ),
                         ];

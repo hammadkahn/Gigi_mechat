@@ -47,10 +47,17 @@ class Full_menu_user extends StatelessWidget {
                         case ConnectionState.waiting:
                           return const Center(
                               child: CircularProgressIndicator());
+
                         default:
                           if (snapshot.hasError) {
                             return Center(
                               child: Text(snapshot.error.toString()),
+                            );
+                          } else if (snapshot.data == null ||
+                              snapshot.data!.data!.isEmpty) {
+                            return const Center(
+                              child:
+                                  Text('No recent offers added in last 7 days'),
                             );
                           } else {
                             return C_slider(

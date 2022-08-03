@@ -13,6 +13,8 @@ class DealProvider with ChangeNotifier {
   TrendingDealsModel? dealsDataList;
   DealData? _dealData;
   CartData? _purchaseData;
+  RangeValues? _distanceRange;
+  RangeValues? _priceRange;
 
   List<CartData> _cartData = [];
 
@@ -25,6 +27,20 @@ class DealProvider with ChangeNotifier {
   List<CartData> get cartData => _cartData;
 
   String get msg => _msg;
+  RangeValues get distanceRange => _distanceRange!;
+  RangeValues get priceRange => _priceRange!;
+
+  void setDistanceRange(RangeValues values) {
+    _distanceRange = values;
+    debugPrint(_distanceRange.toString());
+    notifyListeners();
+  }
+
+  void setPriceRange(RangeValues values) {
+    _priceRange = values;
+    debugPrint(_priceRange.toString());
+    notifyListeners();
+  }
 
   Future<void> tryCatch(String token, dynamic url,
       {Map<String, dynamic>? data}) async {

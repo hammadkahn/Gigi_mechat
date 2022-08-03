@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/user_app/user_menu/rating.dart';
-
-import '../../constant/size_constants.dart';
+import 'package:provider/provider.dart';
 
 class filter_list extends StatefulWidget {
   const filter_list({Key? key}) : super(key: key);
@@ -17,8 +15,9 @@ class filter_list extends StatefulWidget {
 class _filter_listState extends State<filter_list> {
   final List<String> items = ['High', 'Mid', 'Low'];
   String? selectedValue;
-  RangeValues values = RangeValues(3, 20);
-  RangeValues valuess = RangeValues(3, 20);
+  RangeValues values = const RangeValues(3, 20);
+  RangeValues valuess = const RangeValues(3, 20);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,19 +27,19 @@ class _filter_listState extends State<filter_list> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Divider(
+              const Divider(
                 color: Color(0xFFC0C0CF),
                 thickness: 5,
                 indent: 120,
                 endIndent: 120,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              Center(
+              const Center(
                 child: Text(
                   'Filters',
                   textAlign: TextAlign.center,
@@ -50,15 +49,15 @@ class _filter_listState extends State<filter_list> {
                       fontFamily: 'Mulish'),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Text('Set by Discount',
+              const Text('Set by Discount',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Mulish')),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               DropdownButton2(
@@ -130,15 +129,15 @@ class _filter_listState extends State<filter_list> {
                 scrollbarAlwaysShow: true,
                 offset: const Offset(-20, 0),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              Text('Sort by Distance',
+              const Text('Sort by Distance',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Mulish')),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               RangeSlider(
@@ -151,27 +150,27 @@ class _filter_listState extends State<filter_list> {
                 divisions: 5,
                 labels: RangeLabels('${values.start}', '${values.end}'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 32,
               ),
-              Text('Rating',
+              const Text('Rating',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Mulish')),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              rating(),
-              SizedBox(
+              const rating(),
+              const SizedBox(
                 height: 20,
               ),
-              Text('Price Range',
+              const Text('Price Range',
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Mulish')),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               RangeSlider(
@@ -187,10 +186,18 @@ class _filter_listState extends State<filter_list> {
                   valuess.end.round().toString(),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              CustomButton(text: 'Submit', onPressed: () {}),
+              CustomButton(
+                  text: 'Submit',
+                  onPressed: () {
+                    Provider.of<DealProvider>(context, listen: false)
+                        .setDistanceRange(values);
+                    Provider.of<DealProvider>(context, listen: false)
+                        .setPriceRange(valuess);
+                    Navigator.of(context).pop();
+                  }),
             ]),
       ),
     );

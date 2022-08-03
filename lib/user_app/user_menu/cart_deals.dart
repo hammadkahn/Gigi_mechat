@@ -175,7 +175,7 @@ class cart_deals extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                          onTap: () => value.decreaseQty(),
+                          onTap: () => value.removeSingleItem(cart.id!),
                           child: Container(
                             height: 32,
                             width: 32,
@@ -196,7 +196,7 @@ class cart_deals extends StatelessWidget {
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Text(
-                          value.qty.toString(),
+                          cart.qty!,
                           style: const TextStyle(
                               color: Color(0xff666687),
                               fontSize: 14,
@@ -206,7 +206,14 @@ class cart_deals extends StatelessWidget {
                       ),
                       InkWell(
                           onTap: () {
-                            value.increaseQty();
+                            value.addTCart(
+                                id: cart.id,
+                                price: cart.price,
+                                title: cart.title,
+                                image: cart.image ?? '',
+                                reviews: '0',
+                                discountOnPrice: cart.discountOnPrice,
+                                path: cart.path ?? '');
                           },
                           child: Container(
                             height: 32,

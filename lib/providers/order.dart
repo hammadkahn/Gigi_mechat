@@ -29,8 +29,10 @@ class CartItems {
 class Cart with ChangeNotifier {
   List<CartItems> _cartItemsList = [];
   int _qty = 0;
+  final Map<String, CartItems> _cartMap = {};
 
   List<CartItems> get cartItems => _cartItemsList;
+  Map<String, CartItems> get cartMap => {..._cartMap};
   int get qty => _qty;
 
   addTCart({
@@ -44,31 +46,66 @@ class Cart with ChangeNotifier {
     String? afterDiscount = '0',
     String? reviewsCount = '0',
   }) {
-    _cartItemsList.add(
-      CartItems(
-        reviewsCount: reviewsCount ?? '0',
-        priceAfterDiscount: calculateDiscount(discountOnPrice!, price!),
-        qty: qty.toString(),
-        id: id!,
-        path: path!,
-        image: image ?? '',
-        price: price,
-        reviews: reviews ?? '0',
-        discountOnPrice: discountOnPrice,
-        title: title!,
-      ),
-    );
+    print('id : $id');
+    if (_cartMap.containsKey(id)) {
+      _cartMap.update(
+          id!,
+          (cartItem) => CartItems(
+                reviewsCount: cartItem.reviewsCount,
+                priceAfterDiscount: cartItem.priceAfterDiscount,
+                qty: '${int.parse(cartItem.qty!) + 1}',
+                id: cartItem.id,
+                path: cartItem.path ?? '',
+                image: cartItem.image ?? '',
+                price: cartItem.price,
+                reviews: cartItem.reviews ?? '0',
+                discountOnPrice: cartItem.discountOnPrice,
+                title: cartItem.title!,
+              ));
+    } else {
+      print('id : $id');
+      _cartMap.putIfAbsent(
+        id!,
+        () => CartItems(
+          reviewsCount: reviewsCount ?? '0',
+          priceAfterDiscount: calculateDiscount(discountOnPrice!, price!),
+          qty: '${qty + 1}',
+          id: id,
+          path: path!,
+          image: image ?? '',
+          price: price,
+          reviews: reviews ?? '0',
+          discountOnPrice: discountOnPrice,
+          title: title!,
+        ),
+      );
+      print(cartMap[id]!.title ?? 'null values');
+    }
+    // _cartItemsList.add(
+    //   CartItems(
+    //     reviewsCount: reviewsCount ?? '0',
+    //     priceAfterDiscount: calculateDiscount(discountOnPrice!, price!),
+    //     qty: qty.toString(),
+    //     id: id!,
+    //     path: path!,
+    //     image: image ?? '',
+    //     price: price,
+    //     reviews: reviews ?? '0',
+    //     discountOnPrice: discountOnPrice,
+    //     title: title!,
+    //   ),
+    // );
     notifyListeners();
   }
 
   //remove deal from the cart
-  void removeItem(int index) {
-    _cartItemsList.removeAt(index);
+  void removeItem(String dealId) {
+    _cartMap.remove(dealId);
     notifyListeners();
   }
 
   void checkIsAddedToCart(BuildContext context) {
-    if (cartItems.isNotEmpty) {
+    if (cartMap.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('deal added to the cart'),
@@ -81,6 +118,33 @@ class Cart with ChangeNotifier {
         ),
       );
     }
+  }
+
+  // void removeItem(String productId) {
+  //   _items.remove(productId);
+  //   notifyListeners();
+  // }
+
+  void removeSingleItem(String productId) {
+    if (int.parse(_cartMap[productId]!.qty!) > 1) {
+      _cartMap.update(
+          productId,
+          (existingCartItem) => CartItems(
+                id: existingCartItem.id,
+                title: existingCartItem.title,
+                price: existingCartItem.price,
+                qty: '${int.parse(existingCartItem.qty!) - 1}',
+                reviewsCount: existingCartItem.reviewsCount ?? '0',
+                priceAfterDiscount: existingCartItem.priceAfterDiscount,
+                path: existingCartItem.path,
+                image: existingCartItem.image,
+                reviews: existingCartItem.reviews,
+                discountOnPrice: existingCartItem.discountOnPrice,
+              ));
+    } else {
+      _cartMap.remove(productId);
+    }
+    notifyListeners();
   }
 
   void clearCart() {

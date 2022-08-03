@@ -6,6 +6,7 @@ class CustomButton extends StatelessWidget {
   final double elevation;
   final double borderRadius;
   final bool isLoading;
+  final bool? padding;
 
   const CustomButton(
       {Key? key,
@@ -13,7 +14,8 @@ class CustomButton extends StatelessWidget {
       required this.onPressed,
       this.elevation = 0.0,
       this.borderRadius = 0,
-      this.isLoading = false})
+      this.isLoading = false,
+      this.padding = false})
       : super(key: key);
 
   @override
@@ -22,11 +24,14 @@ class CustomButton extends StatelessWidget {
       onPressed: onPressed,
       elevation: elevation,
       fillColor: const Color(0xFF030381),
-      constraints: const BoxConstraints(minHeight: 54, minWidth: 327),
+      constraints: BoxConstraints(
+          minHeight: padding == true ? 25 : 54,
+          minWidth: padding == true ? 150 : 327),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding:
-            const EdgeInsets.only(top: 16, bottom: 24, left: 16, right: 24),
+        padding: padding == true
+            ? const EdgeInsets.all(4)
+            : const EdgeInsets.only(top: 16, bottom: 24, left: 16, right: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
