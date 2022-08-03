@@ -125,6 +125,7 @@ class _Details_dealsState extends State<Details_deals> {
                       borderRadius: BorderRadius.circular(10),
                       color: const Color(0xFFF5F5F5)),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
                         width: 117,
@@ -142,7 +143,7 @@ class _Details_dealsState extends State<Details_deals> {
                                 child: const Icon(
                                   Icons.remove,
                                   color: Colors.white,
-                                  size: 16,
+                                  size: 20,
                                 )),
                             Container(
                               margin: const EdgeInsets.symmetric(horizontal: 3),
@@ -154,19 +155,18 @@ class _Details_dealsState extends State<Details_deals> {
                               child: Text(
                                 value.qty.toString(),
                                 style: const TextStyle(
-                                    color: Colors.black, fontSize: 16),
+                                    color: Colors.black, fontSize: 22),
                               ),
                             ),
                             InkWell(
                                 onTap: () => value.increaseQty(),
                                 child: const Icon(
                                   Icons.add,
-                                  size: 16,
+                                  size: 20,
                                 )),
                           ],
                         ),
                       ),
-                      const Spacer(),
                       Container(
                         width: 200,
                         height: 54,

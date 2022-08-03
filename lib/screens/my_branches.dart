@@ -44,21 +44,31 @@ class MyBranches extends StatelessWidget {
                       var data = snapshot.data!.data![index];
                       return InkWell(
                         onTap: () {},
-                        child: ListTile(
-                          title: Text(data.name!),
-                          subtitle: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data.description ?? 'no description'),
-                                Text(data.address ?? 'no address'),
-                                Text(data.country ?? 'country not specified'),
-                                Divider(
-                                  thickness: 0.5,
-                                  height: 1,
-                                  color: Colors.grey[350],
-                                )
-                              ]),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: ListTile(
+                            iconColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(10),
+                            textColor: Colors.white,
+                            tileColor: Color(0xFF030381),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            leading: Icon(Icons.notifications),
+                            title: Text(data.name!),
+                            subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(data.description ?? 'no description'),
+                                  Text(data.address ?? 'no address'),
+                                  Text(data.country ?? 'country not specified'),
+                                  Divider(
+                                    thickness: 0.5,
+                                    height: 1,
+                                    color: Colors.grey[350],
+                                  )
+                                ]),
+                          ),
                         ),
                       );
                     },

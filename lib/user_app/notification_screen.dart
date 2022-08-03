@@ -42,21 +42,32 @@ class NotificationScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.data![index];
                       return InkWell(
+                          hoverColor: Colors.lightBlue,
                           onTap: () {},
-                          child: ListTile(
-                            title: Text(data.subject!),
-                            subtitle: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(data.message!),
-                                Text(data.type!),
-                                Text(data.seen == '0' ? 'Not seen' : 'Seen'),
-                                const Divider(
-                                  thickness: 1,
-                                  height: 1,
-                                ),
-                              ],
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            child: ListTile(
+                              iconColor: Colors.white,
+                              contentPadding: const EdgeInsets.all(10),
+                              textColor: Colors.white,
+                              tileColor: Color(0xFF030381),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              leading: Icon(Icons.notifications),
+                              title: Text(data.subject!),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(data.message!),
+                                  Text(data.type!),
+                                  Text(data.seen == '0' ? 'Not seen' : 'Seen'),
+                                  const Divider(
+                                    thickness: 1,
+                                    height: 1,
+                                  ),
+                                ],
+                              ),
                             ),
                           ));
                     },
