@@ -25,8 +25,8 @@ class _trending_userState extends State<trending_user> {
   Widget build(BuildContext context) {
     return Container(
       height: 217,
-      width: 141,
-      margin: const EdgeInsets.only(right: 8),
+      width: 145,
+      margin: const EdgeInsets.only(right: 8, left: 8),
       decoration: const BoxDecoration(
         color: Color(0xffFFFFFF),
         borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -58,6 +58,9 @@ class _trending_userState extends State<trending_user> {
                 fontSize: 12,
                 fontWeight: FontWeight.w700),
           ),
+          SizedBox(
+            height: 4,
+          ),
           Row(
             children: [
               Image.asset(
@@ -74,6 +77,9 @@ class _trending_userState extends State<trending_user> {
                     color: Color(0xFF848484)),
               ),
             ],
+          ),
+          SizedBox(
+            height: 4,
           ),
           Row(
             children: [
@@ -95,6 +101,9 @@ class _trending_userState extends State<trending_user> {
                     color: Color(0xFF5F5F5F)),
               ),
             ],
+          ),
+          SizedBox(
+            height: 4,
           ),
           Row(
             children: [
@@ -150,6 +159,9 @@ class _trending_userState extends State<trending_user> {
                 ),
               ),
             ],
+          ),
+          SizedBox(
+            height: 4,
           ),
           const Text(
             'Coupons Left:  100/100',

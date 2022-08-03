@@ -42,10 +42,18 @@ class NotificationScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.data![index];
                       return InkWell(
+                          hoverColor: Colors.lightBlue,
                           onTap: () {},
                           child: Container(
-                            margin: const EdgeInsets.only(bottom: 15),
+                            margin: const EdgeInsets.only(bottom: 12),
                             child: ListTile(
+                              iconColor: Colors.white,
+                              contentPadding: const EdgeInsets.all(10),
+                              textColor: Colors.white,
+                              tileColor: const Color(0xFF030381),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              leading: const Icon(Icons.notifications),
                               title: Text(data.subject!),
                               subtitle: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,

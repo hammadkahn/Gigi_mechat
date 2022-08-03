@@ -44,14 +44,14 @@ class _QR_scan extends State<QR_scan> {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Column(
               children: [
                 Center(
                   child: (result != null)
                       ? Text(
                           'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                      : const Text('Scan a code'),
+                      : const Text(''),
                 ),
                 FloatingActionButton(
                   onPressed: () {
@@ -64,7 +64,7 @@ class _QR_scan extends State<QR_scan> {
                     //           controller!.resumeCamera();
                     //         }));
                   },
-                  child: const Text('Go'),
+                  child: const Text('Scan'),
                 )
               ],
             ),

@@ -19,13 +19,16 @@ class Full_menu_user extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(right: 24, left: 24),
+          padding: const EdgeInsets.only(right: 24, left: 24, top: 20),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Location_bar_user(
                   token: token,
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 const Text(
                   'GiGi Find out the best deals for you!',
@@ -34,6 +37,9 @@ class Full_menu_user extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF32324D)),
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 SearchField(
                   token: token,
