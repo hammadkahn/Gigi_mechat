@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/chat/user_list_screen.dart';
 
-import '../../chat/message_list.dart';
 import '../../support/contact.dart';
 
 class support_user extends StatelessWidget {
-  const support_user({Key? key, required this.phoneNumber}) : super(key: key);
+  const support_user({Key? key, required this.phoneNumber, required this.token})
+      : super(key: key);
   final String phoneNumber;
+  final String token;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -94,7 +94,9 @@ class support_user extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const Message()));
+                                    builder: (context) => UserListScreen(
+                                          token: token,
+                                        )));
                           },
                           child: const Text("Chat Support",
                               style: TextStyle(

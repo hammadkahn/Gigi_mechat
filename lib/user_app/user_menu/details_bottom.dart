@@ -36,7 +36,7 @@ class bottom_detail extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    dealData.name!,
+                    dealData.name ?? 'no name',
                     style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 16,
@@ -71,17 +71,17 @@ class bottom_detail extends StatelessWidget {
               child: Row(
                 children: [
                   Image.asset('assets/images/rating.png', width: 6, height: 6),
-                  Text(
-                    totalReviews,
-                    style: const TextStyle(
+                  const Text(
+                    '0',
+                    style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 7,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF5F5F5F)),
                   ),
-                  Text(
-                    '(${dealData.reviews!.length.toString()} reviews)',
-                    style: const TextStyle(
+                  const Text(
+                    '(0 reviews)',
+                    style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 4,
                         fontWeight: FontWeight.w400,
@@ -102,7 +102,7 @@ class bottom_detail extends StatelessWidget {
                         color: Color(0xFFFF6767)),
                   ),
                   Text(
-                    dealData.price!,
+                    dealData.price ?? '0',
                     style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
                         fontFamily: 'Mulish',
@@ -134,7 +134,7 @@ class bottom_detail extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(3))),
                     child: Center(
                       child: Text(
-                        '${dealData.discountOnPrice}% OFF',
+                        '${dealData.discountOnPrice ?? 0}% OFF',
                         style: const TextStyle(
                             fontSize: 5,
                             fontFamily: 'Mulish',

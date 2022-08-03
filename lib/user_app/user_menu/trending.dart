@@ -86,9 +86,9 @@ class _trending_userState extends State<trending_user> {
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF5F5F5F)),
               ),
-              Text(
-                '(${widget.data!.reviews!.length} reviews)',
-                style: const TextStyle(
+              const Text(
+                '(0 reviews)',
+                style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 4,
                     fontWeight: FontWeight.w400,

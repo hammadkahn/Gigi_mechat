@@ -4,18 +4,23 @@ import 'package:provider/provider.dart';
 
 import '../../constant/size_constants.dart';
 import '../../models/wish_list_model.dart';
+import '../../providers/order.dart';
+import '../../shared/custom_button.dart';
+import 'cart_user.dart';
 
 class Wishlist extends StatelessWidget {
-  const Wishlist({Key? key, required this.wishData}) : super(key: key);
+  const Wishlist({Key? key, required this.wishData, required this.token})
+      : super(key: key);
   final WishData wishData;
+  final String token;
   static const url = 'https://gigiapi.zanforthstaging.com/';
 
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     return Container(
+      margin: const EdgeInsets.only(bottom: 15),
       width: SizeConfig.screenWidth,
-      height: 120,
       decoration: const BoxDecoration(
           color: Color(0xFFFFFFFF),
           borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -148,6 +153,22 @@ class Wishlist extends StatelessWidget {
                         ),
                       ],
                     )),
+                const SizedBox(height: 10),
+                CustomButton(
+                    text: 'Add to Cart ➔',
+                    onPressed: () {
+                      Provider.of<Cart>(context, listen: false).addTCart(
+                        id: wishData.id.toString(),
+                        price: wishData.price,
+                        title: wishData.name,
+                        image: wishData.image!.image ?? '',
+                        reviews: '0',
+                        discountOnPrice: wishData.discountOnPrice,
+                        path: wishData.image!.path ?? '',
+                      );
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => Cart_user(token: token)));
+                    })
               ],
             ),
           ),

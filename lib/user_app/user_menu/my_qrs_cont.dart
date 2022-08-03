@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/models/cart_model.dart';
 import 'package:gigi_app/user_app/user_menu/review.dart';
+import 'package:intl/intl.dart';
 
 class qr_cont extends StatelessWidget {
-  const qr_cont({Key? key}) : super(key: key);
+  const qr_cont({Key? key, required this.cartData, required this.token})
+      : super(key: key);
+  final CartData cartData;
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class qr_cont extends StatelessWidget {
         height: MediaQuery.of(context).size.width * 94 / 327,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: Color(0xFFE8E8E8),
+          color: const Color(0xFFE8E8E8),
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 6, left: 26, right: 26),
@@ -23,7 +26,7 @@ class qr_cont extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'Qr Code: ',
                   style: TextStyle(
                       fontFamily: 'Mulish',
@@ -42,14 +45,14 @@ class qr_cont extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 10),
-              Text('Avocado Chicken Salad (Medium)',
-                  style: TextStyle(
+              const SizedBox(height: 10),
+              Text(cartData.name!,
+                  style: const TextStyle(
                       fontFamily: 'Mulish',
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF32324D))),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Image.asset(
@@ -57,7 +60,7 @@ class qr_cont extends StatelessWidget {
                     width: 8,
                     height: 8,
                   ),
-                  Text(
+                  const Text(
                     'Cafe Bistrovia - Baku, Azerbaijan',
                     style: TextStyle(
                         fontFamily: 'Mulish',
@@ -65,10 +68,10 @@ class qr_cont extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF848484)),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
-                    'Redeemed',
-                    style: TextStyle(
+                    cartData.availabilityStatus ?? 'Redeemed',
+                    style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
@@ -76,48 +79,53 @@ class qr_cont extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Row(children: [
-                Text('Date Purchased: ',
+                const Text('Date Purchased: ',
                     style: TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 7,
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF8E8EA9))),
-                Text('27- April-2022',
-                    style: TextStyle(
+                Text(
+                    DateFormat('dd-MM-yyyy')
+                        .format(DateTime.parse(cartData.createdAt!)),
+                    style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 7,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF0D9BFF))),
-                SizedBox(width: 10),
-                Text('Date Purchased: ',
+                const SizedBox(width: 10),
+                const Text('Date Expiry: ',
                     style: TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 7,
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF8E8EA9))),
-                Text('28-May-2022',
-                    style: TextStyle(
+                Text(cartData.expiry!,
+                    style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 7,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF0D9BFF))),
-                Spacer(),
+                const Spacer(),
                 Container(
                   width: 55,
                   height: 11,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Color(0xFF0D9BFF),
+                    color: const Color(0xFF0D9BFF),
                   ),
                   child: Center(
                     child: GestureDetector(
-                      onTap: () => showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (context) => review()),
-                      child: Text('★ Write a Review',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => review(
+                                  dealId: cartData.purchaseId.toString(),
+                                  token: token,
+                                )),
+                      ),
+                      child: const Text('★ Write a Review',
                           style: TextStyle(
                               fontFamily: 'Mulish',
                               fontSize: 5,

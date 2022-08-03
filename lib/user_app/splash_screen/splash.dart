@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   String? email;
   String? userType;
   String? status;
+  int? userId;
 
   var isChecked = false;
   Future<void> checkLogIn() async {
@@ -28,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     email = prefs.getString('email');
     userType = prefs.getString('user_type');
     status = prefs.getString('status');
-
+    userId = prefs.getInt('userId');
     debugPrint('user type: $status');
     debugPrint(token);
     debugPrint(email);

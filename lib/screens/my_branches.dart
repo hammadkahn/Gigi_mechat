@@ -4,18 +4,16 @@ import '../models/branch_model.dart';
 import '../services/branch/branch_services.dart';
 
 class MyBranches extends StatelessWidget {
-  const MyBranches({Key? key, required this.token, required this.title})
-      : super(key: key);
+  const MyBranches({Key? key, required this.token}) : super(key: key);
   final String token;
-  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          title,
-          style: const TextStyle(color: Colors.black),
+        title: const Text(
+          'Branches',
+          style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
         iconTheme: Theme.of(context).iconTheme,

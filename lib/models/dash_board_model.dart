@@ -29,7 +29,7 @@ class DashBoardData {
   int? totalDealSale;
   int? totalDealRadeem;
   int? totalActiveDeals;
-  int? totalSale;
+  String? totalSale;
 
   DashBoardData(
       {this.totalDealSale,

@@ -41,6 +41,7 @@ class _ham_userState extends State<ham_user> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
+                  flex: 5,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 29, left: 29),
                     child: SingleChildScrollView(
@@ -48,11 +49,12 @@ class _ham_userState extends State<ham_user> {
                       future: UserInformation().getUserProfile(widget.token),
                       builder: ((context, snapshot) {
                         List<Widget> children;
+
                         if (snapshot.hasData) {
                           var data = snapshot.data!.data!;
                           children = [
-                            data.profilePicture!.isEmpty ||
-                                    data.profilePicture == null
+                            data.profilePicture == null ||
+                                    data.profilePicture!.isEmpty
                                 ? Image.asset(
                                     'assets/images/slt.png',
                                     height: 100,
@@ -183,6 +185,7 @@ class _ham_userState extends State<ham_user> {
                                       MaterialPageRoute(
                                         builder: (_) => support_user(
                                           phoneNumber: data.phone!,
+                                          token: widget.token,
                                         ),
                                       ),
                                     );
@@ -195,7 +198,7 @@ class _ham_userState extends State<ham_user> {
                                           color: Color(0xff32324D))),
                                 ),
                               ],
-                            )
+                            ),
                           ];
                         } else if (snapshot.hasError) {
                           children = <Widget>[
@@ -231,33 +234,36 @@ class _ham_userState extends State<ham_user> {
                   ),
                 ),
                 Expanded(
+                    flex: 2,
                     child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 35, top: 100, bottom: 56),
-                  child: GestureDetector(
-                    onTap: () {
-                      MerchantAuthServices().logOut(widget.token).then((value) {
-                        if (value == 'success') {
-                          isLogOut();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const user_auth()),
-                              (route) => false);
-                        } else {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(value)));
-                        }
-                      });
-                    },
-                    child: const Text('Log out',
-                        style: TextStyle(
-                            fontFamily: 'Mulish',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff9E9E9E))),
-                  ),
-                ))
+                      padding:
+                          const EdgeInsets.only(left: 35, top: 100, bottom: 56),
+                      child: GestureDetector(
+                        onTap: () {
+                          MerchantAuthServices()
+                              .logOut(widget.token)
+                              .then((value) {
+                            if (value == 'success') {
+                              isLogOut();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const user_auth()),
+                                  (route) => false);
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(content: Text(value)));
+                            }
+                          });
+                        },
+                        child: const Text('Log out',
+                            style: TextStyle(
+                                fontFamily: 'Mulish',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff9E9E9E))),
+                      ),
+                    ))
               ],
             ),
           ),

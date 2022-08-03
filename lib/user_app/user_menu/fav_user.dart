@@ -4,8 +4,6 @@ import 'package:gigi_app/user_app/user_menu/wishlist.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/wish_list_model.dart';
-import '../../shared/custom_button.dart';
-import 'cart_user.dart';
 
 class Fav_user extends StatelessWidget {
   const Fav_user({Key? key, required this.token}) : super(key: key);
@@ -15,6 +13,7 @@ class Fav_user extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dealProvider = Provider.of<DealProvider>(context);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -111,8 +110,7 @@ class Fav_user extends StatelessWidget {
                                         ),
                                       ),
                                       child: Wishlist(
-                                        wishData: data[index],
-                                      ),
+                                          wishData: data[index], token: token),
                                     );
                                   }),
                                 );
@@ -122,15 +120,6 @@ class Fav_user extends StatelessWidget {
                       );
                     }),
                   )),
-              const SizedBox(
-                height: 40,
-              ),
-              CustomButton(
-                  text: 'Add to Cart ➔',
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => Cart_user(token: token)));
-                  })
             ],
           ),
         ),

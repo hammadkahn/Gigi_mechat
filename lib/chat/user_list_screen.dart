@@ -166,44 +166,47 @@ class _UserListScreenState extends State<UserListScreen> {
   Widget build(BuildContext context) {
     final chatProvider = Provider.of<ChatProvider>(context, listen: false)
         .getAllConversation(widget.token);
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-      child: FutureBuilder<Conversation>(
-        future: chatProvider,
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            default:
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
+    return Scaffold(
+      body: Container(
+        margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        child: FutureBuilder<Conversation>(
+          future: chatProvider,
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-              } else {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.data!.length,
-                  itemBuilder: ((context, index) {
-                    var data = snapshot.data!.data!;
-                    // setState(() {
-                    //   name = data[index].oppositeUser!.name;
-                    // });
-                    return ListTile(
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => ChatScreen(
-                                token: widget.token,
-                                chatData: snapshot.data!,
-                              ))),
-                      title: Text(data[index].oppositeUser!.name!),
-                      leading: const Icon(Icons.person, size: 20),
-                    );
-                  }),
-                );
-              }
-          }
-        },
+              default:
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.data!.length,
+                    itemBuilder: ((context, index) {
+                      var data = snapshot.data!.data!;
+                      // setState(() {
+                      //   name = data[index].oppositeUser!.name;
+                      // });
+                      return ListTile(
+                        onTap: () =>
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => ChatScreen(
+                                      token: widget.token,
+                                      chatData: snapshot.data!,
+                                    ))),
+                        title: Text(data[index].oppositeUser!.name!),
+                        leading: const Icon(Icons.person, size: 20),
+                      );
+                    }),
+                  );
+                }
+            }
+          },
+        ),
       ),
     );
   }

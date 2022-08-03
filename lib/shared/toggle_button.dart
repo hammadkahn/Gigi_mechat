@@ -39,7 +39,7 @@ class _Toggle_ButtonState extends State<Toggle_Button> {
         value: (i, v) => v,
         label: (i, v) => v,
       ),
-      choiceStyle: C2ChoiceStyle(
+      choiceStyle: const C2ChoiceStyle(
         backgroundColor: Colors.white,
         color: Color(0xFFA5A5BA),
         borderColor: Color(0xFFDCDCE4),

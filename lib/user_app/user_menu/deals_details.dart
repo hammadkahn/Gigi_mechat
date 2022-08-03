@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/deal_model.dart';
-import 'package:gigi_app/models/reviews_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -22,13 +21,12 @@ class _Details_dealsState extends State<Details_deals> {
   double? percentage;
   double? price;
   double? priceAfterDiscount;
-  String? totalReviews;
+  String? totalReviews = '0';
   int? value = 0;
   var isLaoding = false;
 
   @override
   void initState() {
-    print(widget.data);
     super.initState();
   }
 
@@ -37,14 +35,13 @@ class _Details_dealsState extends State<Details_deals> {
     percentage = int.parse(widget.data!.discountOnPrice!) / 100;
     price = percentage! * int.parse(widget.data!.price!);
     priceAfterDiscount = int.parse(widget.data!.price!) - price!;
-    totalReviews = Reviews().getRating(widget.data!.reviews!);
+    print(widget.data);
+    // totalReviews = Reviews().getRating(widget.data!.reviews!);
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('build...');
-
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
@@ -192,14 +189,11 @@ class _Details_dealsState extends State<Details_deals> {
                                           discountOnPrice:
                                               widget.data!.discountOnPrice!,
                                           title: widget.data!.name!,
-                                          reviews: Reviews()
-                                              .getRating(widget.data!.reviews),
+                                          reviews: '0',
                                           image: widget.data!.images!.isEmpty
                                               ? ''
                                               : widget.data!.images![0].image!,
-                                          reviewsCount: widget
-                                              .data!.reviews!.length
-                                              .toString(),
+                                          reviewsCount: '0',
                                           path: widget.data!.images!.isEmpty
                                               ? ''
                                               : widget.data!.images![0].path!);

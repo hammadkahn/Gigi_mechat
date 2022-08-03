@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/chat/user_list_screen.dart';
+import 'package:gigi_app/providers/chat_provider.dart';
 import 'package:gigi_app/screens/QR/qr.dart';
 import 'package:gigi_app/screens/full_menu/menu.dart';
 import 'package:gigi_app/screens/full_menu/profile.dart';
+import 'package:provider/provider.dart';
 
 import '../../support/contact.dart';
 
@@ -26,6 +28,8 @@ class _BarState extends State<Bar> {
 
   @override
   void initState() {
+    Provider.of<ChatProvider>(context, listen: false)
+        .getCurrentConversation(widget.token, '3');
     super.initState();
     currentScreen = Menu(token: widget.token);
     _children = [

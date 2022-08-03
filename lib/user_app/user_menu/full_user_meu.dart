@@ -123,17 +123,23 @@ class Full_menu_user extends StatelessWidget {
                 child: Text(snapshot.error.toString()),
               );
             } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.data!.length,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: ((context, index) {
-                  return all_details(
-                    dealId: snapshot.data!.data![index].id!.toString(),
-                    token: token,
-                  );
-                }),
-              );
+              if (snapshot.data!.data == null || snapshot.data!.data!.isEmpty) {
+                return const Center(
+                  child: Text('No deals in trending'),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data!.data!.length,
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemBuilder: ((context, index) {
+                    return all_details(
+                      dealId: snapshot.data!.data![index].id!.toString(),
+                      token: token,
+                    );
+                  }),
+                );
+              }
             }
         }
       }),

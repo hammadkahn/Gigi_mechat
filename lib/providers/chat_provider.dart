@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:gigi_app/apis/api_urls.dart';
+import 'package:gigi_app/models/current_user_chat_model.dart';
 import 'package:http/http.dart' as http;
 
 class Conversation {
@@ -90,6 +91,78 @@ class ChatData {
   }
 }
 
+class SingleConversation {
+  bool? status;
+  int? responseCode;
+  String? message;
+  SingleChatData? data;
+
+  SingleConversation({this.status, this.responseCode, this.message, this.data});
+
+  SingleConversation.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    responseCode = json['responseCode'];
+    message = json['message'];
+    data = json['data'] != null ? SingleChatData.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['responseCode'] = responseCode;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class SingleChatData {
+  int? id;
+  String? firstUser;
+  String? secondUser;
+  String? createdAt;
+  String? updatedAt;
+  int? unReadCount;
+  OppositeUser? oppositeUser;
+
+  SingleChatData(
+      {this.id,
+      this.firstUser,
+      this.secondUser,
+      this.createdAt,
+      this.updatedAt,
+      this.unReadCount,
+      this.oppositeUser});
+
+  SingleChatData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    firstUser = json['first_user'];
+    secondUser = json['second_user'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    unReadCount = json['un_readCount'];
+    oppositeUser = json['opposite_user'] != null
+        ? OppositeUser.fromJson(json['opposite_user'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_user'] = firstUser;
+    data['second_user'] = secondUser;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['un_readCount'] = unReadCount;
+    if (oppositeUser != null) {
+      data['opposite_user'] = oppositeUser!.toJson();
+    }
+    return data;
+  }
+}
+
 class LastMessage {
   int? id;
   String? conversationId;
@@ -170,8 +243,13 @@ class OppositeUser {
 
 class ChatProvider with ChangeNotifier {
   Conversation? _conversation;
+  SingleConversation? _singleConversation;
+  CurrentUserConversation? _currentUserConversation;
 
   Conversation get conversation => _conversation!;
+  SingleConversation get singleConversation => _singleConversation!;
+  CurrentUserConversation get currentUserConversation =>
+      _currentUserConversation!;
 
   Future<Conversation> getAllConversation(String token) async {
     try {
@@ -204,6 +282,51 @@ class ChatProvider with ChangeNotifier {
       } else {
         debugPrint(response.reasonPhrase);
 
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<SingleConversation> getSingleConversation(
+      String token, String id) async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              'https://gigiapi.zanforthstaging.com/api/getConversation/$id'),
+          headers: {HttpHeaders.authorizationHeader: 'Bear $token'});
+      final result = SingleConversation.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        _singleConversation = result;
+        notifyListeners();
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<CurrentUserConversation> getCurrentConversation(
+      String token, String id) async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              'https://gigiapi.zanforthstaging.com/api/getConversationMessages/$id'),
+          headers: {HttpHeaders.authorizationHeader: 'Bear $token'});
+      print(response.body);
+      final result =
+          CurrentUserConversation.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        debugPrint('current user : ${result.data!.length}');
+        _currentUserConversation = result;
+        notifyListeners();
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
         throw Exception(response.statusCode);
       }
     } catch (e) {

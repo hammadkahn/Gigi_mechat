@@ -5,15 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:gigi_app/apis/api_urls.dart';
 import 'package:http/http.dart' as http;
 import '../../models/deal_model.dart';
+import '../../models/puchase_model.dart';
 
 class UserDealServices {
   Future<TrendingDealsModel> trendingDeals(String token) async {
     try {
       final response = await http.get(
-        ApiUrls.trendingDealsUrl,
+        Uri.parse(
+            'https://gigiapi.zanforthstaging.com/api/user/getTrendingDeals?lat=50&long=60&country=Pakistan&city=Lahore'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
-
+      print('body : ${response.statusCode}');
       final result = TrendingDealsModel.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
@@ -62,6 +64,30 @@ class UserDealServices {
       } else {
         debugPrint(response.reasonPhrase);
         return result;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<SinglePurchaseModel> purchaseDetails(String token, String id) async {
+    try {
+      final url = Uri.parse('${ApiUrls.baseUrl}user/getPurchaseDeal/$id');
+      final response = await http.get(
+        url,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      );
+      debugPrint(response.statusCode.toString());
+      final result = SinglePurchaseModel.fromJson(jsonDecode(response.body));
+      final mapResult = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        debugPrint('single deal : ${result.message}');
+
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        throw Exception(response.statusCode);
       }
     } catch (e) {
       throw Exception(e);

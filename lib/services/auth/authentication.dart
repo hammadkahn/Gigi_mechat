@@ -69,6 +69,7 @@ class MerchantAuthServices {
         preferences.setString('email', result['data']['email']);
         preferences.setString('status', result['data']['StatusName']);
         preferences.setString('user_type', result['data']['type']);
+        preferences.setInt('userId', result['data']['id']);
 
         return result;
       } else {

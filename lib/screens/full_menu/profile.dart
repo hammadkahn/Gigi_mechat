@@ -4,12 +4,12 @@ import 'package:gigi_app/models/merchant_profile_model.dart';
 import 'package:gigi_app/screens/active_deals.dart';
 import 'package:gigi_app/services/branch/branch_services.dart';
 import 'package:gigi_app/services/get_profile/get_user_info.dart';
+import 'package:gigi_app/user_app/splash_screen/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/auth/authentication.dart';
 
 import '../../support/support.dart';
-import '../authentication/auth.dart';
 import '../my_branches.dart';
 
 class Profile extends StatefulWidget {
@@ -146,7 +146,7 @@ class _ProfileState extends State<Profile> {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
-                              MyBranches(token: widget.token, title: title!)));
+                              MyBranches(token: widget.token)));
                       // branches().whenComplete(() =>
                       //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       //         content: Text(
@@ -187,7 +187,7 @@ class _ProfileState extends State<Profile> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => const auth_page()),
+                                    builder: (_) => const SplashScreen()),
                                 (route) => false);
                           } else {
                             ScaffoldMessenger.of(context)

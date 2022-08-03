@@ -18,7 +18,7 @@ class UserMerchantServices {
       );
       final result = MerchantList.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        debugPrint(result.data![0].name);
+        debugPrint(response.body);
         return result;
       } else {
         debugPrint(response.reasonPhrase);
@@ -31,15 +31,17 @@ class UserMerchantServices {
 
   Future<SingleMerchant> singleMerchantProfile(
       {required String id, required String token}) async {
+    print('objec : user id : $id');
     try {
-      final url = Uri.parse('${ApiUrls.baseUrl}user/getMerchant/$id');
       final response = await http.get(
-        url,
-        headers: {HttpHeaders.authorizationHeader: token},
-      );
+          Uri.parse(
+              'https://gigiapi.zanforthstaging.com/api/user/getMerchant/$id'),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $token",
+          });
       final result = SingleMerchant.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        debugPrint(result.responseCode.toString());
+        debugPrint('name : ${result.data!.id}');
         return result;
       } else {
         debugPrint(response.reasonPhrase);

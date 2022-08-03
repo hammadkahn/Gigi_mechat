@@ -26,7 +26,8 @@ class MerchantDetails extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 itemBuilder: ((context, index) {
-                  if (snapshot.data!.data![index].averageRating! >= 0) {
+                  if (snapshot.data!.data![index].averageRating! >= 0 &&
+                      snapshot.data!.data![index].statusName != null) {
                     return GestureDetector(
                       child: DetailsCardWidget(
                         data: snapshot.data!.data![index],
@@ -36,10 +37,13 @@ class MerchantDetails extends StatelessWidget {
                     );
                   } else {
                     return index == 1
-                        ? Text(
-                            'no merchant in trending',
-                            style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.center,
+                        ? Container(
+                            margin: const EdgeInsets.all(70),
+                            child: Text(
+                              'no merchant in trending',
+                              style: Theme.of(context).textTheme.headline6,
+                              textAlign: TextAlign.center,
+                            ),
                           )
                         : const SizedBox();
                   }

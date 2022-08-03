@@ -32,7 +32,7 @@ class _User_barState extends State<User_bar> {
     _children = [
       Full_menu_user(token: widget.token),
       Categories_user(token: widget.token),
-      const My_Qrs(),
+      My_Qrs(token: widget.token),
       Fav_user(token: widget.token),
       Cart_user(token: widget.token),
     ];
@@ -52,7 +52,7 @@ class _User_barState extends State<User_bar> {
           backgroundColor: Colors.white,
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => My_Qrs(),
+              builder: (_) => My_Qrs(token: widget.token),
             ));
           },
           child: Image.asset(
