@@ -16,6 +16,8 @@ class Cart_user extends StatefulWidget {
 }
 
 class _Cart_userState extends State<Cart_user> {
+  String? productId;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -87,6 +89,8 @@ class _Cart_userState extends State<Cart_user> {
                             : ListView.builder(
                                 itemCount: value.cartMap.length,
                                 itemBuilder: ((context, index) {
+                                  productId =
+                                      value.cartMap.values.toList()[index].id;
                                   print(value.cartMap.values.toList()[index]);
                                   return Slidable(
                                       endActionPane: ActionPane(
@@ -152,8 +156,10 @@ class _Cart_userState extends State<Cart_user> {
                           );
                         }
                       : () {
+                          print('product id : $productId');
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (currentContext) => status_1(
+                                    id: int.parse(productId!),
                                     token: widget.token,
                                   )));
                         },

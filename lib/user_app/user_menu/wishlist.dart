@@ -166,6 +166,7 @@ class Wishlist extends StatelessWidget {
                         reviews: '0',
                         discountOnPrice: wishData.discountOnPrice,
                         path: wishData.image!.path ?? '',
+                        isWishList: true,
                       );
                       Provider.of<DealProvider>(context, listen: false)
                           .removeFromWishList(wishData.wishlistId!, token);
