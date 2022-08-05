@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../chat/message_list.dart';
 import '../../support/contact.dart';
 
 class support_user extends StatefulWidget {
@@ -14,6 +14,16 @@ class support_user extends StatefulWidget {
 }
 
 class _support_userState extends State<support_user> {
+  _launchCaller() async {
+    if (await canLaunchUrl(
+        Uri.parse('https://gigifrontend.zanforthstaging.com/userChat'))) {
+      await launchUrl(
+          Uri.parse('https://gigifrontend.zanforthstaging.com/userChat'));
+    } else {
+      throw 'Could not launch url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -97,12 +107,7 @@ class _support_userState extends State<support_user> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => Message(
-                                          token: widget.token,
-                                        )));
+                            _launchCaller();
                           },
                           child: const Text("Chat Support",
                               style: TextStyle(
