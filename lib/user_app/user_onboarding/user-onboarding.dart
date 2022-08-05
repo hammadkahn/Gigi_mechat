@@ -49,7 +49,7 @@ class User_onboard extends StatelessWidget {
                   .push(MaterialPageRoute(builder: (_) => const user_auth()));
             },
             child: const Padding(
-              padding: EdgeInsets.only(bottom: 38),
+              padding: EdgeInsets.only(bottom: 38, top: 10),
               child: Text(
                 'Are You a Buisness?',
                 textAlign: TextAlign.center,

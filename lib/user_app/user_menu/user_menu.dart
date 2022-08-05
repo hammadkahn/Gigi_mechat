@@ -46,6 +46,7 @@ class _User_barState extends State<User_bar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: PageStorage(bucket: bucket, child: currentScreen),
         floatingActionButton: FloatingActionButton(

@@ -115,6 +115,9 @@ class _auth_pageState extends State<auth_page> {
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF8981AE)),
                 ),
+              ),
+              SizedBox(
+                height: 40,
               )
             ],
           ),

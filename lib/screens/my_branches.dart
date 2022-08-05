@@ -61,12 +61,16 @@ class MyBranches extends StatelessWidget {
                             tileColor: const Color(0xFF030381),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
+<<<<<<< HEAD
                             leading:
                                 // data.logo == null
                                 // ?
                                 Image.asset('assets/images/kfc.png'),
                             // : Image.network(
                             //     '${data.logoPath}/${data.logo}}'),
+=======
+                            leading: Icon(Icons.location_on),
+>>>>>>> 3d46845954d5660dd35451eee7b5691417500561
                             title: Text(data.name!),
                             subtitle: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -75,11 +79,11 @@ class MyBranches extends StatelessWidget {
                                   Text(data.description ?? 'no description'),
                                   Text(data.address ?? 'no address'),
                                   Text(data.country ?? 'country not specified'),
-                                  Divider(
-                                    thickness: 0.5,
-                                    height: 1,
-                                    color: Colors.grey[350],
-                                  )
+                                  // Divider(
+                                  //   thickness: 0.5,
+                                  //   height: 1,
+                                  //   color: Colors.grey[350],
+                                  // )
                                 ]),
                           ),
                         ),
