@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/models/cart_model.dart';
+import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class scan_qr extends StatelessWidget {
-  const scan_qr({Key? key}) : super(key: key);
+  const scan_qr({Key? key, required this.qrCode}) : super(key: key);
+  final CartData qrCode;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class scan_qr extends StatelessWidget {
               const EdgeInsets.only(right: 24, left: 24, top: 55, bottom: 100),
           child: Column(
             children: [
-              Text(
+              const Text(
                 'Show this QR on outlet \n to avail this offer',
                 style: TextStyle(
                     fontSize: 22,
@@ -22,61 +24,64 @@ class scan_qr extends StatelessWidget {
                     fontFamily: 'DMSans',
                     color: Color(0xFF32324D)),
               ),
-              SizedBox(height: 55),
-              Image.asset(
-                'assets/images/scan_qr.png',
-                width: 225,
-                height: 238,
+              const SizedBox(height: 55),
+              QrImage(
+                data: '${qrCode.purchaseId}',
+                version: QrVersions.auto,
+                size: 320,
+                gapless: false,
               ),
-              SizedBox(height: 29),
-              Text('Your Offer ',
+              const SizedBox(height: 29),
+              const Text('Your Offer ',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Mulish',
                       color: Color(0xFF8E8EA9))),
-              Text('Avocado Chicken Salad',
-                  style: TextStyle(
+              Text(qrCode.name!,
+                  style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Mulish',
                       color: Color(0xFF0D9BFF))),
-              Text('20% Discount',
-                  style: TextStyle(
+              Text('${qrCode.discountOnPrice}% Discount',
+                  style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Mulish',
                       color: Color(0xFF8E8EA9))),
-              SizedBox(height: 29),
+              const SizedBox(height: 29),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Get Date: ',
+                  const Text('Get Date: ',
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Mulish',
                           color: Color(0xFF343434))),
-                  Text('26 May 2022',
-                      style: TextStyle(
+                  Text(
+                      DateFormat('dd-MM-yyyy')
+                          .format(DateTime.parse(qrCode.createdAt!)),
+                      style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Mulish',
                           color: Color(0xFF8E8EA9))),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Expiry Date: ',
+                  const Text('Expiry Date: ',
                       style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Mulish',
                           color: Color(0xFF343434))),
-                  Text('26 June 2022',
-                      style: TextStyle(
+                  Text(qrCode.expiry!,
+                      style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Mulish',

@@ -44,7 +44,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
   List<BranchData>? branches;
-  int? averageRating;
+  double? averageRating;
   List<Reviews>? reviews;
   int? activeOffers;
   int? dealRadeems;

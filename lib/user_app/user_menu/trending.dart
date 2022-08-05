@@ -38,10 +38,10 @@ class _trending_userState extends State<trending_user> {
           ClipRRect(
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-            child: widget.data!.images != null &&
-                    widget.data!.images!.isNotEmpty
+            child: widget.data!.image != null &&
+                    widget.data!.image!.image!.isNotEmpty
                 ? Image.network(
-                    '$baseUrl${widget.data!.images![0].path!}/${widget.data!.images![0].image}',
+                    '$baseUrl${widget.data!.image!.path!}/${widget.data!.image!.image}',
                     height: 120,
                     width: 120)
                 : Image.asset(
@@ -58,7 +58,7 @@ class _trending_userState extends State<trending_user> {
                 fontSize: 12,
                 fontWeight: FontWeight.w700),
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Row(
@@ -78,15 +78,16 @@ class _trending_userState extends State<trending_user> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Row(
             children: [
               Image.asset('assets/images/rating.png', width: 6, height: 6),
-              Text(
-                Reviews().getRating(widget.data!.reviews),
-                style: const TextStyle(
+              const Text(
+                '0',
+                // Reviews().getRating(widget.data!.reviews),
+                style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 7,
                     fontWeight: FontWeight.w700,
@@ -102,7 +103,7 @@ class _trending_userState extends State<trending_user> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Row(
@@ -160,7 +161,7 @@ class _trending_userState extends State<trending_user> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           const Text(

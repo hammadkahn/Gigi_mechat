@@ -1,7 +1,7 @@
 import 'package:chips_choice_null_safety/chips_choice_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/providers/deal_provider.dart';
+import 'package:provider/provider.dart';
 
 class rating extends StatefulWidget {
   const rating({Key? key}) : super(key: key);
@@ -24,13 +24,18 @@ class _ratingState extends State<rating> {
   Widget build(BuildContext context) {
     return ChipsChoice<String>.multiple(
       value: tags,
-      onChanged: (val) => {setState(() => tags = val)},
+      onChanged: (val) => {
+        setState(() {
+          tags = val;
+          Provider.of<DealProvider>(context, listen: false).setRating(val);
+        })
+      },
       choiceItems: C2Choice.listFrom<String, String>(
         source: options,
         value: (i, v) => v,
         label: (i, v) => v,
       ),
-      choiceStyle: C2ChoiceStyle(
+      choiceStyle: const C2ChoiceStyle(
         labelStyle: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
@@ -50,7 +55,7 @@ class Content extends StatefulWidget {
   final String? title;
   final Widget? child;
 
-  Content({
+  const Content({
     Key? key,
     required this.title,
     required this.child,
@@ -70,7 +75,7 @@ class _ContentState extends State<Content>
     super.build(context);
     return Card(
       elevation: 2,
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,11 +83,11 @@ class _ContentState extends State<Content>
         children: <Widget>[
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             color: Colors.black,
             child: Text(
               widget.title!,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.blueGrey, fontWeight: FontWeight.w500),
             ),
           ),

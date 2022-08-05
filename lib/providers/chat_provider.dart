@@ -289,16 +289,16 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-  Future<SingleConversation> getSingleConversation(
+  Future<Map<String, dynamic>> getSingleConversation(
       String token, String id) async {
     try {
       final response = await http.get(
           Uri.parse(
               'https://gigiapi.zanforthstaging.com/api/getConversation/$id'),
           headers: {HttpHeaders.authorizationHeader: 'Bear $token'});
-      final result = SingleConversation.fromJson(jsonDecode(response.body));
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
-        _singleConversation = result;
+        // _singleConversation = result;
         notifyListeners();
         return result;
       } else {
@@ -310,7 +310,7 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-  Future<CurrentUserConversation> getCurrentConversation(
+  Future<Map<String, dynamic>> getCurrentConversation(
       String token, String id) async {
     try {
       final response = await http.get(
@@ -318,11 +318,10 @@ class ChatProvider with ChangeNotifier {
               'https://gigiapi.zanforthstaging.com/api/getConversationMessages/$id'),
           headers: {HttpHeaders.authorizationHeader: 'Bear $token'});
       print(response.body);
-      final result =
-          CurrentUserConversation.fromJson(jsonDecode(response.body));
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
-        debugPrint('current user : ${result.data!.length}');
-        _currentUserConversation = result;
+        debugPrint('current user : ${result['data']!.length}');
+        // _currentUserConversation = result;
         notifyListeners();
         return result;
       } else {

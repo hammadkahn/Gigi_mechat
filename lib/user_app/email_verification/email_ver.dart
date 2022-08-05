@@ -140,12 +140,9 @@ class _Email_verState extends State<Email_ver> {
     if (res['message'] == 'success') {
       String accessToken = res['data']['token'];
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => User_bar(token: accessToken),
-        ),
-      );
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => User_bar(token: accessToken)),
+          (route) => false);
     } else {
       //if an error occurs, show snackbar with error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

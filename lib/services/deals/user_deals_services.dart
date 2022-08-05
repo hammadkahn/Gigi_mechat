@@ -8,11 +8,12 @@ import '../../models/deal_model.dart';
 import '../../models/puchase_model.dart';
 
 class UserDealServices {
-  Future<TrendingDealsModel> trendingDeals(String token) async {
+  Future<TrendingDealsModel> trendingDeals(
+      String token, String city, String country) async {
     try {
       final response = await http.get(
         Uri.parse(
-            'https://gigiapi.zanforthstaging.com/api/user/getTrendingDeals?lat=50&long=60&country=Pakistan&city=Lahore'),
+            'https://gigiapi.zanforthstaging.com/api/user/getTrendingDeals?lat=50&long=60&country=$country&city=$city'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       print('body : ${response.statusCode}');
@@ -33,12 +34,13 @@ class UserDealServices {
   Future<UserListOfDeals> getAllUserDeals(String token) async {
     try {
       final response = await http.get(
-        ApiUrls.userAllDeals,
+        Uri.parse(
+            '${ApiUrls.baseUrl}user/getDeals?limit=&page=&returnType=customPagination&timeSort=desc'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
 
       final result = UserListOfDeals.fromJson(jsonDecode(response.body));
-
+      print(result.data);
       if (response.statusCode == 200) {
         return result;
       } else {
@@ -84,6 +86,26 @@ class UserDealServices {
       if (response.statusCode == 200) {
         debugPrint('single deal : ${result.message}');
 
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getSystemCities(
+      String token, String country) async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              '${ApiUrls.baseUrl}getSystemCitiesByCountry?country=$country'),
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        debugPrint(result['message']);
         return result;
       } else {
         debugPrint(response.reasonPhrase);

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:intl/intl.dart';
@@ -20,10 +22,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final dobCtr = TextEditingController();
   final emailCtr = TextEditingController();
   final phoneNumberCtr = TextEditingController();
-  final genderCtr = TextEditingController();
+
   final desCtr = TextEditingController();
   final branchCtr = TextEditingController();
   final catCtr = TextEditingController();
+
+  double? longitude;
+  double? latitued;
 
   var isLoading = false;
 
@@ -98,22 +103,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-                TextFormField(
-                  controller: genderCtr,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    hintText: 'gender',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please speicify your gender';
-                    }
-                    return null;
-                  },
-                ),
+                // TextFormField(
+                //   controller: genderCtr,
+                //   decoration: InputDecoration(
+                //     enabledBorder: OutlineInputBorder(
+                //       borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                //       borderRadius: BorderRadius.circular(16),
+                //     ),
+                //     hintText: 'gender',
+                //   ),
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please speicify your gender';
+                //     }
+                //     return null;
+                //   },
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   child: TextField(
@@ -162,16 +167,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 8),
+                Column(
+                  children: [
+                    TextButton.icon(
+                      icon: const Icon(Icons.location_pin),
+                      onPressed: () {
+                        _determinePosition()
+                            .whenComplete(() => debugPrint('fetched'))
+                            .then(
+                              (value) =>
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(value),
+                                ),
+                              ),
+                            );
+                      },
+                      label: const Text('Fetch your current location'),
+                    ),
+                    Text(
+                      'For get your pricise location, Please Fetch your location',
+                      style: TextStyle(fontSize: 10, color: Colors.grey[350]),
+                    )
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   child: TextFormField(
+                    readOnly: true,
                     controller: countryCtr,
                     decoration: InputDecoration(
+                      labelText: 'Country',
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      hintText: 'country',
+                      hintText: countryCtr.text,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -184,13 +216,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 26),
                   child: TextFormField(
+                    readOnly: true,
                     controller: cityCtr,
                     decoration: InputDecoration(
+                      labelText: 'City',
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      hintText: 'City',
+                      hintText: cityCtr.text,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -299,6 +333,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  Future<String> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return 'Location services are disabled.';
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return 'Location permissions are denied';
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return 'Location permissions are permanently denied, we cannot request permissions.';
+    }
+// When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    Position currentLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    final address = await placemarkFromCoordinates(
+        currentLocation.latitude, currentLocation.longitude);
+    debugPrint(address[0].country);
+    debugPrint(address[0].subLocality);
+    latitued = currentLocation.latitude;
+    longitude = currentLocation.longitude;
+    countryCtr.text = address[0].country!;
+    cityCtr.text = address[0].locality!;
+
+    return 'Location fetched successfully';
+  }
+
   Future<void> _handleRegister() async {
     if (_key.currentState!.validate()) {
       setState(() {
@@ -319,14 +400,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'password': passCtr.text,
         'password_confirmation': passCtr.text,
         'branch_name': branchCtr.text,
-        'address': cityCtr.text + countryCtr.text,
+        'address': '$latitued, $longitude, ${cityCtr.text}, ${countryCtr.text}',
         'description': desCtr.text,
         // 'profile_picture': '',
         // 'logo': '',
         'country': countryCtr.text,
         'city': cityCtr.text,
-        // 'lat': '',
-        // 'long': '',
+        'lat': '${latitued ?? ''}',
+        'long': '${longitude ?? ''}',
         'categories[0]': catCtr.text,
       };
 

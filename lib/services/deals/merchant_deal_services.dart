@@ -55,4 +55,24 @@ class DealServices {
       throw Exception(e);
     }
   }
+
+  Future<void> redeemPurchase(
+      String token, String purchaseId, String branchId) async {
+    try {
+      final url = Uri.parse(
+          '${ApiUrls.baseUrl}merchant/radeemDeal/$purchaseId?branch=$branchId');
+      final response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+      } else {
+        debugPrint(response.reasonPhrase);
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

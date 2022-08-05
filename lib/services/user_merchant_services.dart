@@ -18,7 +18,6 @@ class UserMerchantServices {
       );
       final result = MerchantList.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        debugPrint(response.body);
         return result;
       } else {
         debugPrint(response.reasonPhrase);

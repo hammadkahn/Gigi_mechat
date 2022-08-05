@@ -145,18 +145,20 @@ class _dealsUserState extends State<dealsUser> {
                                 children: [
                                   Image.asset('assets/images/rating.png',
                                       width: 6, height: 6),
-                                  Text(
-                                    Reviews().getRating(
-                                        dealProvider!.dealData.reviews),
-                                    style: const TextStyle(
+                                  const Text(
+                                    '0',
+                                    // Reviews().getRating(
+                                    //     dealProvider!.dealData.reviews),
+                                    style: TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 7,
                                         fontWeight: FontWeight.w700,
                                         color: Color(0xFFFFFFFF)),
                                   ),
-                                  Text(
-                                    '(${dealProvider!.dealData.reviews!.length} reviews)',
-                                    style: const TextStyle(
+                                  const Text(
+                                    '0 reviews',
+                                    // '(${dealProvider!.dealData.reviews!.length} reviews)',
+                                    style: TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 4,
                                         fontWeight: FontWeight.w400,
@@ -229,11 +231,11 @@ class _dealsUserState extends State<dealsUser> {
                       ),
                       const Spacer(),
                       Expanded(
-                        child: dealProvider!.dealData.images == null ||
-                                dealProvider!.dealData.images!.isEmpty
+                        child: dealProvider!.dealData.image == null ||
+                                dealProvider!.dealData.image!.image!.isEmpty
                             ? Image.asset('assets/images/food.png')
                             : Image.network(
-                                '${dealsUser.url}${dealProvider!.dealData.images![0].path}/${dealProvider!.dealData.images![0].image}',
+                                '${dealsUser.url}${dealProvider!.dealData.image!.path}/${dealProvider!.dealData.image!.image}',
                               ),
                       ),
                     ],

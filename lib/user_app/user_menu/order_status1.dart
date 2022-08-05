@@ -121,7 +121,7 @@ class _status_1State extends State<status_1> {
                       });
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const stats3(),
+                          builder: (context) => stats3(token: widget.token),
                         ),
                       );
                       cart.clearCart();

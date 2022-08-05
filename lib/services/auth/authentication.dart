@@ -31,6 +31,7 @@ class MerchantAuthServices {
 
   Future<Map<String, dynamic>> userSignUp(
       {required Map<String, dynamic> data}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final response = await http.post(
         ApiUrls.userSignUp,
@@ -40,6 +41,7 @@ class MerchantAuthServices {
       print(response.body);
       if (response.statusCode == 200) {
         debugPrint(response.body);
+        prefs.setString('country', result['data']['location']['country']);
         return result;
       } else {
         print(response.reasonPhrase);
@@ -70,6 +72,7 @@ class MerchantAuthServices {
         preferences.setString('status', result['data']['StatusName']);
         preferences.setString('user_type', result['data']['type']);
         preferences.setInt('userId', result['data']['id']);
+        preferences.setString('country', result['data']['location']['country']);
 
         return result;
       } else {

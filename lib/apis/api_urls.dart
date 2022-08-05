@@ -10,14 +10,14 @@ class ApiUrls {
   //deal urls
   static final getSingleDeal = Uri.parse('${baseUrl}merchant/getDeal/');
   static final allDeals = Uri.parse(
-      '${baseUrl}merchant/getDeals?limit=10000&page=1&returnType=customPagination&status=1&active=1');
+      '${baseUrl}merchant/getDeals?page=1&returnType=customPagination&status=1&active=1');
   static final trendingDealsUrl = Uri.parse('${baseUrl}user/getTrendingDeals');
   static final userAllDeals = Uri.parse(
-    '${baseUrl}user/getDeals?limit=10000&returnType=customPagination&timeSort=desc',
+    '${baseUrl}user/user/getDeals?limit=&page=&returnType=customPagination&timeSort=asc&lat=&long=&startingDiscount&endingDiscount',
   );
   static final purchaseDeal = Uri.parse('${baseUrl}user/purchaseDeal');
   static final cartList = Uri.parse(
-      '${baseUrl}user/getCustomerPurchasedDeals?limit=1000?returnType=customPagination');
+      '${baseUrl}user/getCustomerPurchasedDeals?limit=?returnType=customPagination');
 
   //whilist urls
   static final addToWishList = Uri.parse('${baseUrl}user/addToWishlist');
