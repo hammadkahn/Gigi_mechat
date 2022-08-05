@@ -27,9 +27,9 @@ class CartItems {
 }
 
 class Cart with ChangeNotifier {
-  List<CartItems> _cartItemsList = [];
+  final List<CartItems> _cartItemsList = [];
   int _qty = 0;
-  final Map<String, CartItems> _cartMap = {};
+  Map<String, CartItems> _cartMap = {};
 
   List<CartItems> get cartItems => _cartItemsList;
   Map<String, CartItems> get cartMap => {..._cartMap};
@@ -45,6 +45,7 @@ class Cart with ChangeNotifier {
     required String? path,
     String? afterDiscount = '0',
     String? reviewsCount = '0',
+    bool isWishList = false,
   }) {
     print('id : $id');
     if (_cartMap.containsKey(id)) {
@@ -69,7 +70,7 @@ class Cart with ChangeNotifier {
         () => CartItems(
           reviewsCount: reviewsCount ?? '0',
           priceAfterDiscount: calculateDiscount(discountOnPrice!, price!),
-          qty: '${qty + 1}',
+          qty: isWishList == true ? '1' : '$qty',
           id: id,
           path: path!,
           image: image ?? '',
@@ -148,7 +149,7 @@ class Cart with ChangeNotifier {
   }
 
   void clearCart() {
-    _cartItemsList = [];
+    _cartMap = {};
     notifyListeners();
   }
 

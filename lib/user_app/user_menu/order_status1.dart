@@ -9,8 +9,10 @@ import 'order_detials.dart';
 import 'status3.dart';
 
 class status_1 extends StatefulWidget {
-  const status_1({Key? key, required this.token}) : super(key: key);
+  const status_1({Key? key, required this.token, required this.id})
+      : super(key: key);
   final String token;
+  final int id;
 
   @override
   State<status_1> createState() => _status_1State();
@@ -93,17 +95,22 @@ class _status_1State extends State<status_1> {
                     });
                     final cart =
                         Provider.of<Cart>(key.currentContext!, listen: false);
-                    Map<int, CartItems> map = cart.cartItems.asMap();
+
                     String price =
-                        (int.parse(map[0]!.price!) * cart.qty).toString();
+                        (int.parse(cart.cartMap.values.toList()[0].price!) *
+                                int.parse(cart.cartMap.values.toList()[0].qty!))
+                            .toString();
                     String totalPrice = cart
                         .calculateRealPrice(
-                            cart.qty, map[0]!.discountOnPrice!, map[0]!.price!)
+                            int.parse(cart.cartMap.values.toList()[0].qty!),
+                            cart.cartMap.values.toList()[0].discountOnPrice!,
+                            cart.cartMap.values.toList()[0].price!)
                         .toString();
-                    String discount = map[0]!.discountOnPrice!;
+                    String discount =
+                        cart.cartMap.values.toList()[0].discountOnPrice!;
                     addToCart(
-                      map[0]!.id!,
-                      cart.qty.toString(),
+                      cart.cartMap.values.toList()[0].id!,
+                      cart.cartMap.values.toList()[0].qty!,
                       price,
                       totalPrice,
                       discount,

@@ -11,18 +11,16 @@ class order_details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
+    print('order details...');
+    final cart = Provider.of<Cart>(context, listen: false);
+    print(cart.cartMap.length);
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: cart.cartItems.length,
+        itemCount: cart.cartMap.length,
         itemBuilder: ((context, index) {
-          int quantity;
-          int.parse(cart.cartItems[index].qty!) < cart.qty
-              ? quantity = cart.qty
-              : quantity = int.parse(cart.cartItems[index].qty!);
-          double discount =
-              double.parse('0.${cart.cartItems[index].discountOnPrice}') *
-                  int.parse(cart.cartItems[index].price!);
+          double discount = double.parse(
+                  '0.${cart.cartMap.values.toList()[index].discountOnPrice}') *
+              int.parse(cart.cartMap.values.toList()[index].price!);
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
             child: Padding(
@@ -43,19 +41,20 @@ class order_details extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Row(
                     children: [
-                      cart.cartItems[index].image == ''
-                          ? Image.asset(
-                              'assets/images/expand_pic.png',
-                              height: 40,
-                              width: 40,
-                            )
-                          : Image.network(
-                              '$url${cart.cartItems[index].path}/${cart.cartItems[index].image}}',
-                              height: 40,
-                              width: 40,
-                            ),
+                      // cart.cartMap.values.toList()[index].image == ''
+                      //     ?
+                      Image.asset(
+                        'assets/images/expand_pic.png',
+                        height: 40,
+                        width: 40,
+                      ),
+                      // : Image.network(
+                      //     '$url${cart.cartMap.values.toList()[index].path}/${cart.cartMap.values.toList()[index].image}}',
+                      //     height: 40,
+                      //     width: 40,
+                      //   ),
                       Text(
-                        cart.cartItems[index].title!,
+                        cart.cartMap.values.toList()[index].title!,
                         style: const TextStyle(
                             fontFamily: "Mulish",
                             fontSize: 14,
@@ -64,7 +63,7 @@ class order_details extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        "$quantity x",
+                        "${cart.cartMap.values.toList()[index].qty} x",
                         style: const TextStyle(
                             fontFamily: "Mulish",
                             fontSize: 14,
@@ -72,7 +71,7 @@ class order_details extends StatelessWidget {
                             color: Color(0xFFA5A5BA)),
                       ),
                       Text(
-                        "${cart.cartItems[index].discountOnPrice}% off",
+                        "${cart.cartMap.values.toList()[index].discountOnPrice}% off",
                         style: const TextStyle(
                             fontFamily: "Mulish",
                             fontSize: 14,
@@ -93,7 +92,7 @@ class order_details extends StatelessWidget {
                           width: 40,
                         ),
                         Text(
-                          cart.cartItems[index].title!,
+                          cart.cartMap.values.toList()[index].title!,
                           style: const TextStyle(
                               fontFamily: "Mulish",
                               fontSize: 14,
@@ -102,7 +101,7 @@ class order_details extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          "$quantity x",
+                          "${cart.cartMap.values.toList()[index].qty} x",
                           style: const TextStyle(
                               fontFamily: "Mulish",
                               fontSize: 14,
@@ -110,7 +109,7 @@ class order_details extends StatelessWidget {
                               color: Color(0xFFA5A5BA)),
                         ),
                         Text(
-                          "${cart.cartItems[index].discountOnPrice}% off",
+                          "${cart.cartMap.values.toList()[index].discountOnPrice}% off",
                           style: const TextStyle(
                               fontFamily: "Mulish",
                               fontSize: 14,
@@ -138,7 +137,7 @@ class order_details extends StatelessWidget {
                                   color: Color(0xFF666687))),
                           const Spacer(),
                           Text(
-                              " \$${quantity * double.parse(cart.cartItems[index].price!)} ",
+                              " \$${int.parse(cart.cartMap.values.toList()[index].qty!) * double.parse(cart.cartMap.values.toList()[index].price!)} ",
                               style: const TextStyle(
                                   fontFamily: "Mulish",
                                   fontSize: 14,
@@ -156,7 +155,8 @@ class order_details extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xFF666687))),
                         const Spacer(),
-                        Text(" \$ ${discount * quantity}",
+                        Text(
+                            " \$ ${discount * int.parse(cart.cartMap.values.toList()[index].qty!)}",
                             style: const TextStyle(
                                 fontFamily: "Mulish",
                                 fontSize: 14,
@@ -181,7 +181,7 @@ class order_details extends StatelessWidget {
                                 color: Color(0xFF4A4A6A))),
                         const Spacer(),
                         Text(
-                            " \$ ${cart.calculateRealPrice(quantity, cart.cartItems[index].discountOnPrice!, cart.cartItems[index].price!)}",
+                            " \$ ${cart.calculateRealPrice(int.parse(cart.cartMap.values.toList()[index].qty!), cart.cartMap.values.toList()[index].discountOnPrice!, cart.cartMap.values.toList()[index].price!)}",
                             style: const TextStyle(
                                 fontFamily: "Mulish",
                                 fontSize: 16,
