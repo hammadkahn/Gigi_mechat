@@ -24,7 +24,10 @@ class qr_cont extends StatelessWidget {
         child: InkWell(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => scan_qr(qrCode: cartData),
+              builder: (context) => scan_qr(
+                qrCode: cartData,
+                token: token,
+              ),
             ),
           ),
           child: Padding(

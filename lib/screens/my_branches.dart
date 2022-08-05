@@ -61,16 +61,13 @@ class MyBranches extends StatelessWidget {
                             tileColor: const Color(0xFF030381),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-<<<<<<< HEAD
                             leading:
                                 // data.logo == null
                                 // ?
                                 Image.asset('assets/images/kfc.png'),
                             // : Image.network(
                             //     '${data.logoPath}/${data.logo}}'),
-=======
-                            leading: Icon(Icons.location_on),
->>>>>>> 3d46845954d5660dd35451eee7b5691417500561
+                            // leading: Icon(Icons.location_on),
                             title: Text(data.name!),
                             subtitle: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,

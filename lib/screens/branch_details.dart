@@ -11,10 +11,8 @@ class BranchDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           branchData.name!,
-          style: const TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
-        iconTheme: Theme.of(context).iconTheme,
+        backgroundColor: const Color(0xFF030381),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),

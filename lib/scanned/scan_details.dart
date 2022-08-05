@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/ham_burger/ham_burger.dart';
+import 'package:gigi_app/services/deals/merchant_deal_services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../shared/custom_button.dart';
 
 // ignore: camel_case_types
-class Scanned_details extends StatelessWidget {
+class Scanned_details extends StatefulWidget {
   const Scanned_details(
       {Key? key, required this.token, required this.scannedData})
       : super(key: key);
   final String token;
   final Barcode scannedData;
+
+  @override
+  State<Scanned_details> createState() => _Scanned_detailsState();
+}
+
+class _Scanned_detailsState extends State<Scanned_details> {
   // final String userName;
-  // final String discount;
-  // final String coupan;
+  List? details;
+
+  @override
+  void initState() {
+    details = widget.scannedData.code!.split(' ');
+    super.initState();
+    print(details);
+  }
 
   @override
   Widget build(BuildContext context) {
     // final result = scannedData.rawBytes as Map<String, dynamic>;
 
-    debugPrint('result : ${scannedData.code}');
+    debugPrint('result : ${widget.scannedData.code}');
     return Scaffold(
       body: Center(
         child: Padding(
@@ -28,7 +41,7 @@ class Scanned_details extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                scannedData.code!,
+                widget.scannedData.code!,
                 style: const TextStyle(
                     fontFamily: 'DMSans',
                     fontSize: 22,
@@ -79,10 +92,17 @@ class Scanned_details extends StatelessWidget {
                 child: CustomButton(
                   text: 'Submit',
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => Ham_burger(
-                              token: token,
-                            )));
+                    snackBar('Processing...');
+                    redeemResult().whenComplete(() {
+                      if (msg == 'success') {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => Ham_burger(
+                                  token: widget.token,
+                                )));
+                      } else {
+                        snackBar('Error: $msg');
+                      }
+                    });
                   },
                 ),
               ),
@@ -91,5 +111,19 @@ class Scanned_details extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void snackBar(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  String? msg;
+  Future<void> redeemResult() async {
+    final result = await DealServices()
+        .redeemPurchase(widget.token, details![0], details![1]);
+
+    setState(() {
+      msg = result;
+    });
   }
 }

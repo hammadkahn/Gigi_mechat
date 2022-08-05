@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/scanned/scan_details.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 
 class QR_scan extends StatefulWidget {
   const QR_scan({Key? key, required this.title, required this.token})
@@ -43,33 +42,6 @@ class _QR_scan extends State<QR_scan> {
               onQRViewCreated: _onQRViewCreated,
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Center(
-                  child: (result != null)
-                      ? Text(
-                          'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                      : const Text(''),
-                ),
-                FloatingActionButton(
-                  backgroundColor: Color(0xFF030381),
-                  onPressed: () {
-                    controller!.pauseCamera();
-                    // Navigator.of(context)
-                    //     .push(MaterialPageRoute(
-                    //         builder: (_) =>
-                    //             Scanned_details(token: widget.token)))
-                    //     .then((value) => setState(() {
-                    //           controller!.resumeCamera();
-                    //         }));
-                  },
-                  child: const Text('Scan'),
-                )
-              ],
-            ),
-          )
         ],
       ),
     );

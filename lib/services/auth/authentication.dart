@@ -72,7 +72,10 @@ class MerchantAuthServices {
         preferences.setString('status', result['data']['StatusName']);
         preferences.setString('user_type', result['data']['type']);
         preferences.setInt('userId', result['data']['id']);
-        preferences.setString('country', result['data']['location']['country']);
+        if (result['data']['type'] == '1') {
+          preferences.setString(
+              'country', result['data']['location']['country']);
+        }
 
         return result;
       } else {

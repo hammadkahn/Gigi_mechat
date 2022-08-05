@@ -24,4 +24,24 @@ class BranchServices {
       throw Exception(e);
     }
   }
+
+  Future<Map<String, dynamic>> getBranchesList({required String token}) async {
+    try {
+      final response = await http.get(
+        ApiUrls.getAllBranches,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      );
+
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+
+      if (response.statusCode == 200) {
+        return result;
+      } else {
+        print(response.statusCode);
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

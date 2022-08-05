@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../models/reviews_model.dart';
 
 class trending_user extends StatefulWidget {
   const trending_user({Key? key, this.data}) : super(key: key);
@@ -14,8 +13,6 @@ class trending_user extends StatefulWidget {
 }
 
 class _trending_userState extends State<trending_user> {
-  static const String baseUrl = 'https://gigiapi.zanforthstaging.com/';
-
   @override
   void initState() {
     super.initState();
@@ -41,7 +38,7 @@ class _trending_userState extends State<trending_user> {
             child: widget.data!.image != null &&
                     widget.data!.image!.image!.isNotEmpty
                 ? Image.network(
-                    '$baseUrl${widget.data!.image!.path!}/${widget.data!.image!.image}',
+                    '${ApiUrls.imgBaseUrl}${widget.data!.image!.path!}/${widget.data!.image!.image}',
                     height: 120,
                     width: 120)
                 : Image.asset(

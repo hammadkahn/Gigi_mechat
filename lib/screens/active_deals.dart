@@ -13,8 +13,8 @@ class ActiveMerchantDeals extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: Theme.of(context).iconTheme,
+        title: const Text('Active Deals'),
+        backgroundColor: const Color(0xFF030381),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),

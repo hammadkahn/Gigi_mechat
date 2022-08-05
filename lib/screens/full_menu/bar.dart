@@ -32,7 +32,9 @@ class _BarState extends State<Bar> {
       Menu(
         token: widget.token,
       ),
-      const Contact(),
+      const Contact(
+        isFromBottomNav: true,
+      ),
       QR(token: widget.token),
       UserListScreen(token: widget.token),
       Profile(
@@ -88,7 +90,7 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 1;
-                          currentScreen = const Contact();
+                          currentScreen = const Contact(isFromBottomNav: true);
                         });
                       },
                       child: Image.asset(

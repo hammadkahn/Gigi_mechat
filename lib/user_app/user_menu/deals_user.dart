@@ -3,8 +3,8 @@ import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
+import '../../apis/api_urls.dart';
 import '../../constant/size_constants.dart';
-import '../../models/reviews_model.dart';
 import 'deals_details.dart';
 
 class dealsUser extends StatefulWidget {
@@ -12,8 +12,6 @@ class dealsUser extends StatefulWidget {
       : super(key: key);
   final String dealData;
   final String token;
-
-  static const url = 'https://gigiapi.zanforthstaging.com/';
 
   @override
   State<dealsUser> createState() => _dealsUserState();
@@ -235,7 +233,7 @@ class _dealsUserState extends State<dealsUser> {
                                 dealProvider!.dealData.image!.image!.isEmpty
                             ? Image.asset('assets/images/food.png')
                             : Image.network(
-                                '${dealsUser.url}${dealProvider!.dealData.image!.path}/${dealProvider!.dealData.image!.image}',
+                                '${ApiUrls.imgBaseUrl}${dealProvider!.dealData.image!.path}/${dealProvider!.dealData.image!.image}',
                               ),
                       ),
                     ],

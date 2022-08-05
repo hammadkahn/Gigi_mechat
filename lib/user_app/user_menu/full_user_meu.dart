@@ -24,6 +24,7 @@ class _Full_menu_userState extends State<Full_menu_user> {
   String? selectedValue;
   String? country;
   List<dynamic>? items;
+  String? city = '';
 
   Future<void> getCountry() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -145,7 +146,11 @@ class _Full_menu_userState extends State<Full_menu_user> {
                 ),
                 SizedBox(
                   height: 190,
-                  child: MerchantDetails(token: widget.token),
+                  child: MerchantDetails(
+                    token: widget.token,
+                    country: country ?? 'fetching...',
+                    city: city,
+                  ),
                 )
               ],
             ),
@@ -230,6 +235,7 @@ class _Full_menu_userState extends State<Full_menu_user> {
                   onChanged: (value) {
                     setState(() {
                       selectedValue = value as String;
+                      city = value;
                     });
                   },
                   underline: const SizedBox(),

@@ -192,7 +192,6 @@ class _filter_listState extends State<filter_list> {
                 valuess.start.round().toString(),
                 valuess.end.round().toString(),
               ),
-<<<<<<< HEAD
             ),
             const SizedBox(
               height: 30,
@@ -202,65 +201,12 @@ class _filter_listState extends State<filter_list> {
                 onPressed: () {
                   dealProvider!.setDistanceRange(values);
                   dealProvider!.setPriceRange(valuess);
-
                   Navigator.of(context).pop();
                 }),
+            const SizedBox(
+              height: 20,
+            ),
           ]),
-=======
-              const SizedBox(
-                height: 32,
-              ),
-              const Text('Rating',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Mulish')),
-              const SizedBox(
-                height: 24,
-              ),
-              const rating(),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text('Price Range',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Mulish')),
-              const SizedBox(
-                height: 30,
-              ),
-              RangeSlider(
-                values: valuess,
-                onChanged: (newRange) {
-                  setState(() => valuess = newRange);
-                },
-                min: 3,
-                max: 20,
-                divisions: 5,
-                labels: RangeLabels(
-                  valuess.start.round().toString(),
-                  valuess.end.round().toString(),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              CustomButton(
-                  text: 'Submit',
-                  onPressed: () {
-                    Provider.of<DealProvider>(context, listen: false)
-                        .setDistanceRange(values);
-                    Provider.of<DealProvider>(context, listen: false)
-                        .setPriceRange(valuess);
-                    Navigator.of(context).pop();
-                  }),
-              SizedBox(
-                height: 20,
-              )
-            ]),
-      ),
->>>>>>> 3d46845954d5660dd35451eee7b5691417500561
     );
   }
 }

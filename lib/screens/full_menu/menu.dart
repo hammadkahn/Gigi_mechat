@@ -104,7 +104,6 @@ class Menu extends StatelessWidget {
                             return const Center(
                                 child: Text('No deals available'));
                           } else {
-                            print(snapshot.data!.data!.length);
                             return ListView.builder(
                               itemCount: snapshot.data!.data!.length,
                               shrinkWrap: true,

@@ -1,4 +1,6 @@
 class ApiUrls {
+  static const String imgBaseUrl = 'https://gigiapi.zanforthstaging.com/';
+
   static const String baseUrl = 'https://gigiapi.zanforthstaging.com/api/';
 
   //merchant auth urls
@@ -26,7 +28,7 @@ class ApiUrls {
 
   //branch urls
   static final getAllBranches = Uri.parse(
-      '${baseUrl}merchant/getBranches?limit=10&page=1&returnType=customPagination');
+      '${baseUrl}merchant/getBranches?limit=&page=&returnType=customPagination');
 
   //dash board stats urls
   static final getDashStats = Uri.parse('${baseUrl}merchant/getDashboardStats');

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Contact extends StatelessWidget {
-  const Contact({Key? key}) : super(key: key);
+  const Contact({Key? key, this.isFromBottomNav = false}) : super(key: key);
+  final bool? isFromBottomNav;
 
   _launchCaller() async {
     const url = "tel:1234567";
@@ -38,29 +39,30 @@ class Contact extends StatelessWidget {
                         children: <Widget>[
                           Row(
                             children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 1,
-                                      // changes position of shadow
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: Colors.white,
+                              if (isFromBottomNav == false)
+                                Container(
+                                  width: 44,
+                                  height: 44,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 1,
+                                        // changes position of shadow
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Colors.white,
+                                  ),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Image.asset(
+                                          'assets/images/arrow-left.png')),
                                 ),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Image.asset(
-                                        'assets/images/arrow-left.png')),
-                              ),
-                              const Spacer(),
+                              if (isFromBottomNav == false) const Spacer(),
                               const Text('Support',
                                   style: TextStyle(
                                       fontFamily: 'Mulish',

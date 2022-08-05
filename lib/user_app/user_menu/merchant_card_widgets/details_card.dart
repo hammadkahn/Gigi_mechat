@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/models/merchant_model.dart';
+import 'package:gigi_app/models/top_mecrchant_model.dart';
 import 'package:gigi_app/user_app/user_menu/profile.dart';
-
-import '../../../services/user_merchant_services.dart';
 
 class DetailsCardWidget extends StatefulWidget {
   const DetailsCardWidget(
@@ -12,7 +10,7 @@ class DetailsCardWidget extends StatefulWidget {
       required this.data})
       : super(key: key);
   final String merchantId;
-  final MerchantData data;
+  final TopMerchantData data;
   final String token;
 
   @override
@@ -20,17 +18,6 @@ class DetailsCardWidget extends StatefulWidget {
 }
 
 class _DetailsCardWidgetState extends State<DetailsCardWidget> {
-  SingleMerchant? merchantData;
-
-  Future<void> getMerchantProfile() async {
-    final result = await UserMerchantServices()
-        .singleMerchantProfile(id: widget.merchantId, token: widget.token);
-
-    setState(() {
-      merchantData = result;
-    });
-  }
-
   static const baseUrl = 'https://gigiapi.zanforthstaging.com/';
 
   @override

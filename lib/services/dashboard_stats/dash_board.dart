@@ -20,7 +20,6 @@ class DashBoardStats {
 
         return result;
       } else {
-        print(response.statusCode);
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {
