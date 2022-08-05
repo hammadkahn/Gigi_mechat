@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/models/puchase_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/services/deals/user_deals_services.dart';
@@ -58,7 +59,11 @@ class _reviewState extends State<review> {
                           endIndent: 120,
                         ),
                         const SizedBox(height: 5),
-                        Image.asset('assets/images/detail.png'),
+                        singlePurchaseModel!.data!.image == null ||
+                                singlePurchaseModel!.data!.image!.image!.isEmpty
+                            ? Image.asset('assets/images/detail.png')
+                            : Image.network(
+                                '${ApiUrls.imgBaseUrl}/${singlePurchaseModel!.data!.image!.path}/${singlePurchaseModel!.data!.image!.image}'),
                         const SizedBox(height: 12),
                         const Padding(
                           padding: EdgeInsets.only(top: 10),
@@ -154,7 +159,9 @@ class _reviewState extends State<review> {
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFF8E8EA9))),
                         const SizedBox(height: 5),
-                        Text(singlePurchaseModel!.data!.description!,
+                        Text(
+                            singlePurchaseModel!.data!.description ??
+                                'no description provided',
                             style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 10,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/user_model.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/services/get_profile/get_user_info.dart';
+import 'package:gigi_app/user_app/user_menu/my_qrs.dart';
 import 'package:gigi_app/user_app/user_menu/support_user.dart';
 import 'package:gigi_app/user_app/user_onboarding/user-onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,7 +98,14 @@ class _ham_userState extends State<ham_user> {
                                       endIndent: 79,
                                     )),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            My_Qrs(token: widget.token),
+                                      ),
+                                    );
+                                  },
                                   child: const Text("My Offers",
                                       style: TextStyle(
                                           fontFamily: 'Mulish',
@@ -117,13 +125,18 @@ class _ham_userState extends State<ham_user> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                            content: Text(
-                                      data.perference!.isNotEmpty
-                                          ? data.perference![0].categoryName!
-                                          : 'no preferences added yet',
-                                    )));
+                                    data.perference == null ||
+                                            data.perference!.isEmpty
+                                        ? ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                'no preferences added yet',
+                                              ),
+                                            ),
+                                          )
+                                        : preferencesBox(
+                                            data.perference!, context);
                                   },
                                   child: const Text("My Prefrences",
                                       style: TextStyle(
@@ -310,6 +323,31 @@ class _ham_userState extends State<ham_user> {
                   leading: const Icon(Icons.person, size: 20),
                   title: Text(userProfileData.age!)),
             ]),
+          );
+        });
+  }
+
+  void preferencesBox(List<Perference> userProfileData, BuildContext context) {
+    showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(26))),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return Container(
+            padding: const EdgeInsets.only(top: 20),
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height / 2,
+            child: ListView.builder(
+              itemCount: userProfileData.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  tileColor:
+                      index % 2 == 0 ? Colors.blue[200] : Colors.blue[100],
+                  title: Text(userProfileData[index].categoryName!),
+                );
+              },
+            ),
           );
         });
   }
