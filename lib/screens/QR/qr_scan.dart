@@ -54,6 +54,7 @@ class _QR_scan extends State<QR_scan> {
                       : const Text(''),
                 ),
                 FloatingActionButton(
+                  backgroundColor: Color(0xFF030381),
                   onPressed: () {
                     controller!.pauseCamera();
                     // Navigator.of(context)

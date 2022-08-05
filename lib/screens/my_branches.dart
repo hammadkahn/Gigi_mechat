@@ -53,7 +53,7 @@ class MyBranches extends StatelessWidget {
                             tileColor: Color(0xFF030381),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            leading: Icon(Icons.notifications),
+                            leading: Icon(Icons.location_on),
                             title: Text(data.name!),
                             subtitle: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -62,11 +62,11 @@ class MyBranches extends StatelessWidget {
                                   Text(data.description ?? 'no description'),
                                   Text(data.address ?? 'no address'),
                                   Text(data.country ?? 'country not specified'),
-                                  Divider(
-                                    thickness: 0.5,
-                                    height: 1,
-                                    color: Colors.grey[350],
-                                  )
+                                  // Divider(
+                                  //   thickness: 0.5,
+                                  //   height: 1,
+                                  //   color: Colors.grey[350],
+                                  // )
                                 ]),
                           ),
                         ),

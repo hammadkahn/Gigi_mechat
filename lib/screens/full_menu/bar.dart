@@ -44,6 +44,7 @@ class _BarState extends State<Bar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: PageStorage(bucket: bucket, child: currentScreen),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white,

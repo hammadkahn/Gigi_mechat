@@ -198,6 +198,9 @@ class _filter_listState extends State<filter_list> {
                         .setPriceRange(valuess);
                     Navigator.of(context).pop();
                   }),
+              SizedBox(
+                height: 20,
+              )
             ]),
       ),
     );

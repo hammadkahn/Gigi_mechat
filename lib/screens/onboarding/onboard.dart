@@ -20,15 +20,18 @@ class onBoard extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.only(
                 top: 8,
+                right: 24,
+                left: 24,
               ),
               child: Text("Full contactless experience",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: 'Dmsans',
                       fontSize: 26,
                       fontWeight: FontWeight.w500)),
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: EdgeInsets.only(top: 8, right: 24, left: 24),
               child: Text(
                 'From ordering to paying, that’s all \n contactless',
                 textAlign: TextAlign.center,
@@ -59,12 +62,15 @@ class onBoard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            CustomButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const SignUpScreen()));
-              },
-              text: 'Get Started',
+            Padding(
+              padding: const EdgeInsets.only(right: 24, left: 24),
+              child: CustomButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                },
+                text: 'Get Started',
+              ),
             ),
           ],
         ));
