@@ -14,6 +14,23 @@ class User_bar extends StatefulWidget {
 }
 
 class _User_barState extends State<User_bar> {
+  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('Do you want to logout?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('DISCARD'),
+              onPressed: () => Navigator.pop(context, false),
+            ),
+            FlatButton(
+              child: Text('CONTINUE'),
+              onPressed: () => Navigator.pop(context, true),
+            ),
+          ],
+        ),
+      );
   int currentIndex = 0;
 
   List<Widget> _children = [];
@@ -45,98 +62,110 @@ class _User_barState extends State<User_bar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        key: _scaffoldKey,
-        body: PageStorage(bucket: bucket, child: currentScreen),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.white,
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => My_Qrs(token: widget.token),
-            ));
-          },
-          child: Image.asset(
-            'assets/images/voucher.png',
-            width: 31,
-            height: 31,
+    return WillPopScope(
+      onWillPop: () async {
+        print('backbutton pressed');
+        final canPop = await showWarning(context);
+        return canPop ?? false;
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: _scaffoldKey,
+          body: PageStorage(bucket: bucket, child: currentScreen),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => My_Qrs(token: widget.token),
+              ));
+            },
+            child: Image.asset(
+              'assets/images/voucher.png',
+              width: 31,
+              height: 31,
+            ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-            color: const Color(0xFF030381),
-            shape: const CircularNotchedRectangle(),
-            notchMargin: 0,
-            child: SizedBox(
-                height: 64,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MaterialButton(
-                      minWidth: 24,
-                      onPressed: () {
-                        setState(() {
-                          currentIndex = 0;
-                          currentScreen = Full_menu_user(
-                            token: widget.token,
-                          );
-                        });
-                      },
-                      child: Image.asset(
-                        'assets/images/gigi-logo.png',
-                        width: 24,
-                        height: 24,
-                        color: currentIndex == 0 ? Colors.black : Colors.white,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+              color: const Color(0xFF030381),
+              shape: const CircularNotchedRectangle(),
+              notchMargin: 0,
+              child: SizedBox(
+                  height: 64,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MaterialButton(
+                        minWidth: 24,
+                        onPressed: () {
+                          setState(() {
+                            currentIndex = 0;
+                            currentScreen = Full_menu_user(
+                              token: widget.token,
+                            );
+                          });
+                        },
+                        child: Image.asset(
+                          'assets/images/gigi-logo.png',
+                          width: 24,
+                          height: 24,
+                          color:
+                              currentIndex == 0 ? Colors.black : Colors.white,
+                        ),
                       ),
-                    ),
-                    MaterialButton(
-                      minWidth: 24,
-                      onPressed: () {
-                        setState(() {
-                          currentIndex = 1;
-                          currentScreen = Categories_user(
-                            token: widget.token,
-                          );
-                        });
-                      },
-                      child: Image.asset(
-                        'assets/images/category.png',
-                        width: 24,
-                        height: 24,
-                        color: currentIndex == 1 ? Colors.black : Colors.white,
+                      MaterialButton(
+                        minWidth: 24,
+                        onPressed: () {
+                          setState(() {
+                            currentIndex = 1;
+                            currentScreen = Categories_user(
+                              token: widget.token,
+                            );
+                          });
+                        },
+                        child: Image.asset(
+                          'assets/images/category.png',
+                          width: 24,
+                          height: 24,
+                          color:
+                              currentIndex == 1 ? Colors.black : Colors.white,
+                        ),
                       ),
-                    ),
-                    MaterialButton(
-                      minWidth: 24,
-                      onPressed: () {
-                        setState(() {
-                          currentIndex = 2;
-                          currentScreen = Fav_user(token: widget.token);
-                        });
-                      },
-                      child: Image.asset(
-                        'assets/images/fav.png',
-                        width: 24,
-                        height: 24,
-                        color: currentIndex == 2 ? Colors.black : Colors.white,
+                      MaterialButton(
+                        minWidth: 24,
+                        onPressed: () {
+                          setState(() {
+                            currentIndex = 2;
+                            currentScreen = Fav_user(token: widget.token);
+                          });
+                        },
+                        child: Image.asset(
+                          'assets/images/fav.png',
+                          width: 24,
+                          height: 24,
+                          color:
+                              currentIndex == 2 ? Colors.black : Colors.white,
+                        ),
                       ),
-                    ),
-                    MaterialButton(
-                      minWidth: 24,
-                      onPressed: () {
-                        setState(() {
-                          currentIndex = 3;
-                          currentScreen = Cart_user(token: widget.token);
-                        });
-                      },
-                      child: Image.asset(
-                        'assets/images/cart.png',
-                        width: 24,
-                        height: 24,
-                        color: currentIndex == 3 ? Colors.black : Colors.white,
-                      ),
-                    )
-                  ],
-                ))));
+                      MaterialButton(
+                        minWidth: 24,
+                        onPressed: () {
+                          setState(() {
+                            currentIndex = 3;
+                            currentScreen = Cart_user(token: widget.token);
+                          });
+                        },
+                        child: Image.asset(
+                          'assets/images/cart.png',
+                          width: 24,
+                          height: 24,
+                          color:
+                              currentIndex == 3 ? Colors.black : Colors.white,
+                        ),
+                      )
+                    ],
+                  )))),
+    );
   }
 }
