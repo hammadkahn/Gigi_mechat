@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/chat/message_list.dart';
 import 'package:gigi_app/chat/user_list_screen.dart';
 import 'package:gigi_app/screens/QR/qr.dart';
 import 'package:gigi_app/screens/full_menu/menu.dart';
@@ -36,7 +37,7 @@ class _BarState extends State<Bar> {
         isFromBottomNav: true,
       ),
       QR(token: widget.token),
-      UserListScreen(token: widget.token),
+      const Message(),
       Profile(
         token: widget.token,
       ),
@@ -105,7 +106,7 @@ class _BarState extends State<Bar> {
                       onPressed: () {
                         setState(() {
                           currentIndex = 2;
-                          currentScreen = UserListScreen(token: widget.token);
+                          currentScreen = const Message();
                         });
                       },
                       child: Image.asset(
