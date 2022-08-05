@@ -28,7 +28,8 @@ class CategoryServices {
   Future<SearchModel> searchDeal(String token, String search) async {
     try {
       final response = await http.get(
-        Uri.parse('${ApiUrls.baseUrl}categoryAutoComplete?search=$search'),
+        Uri.parse(
+            '${ApiUrls.baseUrl}user/getNearByDeals?cities[0]=Lahore&cities[1]=Karachi&returnType=customPagination&timeSort=desc&searchText=$search&country=Pakistan'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       final result = SearchModel.fromJson(jsonDecode(response.body));

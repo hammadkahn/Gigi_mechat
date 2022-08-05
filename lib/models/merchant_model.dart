@@ -107,7 +107,7 @@ class MerchantData {
   int? totalDealPurchase;
   int? totalCategories;
   List<BranchData>? branches;
-  int? averageRating;
+  double? averageRating;
   List<Reviews>? reviews;
   String? profilePicturePath;
   String? statusName;
@@ -160,7 +160,9 @@ class MerchantData {
         branches!.add(BranchData.fromJson(v));
       });
     }
-    averageRating = json['averageRating'];
+    if (averageRating.runtimeType == int) {
+      averageRating = double.parse(json['averageRating']);
+    }
     if (json['reviews'] != null) {
       reviews = <Reviews>[];
       json['reviews'].forEach((v) {

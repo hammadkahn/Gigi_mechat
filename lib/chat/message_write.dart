@@ -2,19 +2,16 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:gigi_app/providers/chat_provider.dart';
 import 'package:http/http.dart';
-import 'package:provider/provider.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apis/api_urls.dart';
 
 class Message_write extends StatefulWidget {
-  const Message_write({Key? key, required this.token, required this.id})
-      : super(key: key);
-  final String token;
-  final String id;
+  const Message_write({Key? key, this.token, this.id}) : super(key: key);
+  final String? token;
+  final String? id;
 
   @override
   State<Message_write> createState() => _Message_writeState();
@@ -241,12 +238,6 @@ class _Message_writeState extends State<Message_write> {
               ),
               IconButton(
                 onPressed: () {
-                  onTriggerEventPressed();
-                  Provider.of<ChatProvider>(context, listen: false).sendMessage(
-                    widget.token,
-                    msgController.text,
-                    widget.id,
-                  );
                   msgController.clear();
                 },
                 icon: Icon(

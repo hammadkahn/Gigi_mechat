@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:gigi_app/models/top_mecrchant_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../apis/api_urls.dart';
@@ -18,7 +19,6 @@ class UserMerchantServices {
       );
       final result = MerchantList.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        debugPrint(response.body);
         return result;
       } else {
         debugPrint(response.reasonPhrase);
@@ -42,6 +42,28 @@ class UserMerchantServices {
       final result = SingleMerchant.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         debugPrint('name : ${result.data!.id}');
+        return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        return result;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<TopMerchantModel> getTopMerchant(
+      String token, String country, String city) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '${ApiUrls.baseUrl}user/getTopMerchants?country=$country&city=$city'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      final result = TopMerchantModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
         return result;
       } else {
         debugPrint(response.reasonPhrase);

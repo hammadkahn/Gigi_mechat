@@ -58,14 +58,14 @@ class _Details_dealsState extends State<Details_deals> {
             height: 250,
             child: Stack(
               children: [
-                widget.data!.images == null || widget.data!.images!.isEmpty
+                widget.data!.image == null || widget.data!.image!.image!.isEmpty
                     ? Image.asset(
                         'assets/images/detail.png',
                         height: 248,
                         width: MediaQuery.of(context).size.width,
                       )
                     : Image.network(
-                        '$baseUrl${widget.data!.images![0].path!}/${widget.data!.images![0].image}',
+                        '$baseUrl${widget.data!.image!.path!}/${widget.data!.image!.image}',
                         height: 248,
                         width: MediaQuery.of(context).size.width,
                       ),
@@ -190,13 +190,15 @@ class _Details_dealsState extends State<Details_deals> {
                                               widget.data!.discountOnPrice!,
                                           title: widget.data!.name!,
                                           reviews: '0',
-                                          image: widget.data!.images!.isEmpty
+                                          image: widget.data!.image == null ||
+                                                  widget.data!.image!.image!
+                                                      .isEmpty
                                               ? ''
-                                              : widget.data!.images![0].image!,
+                                              : widget.data!.image!.image!,
                                           reviewsCount: '0',
-                                          path: widget.data!.images!.isEmpty
+                                          path: widget.data!.image == null
                                               ? ''
-                                              : widget.data!.images![0].path!);
+                                              : widget.data!.image!.path!);
                                       value.checkIsAddedToCart(context);
                                     },
                               child: const Text(

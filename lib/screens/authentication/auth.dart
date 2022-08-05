@@ -161,12 +161,9 @@ class _auth_pageState extends State<auth_page> {
     if (res['message'] == 'success') {
       String accessToken = res['data']['token'];
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Bar(token: accessToken),
-        ),
-      );
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Bar(token: accessToken)),
+          (route) => false);
     } else {
       //if an error occurs, show snackbar with error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

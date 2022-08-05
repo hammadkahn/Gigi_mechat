@@ -14,9 +14,6 @@ class DealServices {
     );
 
     if (response.statusCode == 200) {
-      if (kDebugMode) {
-        print(response.body);
-      }
       final result = MerchantListOfDeals.fromJson(jsonDecode(response.body));
       return result;
     } else {
@@ -50,6 +47,28 @@ class DealServices {
           print(response.statusCode);
         }
         throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> redeemPurchase(
+      String token, String purchaseId, String branchId) async {
+    try {
+      final url =
+          Uri.parse('${ApiUrls.baseUrl}merchant/radeemDeal/$purchaseId');
+      final response = await http.post(url,
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+          body: {'branch': branchId});
+
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        return result['message'];
+      } else {
+        debugPrint(response.body);
+        return result['error'];
       }
     } catch (e) {
       throw Exception(e);

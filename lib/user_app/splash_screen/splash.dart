@@ -31,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     status = prefs.getString('status');
     userId = prefs.getInt('userId');
     debugPrint('user type: $status');
+    debugPrint(prefs.getString('country'));
     debugPrint(token);
     debugPrint(email);
     debugPrint(userType);

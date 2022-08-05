@@ -17,22 +17,38 @@ class DealProvider with ChangeNotifier {
   RangeValues? _priceRange;
 
   List<CartData> _cartData = [];
+  List<String> _rating = [];
+  String? _discountRange;
 
   String _msg = 'purchase fail';
 
   TrendingDealsModel get deals => dealsDataList!;
   DealData get dealData => _dealData!;
   CartData get purchaseData => _purchaseData!;
+  List<String> get ratingFilter => _rating;
 
   List<CartData> get cartData => _cartData;
-
+  String get discountRange => _discountRange!;
   String get msg => _msg;
   RangeValues get distanceRange => _distanceRange!;
   RangeValues get priceRange => _priceRange!;
 
+  void setDiscount(String discount) {
+    _discountRange = discount;
+    debugPrint(discountRange);
+    notifyListeners();
+  }
+
   void setDistanceRange(RangeValues values) {
     _distanceRange = values;
     debugPrint(_distanceRange.toString());
+    notifyListeners();
+  }
+
+  void setRating(List<String> stars) {
+    if (stars.length <= 5) {
+      _rating = stars;
+    }
     notifyListeners();
   }
 

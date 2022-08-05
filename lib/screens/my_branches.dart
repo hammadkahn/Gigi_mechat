@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/screens/branch_details.dart';
 
 import '../models/branch_model.dart';
 import '../services/branch/branch_services.dart';
@@ -43,17 +44,34 @@ class MyBranches extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.data![index];
                       return InkWell(
+<<<<<<< HEAD
                         onTap: () => showsimplee(context),
+=======
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  BranchDetails(branchData: data),
+                            ),
+                          );
+                        },
+>>>>>>> 72f08ede5dc65f548b6ddef5c8a1ac3ff248e814
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 12),
                           child: ListTile(
                             iconColor: Colors.white,
                             contentPadding: const EdgeInsets.all(10),
                             textColor: Colors.white,
-                            tileColor: Color(0xFF030381),
+                            tileColor: const Color(0xFF030381),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            leading: Icon(Icons.location_on),
+                            leading:
+                                // data.logo == null
+                                // ?
+                                Image.asset('assets/images/kfc.png'),
+                            // : Image.network(
+                            //     '${data.logoPath}/${data.logo}}'),
+                            // leading: Icon(Icons.location_on),
                             title: Text(data.name!),
                             subtitle: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,

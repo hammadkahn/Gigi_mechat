@@ -45,9 +45,9 @@ class _Cart_userState extends State<Cart_user> {
                       color: Colors.white,
                     ),
                     child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
+                        // onTap: () {
+                        //   // Navigator.pop(context);
+                        // },
                         child: Image.asset('assets/images/arrow-left.png')),
                   ),
                   Padding(

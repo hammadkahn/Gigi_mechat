@@ -276,10 +276,9 @@ class DealData {
   String? createdAt;
   String? updatedAt;
   String? expiry;
-  List<ImageModel>? images;
-  List<Tags>? tags;
-  List<BranchData>? branches;
-  List<Reviews>? reviews;
+  String? merchantName;
+  String? categoryName;
+  ImageModel? image;
   int? dealIsExpired;
   String? typeName;
 
@@ -304,10 +303,9 @@ class DealData {
       this.createdAt,
       this.updatedAt,
       this.expiry,
-      this.images,
-      this.tags,
-      this.branches,
-      this.reviews,
+      this.merchantName,
+      this.categoryName,
+      this.image,
       this.dealIsExpired,
       this.typeName});
 
@@ -332,30 +330,9 @@ class DealData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     expiry = json['expiry'];
-    if (json['images'] != null) {
-      images = <ImageModel>[];
-      json['images'].forEach((v) {
-        images!.add(ImageModel.fromJson(v));
-      });
-    }
-    if (json['tags'] != null) {
-      tags = <Tags>[];
-      json['tags'].forEach((v) {
-        tags!.add(Tags.fromJson(v));
-      });
-    }
-    if (json['branches'] != null) {
-      branches = <BranchData>[];
-      json['branches'].forEach((v) {
-        branches!.add(BranchData.fromJson(v));
-      });
-    }
-    if (json['reviews'] != null) {
-      reviews = <Reviews>[];
-      json['reviews'].forEach((v) {
-        reviews!.add(Reviews.fromJson(v));
-      });
-    }
+    merchantName = json['merchant_name'];
+    categoryName = json['category_name'];
+    image = json['image'] != null ? ImageModel.fromJson(json['image']) : null;
     dealIsExpired = json['dealIsExpired'];
     typeName = json['TypeName'];
   }
@@ -382,17 +359,10 @@ class DealData {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['expiry'] = expiry;
-    if (images != null) {
-      data['images'] = images!.map((v) => v.toJson()).toList();
-    }
-    if (tags != null) {
-      data['tags'] = tags!.map((v) => v.toJson()).toList();
-    }
-    if (branches != null) {
-      data['branches'] = branches!.map((v) => v.toJson()).toList();
-    }
-    if (reviews != null) {
-      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
+    data['merchant_name'] = merchantName;
+    data['category_name'] = categoryName;
+    if (image != null) {
+      data['image'] = image!.toJson();
     }
     data['dealIsExpired'] = dealIsExpired;
     data['TypeName'] = typeName;

@@ -1,20 +1,21 @@
-import 'package:gigi_app/models/reviews_model.dart';
-
-import 'branch_model.dart';
-
-class ProfileModel {
+class TopMerchantModel {
   bool? status;
   int? responseCode;
   String? message;
-  Data? data;
+  List<TopMerchantData>? data;
 
-  ProfileModel({this.status, this.responseCode, this.message, this.data});
+  TopMerchantModel({this.status, this.responseCode, this.message, this.data});
 
-  ProfileModel.fromJson(Map<String, dynamic> json) {
+  TopMerchantModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     responseCode = json['responseCode'];
     message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    if (json['data'] != null) {
+      data = <TopMerchantData>[];
+      json['data'].forEach((v) {
+        data!.add(TopMerchantData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -23,13 +24,13 @@ class ProfileModel {
     data['responseCode'] = responseCode;
     data['message'] = message;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Data {
+class TopMerchantData {
   int? id;
   String? name;
   String? gender;
@@ -43,17 +44,11 @@ class Data {
   String? status;
   String? createdAt;
   String? updatedAt;
-  List<BranchData>? branches;
-  double? averageRating;
-  List<Reviews>? reviews;
-  int? activeOffers;
-  int? dealRadeems;
-  int? totalDealPurchase;
-  int? totalCategories;
+  int? averageRating;
   String? profilePicturePath;
   String? statusName;
 
-  Data(
+  TopMerchantData(
       {this.id,
       this.name,
       this.gender,
@@ -67,17 +62,11 @@ class Data {
       this.status,
       this.createdAt,
       this.updatedAt,
-      this.branches,
       this.averageRating,
-      this.reviews,
-      this.activeOffers,
-      this.dealRadeems,
-      this.totalDealPurchase,
-      this.totalCategories,
       this.profilePicturePath,
       this.statusName});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  TopMerchantData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     gender = json['gender'];
@@ -91,23 +80,9 @@ class Data {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    if (json['branches'] != null) {
-      branches = <BranchData>[];
-      json['branches'].forEach((v) {
-        branches!.add(BranchData.fromJson(v));
-      });
+    if (averageRating.runtimeType == double) {
+      averageRating = int.tryParse(json['averageRating']);
     }
-    averageRating = json['averageRating'];
-    if (json['reviews'] != null) {
-      reviews = <Reviews>[];
-      json['reviews'].forEach((v) {
-        reviews!.add(Reviews.fromJson(v));
-      });
-    }
-    activeOffers = json['activeOffers'];
-    dealRadeems = json['dealRadeems'];
-    totalDealPurchase = json['totalDealPurchase'];
-    totalCategories = json['totalCategories'];
     profilePicturePath = json['profilePicturePath'];
     statusName = json['StatusName'];
   }
@@ -127,17 +102,7 @@ class Data {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    if (branches != null) {
-      data['branches'] = branches!.map((v) => v.toJson()).toList();
-    }
     data['averageRating'] = averageRating;
-    if (reviews != null) {
-      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
-    }
-    data['activeOffers'] = activeOffers;
-    data['dealRadeems'] = dealRadeems;
-    data['totalDealPurchase'] = totalDealPurchase;
-    data['totalCategories'] = totalCategories;
     data['profilePicturePath'] = profilePicturePath;
     data['StatusName'] = statusName;
     return data;

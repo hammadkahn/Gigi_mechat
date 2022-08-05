@@ -23,35 +23,46 @@ class _C_sliderState extends State<C_slider> {
 
   getDealsDate(DateTime now, DateTime nowW1) {
     int lenght = nowW1.day;
+    debugPrint('length $lenght');
     int current = now.day;
+    debugPrint(current.toString());
 
-    if (mounted) {
-      for (int i = current; i >= lenght; i--) {
-        for (int j = 0; j < widget.merchantList.length; j++) {
-          DateTime? createdDate =
-              DateTime.parse(widget.merchantList[j].createdAt!);
-          if (createdDate.day <= i && createdDate.day >= lenght) {
-            weekDeals.add(widget.merchantList[j]);
-          }
-        }
+    for (int i = 0; i < widget.merchantList.length; i++) {
+      DateTime createdDate =
+          DateTime.parse(widget.merchantList[i].createdAt.toString());
+      if ((createdDate.compareTo(nowW1) > 0) && now.isAfter(createdDate)) {
+        weekDeals.add(widget.merchantList[i]);
       }
     }
+
+    // if(lenght > current){
+
+    // }
+    // for (int i = 0; i <= 6; i++) {
+    //   for (int j = 0; j < widget.merchantList.length; j++) {
+    //     DateTime? createdDate =
+    //         DateTime.parse(widget.merchantList[j].createdAt!);
+    //     debugPrint('day : ${createdDate.day}');
+    //     if (createdDate.day <= i && createdDate.day >= lenght) {
+    //       weekDeals.add(widget.merchantList[j]);
+    //     }
+    //   }
+    // }
   }
 
   @override
   void initState() {
-    if (mounted) {
-      now_1w = now.subtract(const Duration(days: 7));
-      getDealsDate(now, now_1w!);
-    }
+    now_1w = now.subtract(const Duration(days: 7));
+    getDealsDate(now, now_1w!);
+    print(weekDeals);
     super.initState();
   }
 
   @override
   void dispose() {
+    super.dispose();
     getDealsDate(now, now_1w!);
     controller!.stopAutoPlay();
-    super.dispose();
   }
 
   int activeIndex = 0;

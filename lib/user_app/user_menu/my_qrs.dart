@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/cart_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/user_app/user_menu/my_qrs_cont.dart';
+import 'package:gigi_app/user_app/user_menu/scan_qr.dart';
 import 'package:provider/provider.dart';
 
 class My_Qrs extends StatelessWidget {
@@ -73,6 +74,7 @@ class My_Qrs extends StatelessWidget {
                           );
                         } else {
                           return ListView.builder(
+                            reverse: true,
                             itemCount: snapshot.data!.data!.length,
                             itemBuilder: (context, index) {
                               return qr_cont(

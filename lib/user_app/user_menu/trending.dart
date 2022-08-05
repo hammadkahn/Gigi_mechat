@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../../models/reviews_model.dart';
 
 class trending_user extends StatefulWidget {
   const trending_user({Key? key, this.data}) : super(key: key);
@@ -14,8 +13,6 @@ class trending_user extends StatefulWidget {
 }
 
 class _trending_userState extends State<trending_user> {
-  static const String baseUrl = 'https://gigiapi.zanforthstaging.com/';
-
   @override
   void initState() {
     super.initState();
@@ -38,10 +35,10 @@ class _trending_userState extends State<trending_user> {
           ClipRRect(
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-            child: widget.data!.images != null &&
-                    widget.data!.images!.isNotEmpty
+            child: widget.data!.image != null &&
+                    widget.data!.image!.image!.isNotEmpty
                 ? Image.network(
-                    '$baseUrl${widget.data!.images![0].path!}/${widget.data!.images![0].image}',
+                    '${ApiUrls.imgBaseUrl}${widget.data!.image!.path!}/${widget.data!.image!.image}',
                     height: 120,
                     width: 120)
                 : Image.asset(
@@ -58,7 +55,7 @@ class _trending_userState extends State<trending_user> {
                 fontSize: 12,
                 fontWeight: FontWeight.w700),
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Row(
@@ -78,15 +75,16 @@ class _trending_userState extends State<trending_user> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Row(
             children: [
               Image.asset('assets/images/rating.png', width: 6, height: 6),
-              Text(
-                Reviews().getRating(widget.data!.reviews),
-                style: const TextStyle(
+              const Text(
+                '0',
+                // Reviews().getRating(widget.data!.reviews),
+                style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 7,
                     fontWeight: FontWeight.w700,
@@ -102,7 +100,7 @@ class _trending_userState extends State<trending_user> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Row(
@@ -160,7 +158,7 @@ class _trending_userState extends State<trending_user> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           const Text(

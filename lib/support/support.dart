@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/chat/message_list.dart';
 import 'package:gigi_app/support/contact.dart';
 
 class Support extends StatelessWidget {
@@ -88,10 +87,10 @@ class Support extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Message()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => Message(token:,)));
                           },
                           child: const Text("Chat Support",
                               style: TextStyle(

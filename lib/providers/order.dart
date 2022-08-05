@@ -11,9 +11,11 @@ class CartItems {
   String? priceAfterDiscount;
   String? reviewsCount;
   String? path;
+  String? purchasedDate;
 
   CartItems({
     this.id,
+    this.purchasedDate,
     this.reviewsCount,
     this.priceAfterDiscount,
     this.qty,

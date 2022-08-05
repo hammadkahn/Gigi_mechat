@@ -47,7 +47,6 @@ class BranchData {
   String? createdAt;
   String? updatedAt;
   String? logoPath;
-
   BranchData(
       {this.id,
       this.name,

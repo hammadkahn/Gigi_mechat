@@ -49,9 +49,6 @@ class _Fav_userState extends State<Fav_user> {
                       color: Colors.white,
                     ),
                     child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
                         child: Image.asset('assets/images/arrow-left.png')),
                   ),
                   const Padding(

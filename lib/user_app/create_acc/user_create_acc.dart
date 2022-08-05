@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +25,9 @@ class _User_create_accState extends State<User_create_acc> {
   final genderCtr = TextEditingController();
 
   var isLoading = false;
+
+  double? latitued = 0.0;
+  double? longitude = 0.0;
 
   @override
   void initState() {
@@ -115,6 +120,7 @@ class _User_create_accState extends State<User_create_acc> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   child: TextField(
                     controller: dobCtr,
+                    readOnly: true,
                     decoration: InputDecoration(
                         icon: const Icon(Icons.calendar_today_rounded),
                         labelText: 'Date of Birth',
@@ -160,41 +166,6 @@ class _User_create_accState extends State<User_create_acc> {
                   },
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 16),
-                  child: TextFormField(
-                    controller: countryCtr,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      hintText: 'country',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'country field is required';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                TextFormField(
-                  controller: cityCtr,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    hintText: 'City',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'city field required';
-                    }
-                    return null;
-                  },
-                ),
-                Padding(
                   padding: const EdgeInsets.only(bottom: 26),
                   child: TextFormField(
                     controller: passCtr,
@@ -215,14 +186,78 @@ class _User_create_accState extends State<User_create_acc> {
                     },
                   ),
                 ),
+                const SizedBox(height: 8),
+                Column(
+                  children: [
+                    TextButton.icon(
+                      icon: const Icon(Icons.location_pin),
+                      onPressed: () {
+                        _determinePosition()
+                            .whenComplete(() => debugPrint('fetched'))
+                            .then(
+                              (value) =>
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(value),
+                                ),
+                              ),
+                            );
+                      },
+                      label: const Text('Fetch your current location'),
+                    ),
+                    Text(
+                      'For get your pricise location, Please Fetch your location',
+                      style: TextStyle(fontSize: 10, color: Colors.grey[350]),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: TextFormField(
+                    controller: countryCtr,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Country',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      hintText: countryCtr.text,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'country field is required';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                TextFormField(
+                  controller: cityCtr,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'City',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    hintText: cityCtr.text,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'city field required';
+                    }
+                    return null;
+                  },
+                ),
                 CustomButton(
                   isLoading: isLoading,
                   text: 'Next',
                   onPressed: _handleRegister,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.only(top: 12),
+                  child: Text(
                     'Forgot Password?',
                     style: TextStyle(
                         fontFamily: 'Mulish',
@@ -239,74 +274,53 @@ class _User_create_accState extends State<User_create_acc> {
     );
   }
 
-  // dynamic msg;
+  Future<String> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  // void onSubmit() async {
-  //   try {
-  //     if (_key.currentState!.validate()) {
-  //       setState(() {
-  //         isLoading = true;
-  //       });
-  //       signUp().whenComplete(() {
-  //         if (msg == 'success') {
-  //           Navigator.of(context).push(MaterialPageRoute(
-  //               builder: (_) => User_Verification(email: emailCtr.text)));
-  //         } else {
-  //           showSnackBar(msg!);
-  //           setState(() {
-  //             isLoading = false;
-  //           });
-  //         }
-  //       }).catchError((e) {
-  //         showSnackBar(e);
-  //         setState(() {
-  //           isLoading = false;
-  //         });
-  //       });
-  //     } else {
-  //       setState(() {
-  //         isLoading = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     AlertDialog(
-  //       title: const Text('Alert'),
-  //       content: Text(e.toString()),
-  //     );
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return 'Location services are disabled.';
+    }
 
-  // void showSnackBar(String message) {
-  //   ScaffoldMessenger.of(context)
-  //       .showSnackBar(SnackBar(content: Text(message)));
-  // }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return 'Location permissions are denied';
+      }
+    }
 
-  // Future<void> signUp() async {
-  //   Map<String, dynamic> data = {
-  //     'name': nameCtr.text,
-  //     'email': emailCtr.text,
-  //     'phone_no': phoneNumberCtr.text,
-  //     'date_of_birth': dobCtr.text,
-  //     'password': passCtr.text,
-  //     'password_confirmation': passCtr.text,
-  //     'gender': genderCtr.text,
-  //     'address': cityCtr.text + countryCtr.text,
-  //     'country': countryCtr.text,
-  //     'city': cityCtr.text
-  //   };
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return 'Location permissions are permanently denied, we cannot request permissions.';
+    }
+// When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    Position currentLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
 
-  //   final result = await MerchantAuthServices().userSignUp(data: data);
-  //   if (result['message'] == 'success') {
-  //     setState(() {
-  //       msg = result['message'];
-  //     });
-  //   } else {
-  //     msg = result['message'];
-  //   }
-  // }
+    final address = await placemarkFromCoordinates(
+        currentLocation.latitude, currentLocation.longitude);
+    debugPrint(address[0].country);
+    debugPrint(address[0].locality);
+    latitued = currentLocation.latitude;
+    longitude = currentLocation.longitude;
+    countryCtr.text = address[0].country!;
+    cityCtr.text = address[0].subAdministrativeArea!;
+
+    return 'Location fetched successfully';
+  }
+
   Future<void> _handleRegister() async {
     if (_key.currentState!.validate()) {
       setState(() {
@@ -327,9 +341,11 @@ class _User_create_accState extends State<User_create_acc> {
         'password': passCtr.text,
         'password_confirmation': passCtr.text,
         'gender': genderCtr.text,
-        'address': cityCtr.text + countryCtr.text,
+        'address': '$latitued, $longitude, ${cityCtr.text}, ${countryCtr.text}',
         'country': countryCtr.text,
-        'city': cityCtr.text
+        'city': cityCtr.text,
+        'lat': latitued.toString(),
+        'long': longitude.toString(),
       };
 
       //get response from ApiClient

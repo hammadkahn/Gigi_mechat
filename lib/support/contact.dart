@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Contact extends StatelessWidget {
-  const Contact({Key? key}) : super(key: key);
+  const Contact({Key? key, this.isFromBottomNav = false}) : super(key: key);
+  final bool? isFromBottomNav;
+
+  _launchCaller() async {
+    const url = "tel:1234567";
+    if (await canLaunchUrl(Uri(scheme: 'tel', path: '+98712212121212'))) {
+      await launchUrl(Uri(scheme: 'tel', path: '+98712212121212'));
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,38 +39,39 @@ class Contact extends StatelessWidget {
                         children: <Widget>[
                           Row(
                             children: [
-                              Container(
-                                width: 44,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 1,
-                                      // changes position of shadow
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: Colors.white,
+                              if (isFromBottomNav == false)
+                                Container(
+                                  width: 44,
+                                  height: 44,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 1,
+                                        // changes position of shadow
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Colors.white,
+                                  ),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Image.asset(
+                                          'assets/images/arrow-left.png')),
                                 ),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Image.asset(
-                                        'assets/images/arrow-left.png')),
-                              ),
-                              Spacer(),
-                              Text('Support',
+                              if (isFromBottomNav == false) const Spacer(),
+                              const Text('Support',
                                   style: TextStyle(
                                       fontFamily: 'Mulish',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600)),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 42),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 42),
                             child: Text("Contact :",
                                 style: TextStyle(
                                     fontFamily: 'Mulish',
@@ -71,12 +81,15 @@ class Contact extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 30),
-                            child: Text("+98712212121212",
-                                style: TextStyle(
-                                    fontFamily: 'Mulish',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xffADADB6))),
+                            child: InkWell(
+                              onTap: () => _launchCaller(),
+                              child: const Text("+98712212121212",
+                                  style: TextStyle(
+                                      fontFamily: 'Mulish',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xffADADB6))),
+                            ),
                           )
                         ])))));
   }

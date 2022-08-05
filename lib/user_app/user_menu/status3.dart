@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:gigi_app/user_app/user_menu/scan_qr.dart';
+import 'package:gigi_app/user_app/user_menu/my_qrs.dart';
 
 class stats3 extends StatelessWidget {
-  const stats3({Key? key}) : super(key: key);
+  const stats3({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class stats3 extends StatelessWidget {
                   text: 'Go to My Discounts',
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const scan_qr()),
+                      MaterialPageRoute(builder: (_) => My_Qrs(token: token)),
                     );
                   },
                 ),
