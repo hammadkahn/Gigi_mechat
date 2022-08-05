@@ -43,7 +43,7 @@ class MyBranches extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.data![index];
                       return InkWell(
-                        onTap: () {},
+                        onTap: () => showsimplee(context),
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 12),
                           child: ListTile(
@@ -78,6 +78,26 @@ class MyBranches extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  void showsimplee(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Branches'),
+          content: Text('This is a demo alert dialog.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

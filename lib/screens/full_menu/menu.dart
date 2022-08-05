@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/screens/full_menu/location_bar.dart';
+import 'package:gigi_app/screens/full_menu/sheet_deals.dart';
 import 'package:gigi_app/services/dashboard_stats/dash_board.dart';
 import 'package:gigi_app/services/deals/merchant_deal_services.dart';
 
@@ -111,12 +112,10 @@ class Menu extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 var data = snapshot.data!.data![index];
                                 return InkWell(
-                                  onTap: () {
-                                    DealServices().getSingleDeal(
-                                      dealId: data.id.toString(),
-                                      token: token,
-                                    );
-                                  },
+                                  onTap: () => showModalBottomSheet(
+                                    isScrollControlled: true,
+                                      context: context,
+                                      builder: (context) => sheet_deals()),
                                   child: Deals(
                                     merchantListOfDeals: data,
                                   ),
