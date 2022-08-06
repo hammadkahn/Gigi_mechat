@@ -306,23 +306,107 @@ class _ham_userState extends State<ham_user> {
               '${userProfileData.name!}\'s Profile',
               textAlign: TextAlign.center,
             ),
-            content: Column(children: [
-              ListTile(
-                  leading: const Icon(Icons.person, size: 20),
-                  title: Text(userProfileData.name!)),
-              ListTile(
-                  leading: const Icon(Icons.email, size: 20),
-                  title: Text(userProfileData.email!)),
-              ListTile(
-                  leading: const Icon(Icons.male, size: 20),
-                  title: Text(userProfileData.gender!)),
-              ListTile(
-                  leading: const Icon(Icons.phone, size: 20),
-                  title: Text(userProfileData.phone!)),
-              ListTile(
-                  leading: const Icon(Icons.person, size: 20),
-                  title: Text(userProfileData.age!)),
-            ]),
+            content: Container(
+              width: MediaQuery.of(context).size.width - 30,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: Column(children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF030381),
+                  ),
+                  child: ListTile(
+                      leading: const Icon(
+                        Icons.person,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        userProfileData.name!,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF030381),
+                  ),
+                  child: ListTile(
+                      leading: const Icon(
+                        Icons.email,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        userProfileData.email!,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF030381),
+                  ),
+                  child: ListTile(
+                      leading: const Icon(
+                        Icons.male,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        userProfileData.gender!,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF030381),
+                  ),
+                  child: ListTile(
+                      leading: const Icon(
+                        Icons.phone,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        userProfileData.phone!,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xFF030381),
+                  ),
+                  child: ListTile(
+                      leading: const Icon(
+                        Icons.person,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        userProfileData.age!,
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+              ]),
+            ),
           );
         });
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/user_app/user_menu/full_user_meu.dart';
+import 'package:gigi_app/user_app/user_menu/user_menu.dart';
 import 'package:gigi_app/user_app/user_menu/wishlist.dart';
 import 'package:provider/provider.dart';
 
@@ -52,8 +53,7 @@ class _Fav_userState extends State<Fav_user> {
                     child: GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  Full_menu_user(token: widget.token)));
+                              builder: (_) => User_bar(token: widget.token)));
                         },
                         child: Image.asset('assets/images/arrow-left.png')),
                   ),

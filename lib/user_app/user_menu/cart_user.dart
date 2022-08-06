@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/user_app/user_menu/order_status1.dart';
+import 'package:gigi_app/user_app/user_menu/user_menu.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/order.dart';
@@ -45,9 +46,10 @@ class _Cart_userState extends State<Cart_user> {
                       color: Colors.white,
                     ),
                     child: GestureDetector(
-                        // onTap: () {
-                        //   // Navigator.pop(context);
-                        // },
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => User_bar(token: widget.token)));
+                        },
                         child: Image.asset('assets/images/arrow-left.png')),
                   ),
                   Padding(
