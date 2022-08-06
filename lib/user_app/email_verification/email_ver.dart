@@ -139,7 +139,6 @@ class _Email_verState extends State<Email_ver> {
     //if there is no error, get the user's accesstoken and pass it to HomeScreen
     if (res['message'] == 'success') {
       String accessToken = res['data']['token'];
-
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => User_bar(token: accessToken)),
           (route) => false);

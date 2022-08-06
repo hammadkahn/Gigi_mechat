@@ -25,12 +25,15 @@ class CategoryServices {
     }
   }
 
-  Future<SearchModel> searchDeal(String token, String search,
-      {String? startingDiscount = '0', String? endingDiscount = '100'}) async {
+  Future<SearchModel> searchDeal(
+      String token, String search, String country, String city,
+      {String? startingDiscount = '0',
+      String? endingDiscount = '100',
+      String? priceOrder = 'asc'}) async {
     try {
       final response = await http.get(
         Uri.parse(
-            '${ApiUrls.baseUrl}user/getNearByDeals?cities[0]=Lahore&cities[1]=Karachi&returnType=customPagination&timeSort=desc&searchText=$search&country=Pakistan&startingDiscount=$startingDiscount&endingDiscount=$endingDiscount'),
+            '${ApiUrls.baseUrl}user/getNearByDeals?cities[0]=$city&cities[1]=$city&returnType=customPagination&priceSort=$priceOrder&searchText=$search&country=$country&startingDiscount=$startingDiscount&endingDiscount=$endingDiscount'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       final result = SearchModel.fromJson(jsonDecode(response.body));

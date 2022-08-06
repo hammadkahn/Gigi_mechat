@@ -4,6 +4,7 @@ import 'package:gigi_app/services/categories/category_services.dart';
 import 'package:gigi_app/shared/search_result.dart';
 import 'package:gigi_app/user_app/user_menu/filter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant/size_constants.dart';
 import '../providers/deal_provider.dart';
@@ -21,6 +22,24 @@ class SearchField extends StatefulWidget {
 class _SearchFieldState extends State<SearchField> {
   final TextEditingController controller = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String? country;
+  String? city;
+  String? address;
+
+  Future<void> getCountryAndCity() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      city = pref.getString('city');
+      country = pref.getString('country');
+      address = pref.getString('address');
+    });
+  }
+
+  @override
+  void initState() {
+    getCountryAndCity().whenComplete(() => debugPrint(city));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +62,25 @@ class _SearchFieldState extends State<SearchField> {
           enabledBorder: InputBorder.none,
           suffixIcon: IconButton(
               icon: const Icon(Icons.search, color: Color(0xFFC0C0CF)),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('searching...')));
-                searchData().whenComplete(() {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SearchResult(
-                        searchModel: searchModel!,
-                        token: widget.token,
-                      ),
-                    ),
-                  );
-                });
-              }),
+              onPressed: country == null ||
+                      city == null ||
+                      city!.isEmpty ||
+                      country!.isEmpty
+                  ? null
+                  : () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('searching...')));
+                      searchData().whenComplete(() {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SearchResult(
+                              searchModel: searchModel!,
+                              token: widget.token,
+                            ),
+                          ),
+                        );
+                      });
+                    }),
           prefixIcon: GestureDetector(
             onTap: () => showModalBottomSheet(
                 isScrollControlled: true,
@@ -76,16 +100,14 @@ class _SearchFieldState extends State<SearchField> {
   SearchModel? searchModel;
 
   Future<void> searchData() async {
-    double? startingDiscount =
-        Provider.of<DealProvider>(context, listen: false).priceRange!.start;
-    double? endignDiscount =
-        Provider.of<DealProvider>(context, listen: false).priceRange!.end;
+    final provider = Provider.of<DealProvider>(context, listen: false);
+
     final result = await CategoryServices().searchDeal(
-        widget.token, controller.text,
-        startingDiscount:
-            '${startingDiscount.isInfinite || startingDiscount.isNaN || startingDiscount.toString().isEmpty ? '0' : startingDiscount}',
-        endingDiscount:
-            '${endignDiscount.isInfinite || endignDiscount.isNaN || endignDiscount.toString().isEmpty ? '100' : endignDiscount}');
+        widget.token, controller.text, country!, city!,
+        startingDiscount: provider.startingDiscount.toString(),
+        priceOrder: provider.priceOrder,
+        endingDiscount: provider.endignDiscount.toString());
+
     if (result.message == 'success') {
       debugPrint(result.message);
       setState(() {

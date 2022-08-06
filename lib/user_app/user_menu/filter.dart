@@ -2,7 +2,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:gigi_app/user_app/user_menu/rating.dart';
 import 'package:provider/provider.dart';
 
 class filter_list extends StatefulWidget {
@@ -14,7 +13,7 @@ class filter_list extends StatefulWidget {
 
 class _filter_listState extends State<filter_list> {
   DealProvider? dealProvider;
-  final List<String> items = ['High', 'Mid', 'Low'];
+  final List<String> items = ['asc', 'desc'];
   String? selectedValue;
   RangeValues values = const RangeValues(3, 20);
   RangeValues valuess = const RangeValues(0, 100);
@@ -58,7 +57,7 @@ class _filter_listState extends State<filter_list> {
             const SizedBox(
               height: 5,
             ),
-            const Text('Set by Discount',
+            const Text('Price Order',
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -75,7 +74,7 @@ class _filter_listState extends State<filter_list> {
                   ),
                   Expanded(
                     child: Text(
-                      'High to Low',
+                      'asc',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -139,40 +138,10 @@ class _filter_listState extends State<filter_list> {
             const SizedBox(
               height: 30,
             ),
-            const Text('Sort by Distance',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Mulish')),
-            const SizedBox(
-              height: 30,
-            ),
-            RangeSlider(
-              values: values,
-              onChanged: (RangeValues newRange) {
-                setState(() => values = newRange);
-              },
-              min: 3,
-              max: 20,
-              divisions: 5,
-              labels: RangeLabels('${values.start}', '${values.end}'),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            const Text('Rating',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Mulish')),
-            const SizedBox(
-              height: 24,
-            ),
-            const rating(),
             const SizedBox(
               height: 20,
             ),
-            const Text('Price Range',
+            const Text('Discount Range',
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -199,7 +168,6 @@ class _filter_listState extends State<filter_list> {
             CustomButton(
                 text: 'Submit',
                 onPressed: () {
-                  dealProvider!.setDistanceRange(values);
                   dealProvider!.setPriceRange(valuess);
                   Navigator.of(context).pop();
                 }),

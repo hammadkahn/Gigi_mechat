@@ -30,7 +30,6 @@ class _ChatTestingScreenState extends State<ChatTestingScreen> {
   PusherChannel? myChannel;
 
   void log(String text) {
-    print("LOG: $text");
     setState(() {
       _log += "$text\n";
       Timer(

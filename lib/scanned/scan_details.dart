@@ -19,13 +19,22 @@ class Scanned_details extends StatefulWidget {
 
 class _Scanned_detailsState extends State<Scanned_details> {
   // final String userName;
+  final ctr = TextEditingController();
   List? details;
+  double? percentage;
+  double? price;
+  double? priceAfterDiscount;
 
   @override
   void initState() {
-    details = widget.scannedData.code!.split(' ');
+    details = widget.scannedData.code!.split(':');
     super.initState();
     print(details);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
@@ -43,29 +52,21 @@ class _Scanned_detailsState extends State<Scanned_details> {
               Text(
                 widget.scannedData.code!,
                 style: const TextStyle(
+                  fontFamily: 'DMSans',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                  'This user Have ${details![4]}% OFF on\n${details![6]} \n\nCoupon : GiGi12345',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
                     fontFamily: 'DMSans',
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff0D9BFF)),
-              ),
-              // Text(scannedData.code!),
-              const Text(
-                'G.Mamedof',
-                style: TextStyle(
-                    fontFamily: 'DMSans',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff0D9BFF)),
-              ),
-              const Text(
-                'Have 20% OFF on\nEntire Menu \n\nCoupon : GiGi12345',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'DMSans',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff000000)),
-              ),
+                    color: Color(0xff0D9BFF),
+                  )),
               const Text(
                 'Scan verified',
                 textAlign: TextAlign.center,
@@ -78,32 +79,57 @@ class _Scanned_detailsState extends State<Scanned_details> {
               Padding(
                 padding: const EdgeInsets.only(top: 34.5),
                 child: TextField(
+                    controller: ctr,
                     decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  hintText: 'Enter Price of the Bill',
-                )),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Color(0xFFEAEAEF)),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        hintText: 'Enter Price of the Bill',
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.calculate),
+                          onPressed: () {
+                            setState(() {
+                              percentage = int.parse(details![4]) / 100;
+                              price = percentage! * int.parse(ctr.text);
+                              priceAfterDiscount = int.parse(ctr.text) - price!;
+                            });
+                            debugPrint(priceAfterDiscount.toString());
+                          },
+                        ))),
               ),
+              Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Text(
+                    priceAfterDiscount == null
+                        ? 'Enter the price to calculate discount'
+                        : 'You have to charge this user of an amount of $priceAfterDiscount',
+                    style:
+                        const TextStyle(color: Color(0xff0D9BFF), fontSize: 18),
+                  )),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 38),
                 child: CustomButton(
                   text: 'Submit',
-                  onPressed: () {
-                    snackBar('Processing...');
-                    redeemResult().whenComplete(() {
-                      if (msg == 'success') {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => Ham_burger(
-                                  token: widget.token,
-                                )));
-                      } else {
-                        snackBar('Error: $msg');
-                      }
-                    });
-                  },
+                  onPressed: priceAfterDiscount == null
+                      ? () => snackBar(
+                          'Please the price of the bill to calculate the discount on price')
+                      : () {
+                          snackBar('Processing...');
+                          redeemResult().whenComplete(() {
+                            if (msg == 'success') {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => Ham_burger(
+                                        token: widget.token,
+                                      )));
+                            } else {
+                              snackBar('Error: $msg');
+                            }
+                          });
+                        },
                 ),
               ),
             ],

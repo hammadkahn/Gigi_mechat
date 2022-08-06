@@ -75,6 +75,9 @@ class MerchantAuthServices {
         if (result['data']['type'] == '1') {
           preferences.setString(
               'country', result['data']['location']['country']);
+          preferences.setString('city', result['data']['location']['city']);
+          preferences.setString(
+              'address', result['data']['location']['address']);
         }
 
         return result;
