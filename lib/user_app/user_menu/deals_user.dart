@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../apis/api_urls.dart';
 import '../../constant/size_constants.dart';
+import '../../models/reviews_model.dart';
 import 'deals_details.dart';
 
 class dealsUser extends StatefulWidget {
@@ -143,20 +144,22 @@ class _dealsUserState extends State<dealsUser> {
                                 children: [
                                   Image.asset('assets/images/rating.png',
                                       width: 6, height: 6),
-                                  const Text(
-                                    '0',
+                                  Text(
+                                    rating == null || rating!.data!.isEmpty
+                                        ? '0'
+                                        : Reviews().getRating(rating!.data),
                                     // Reviews().getRating(
                                     //     dealProvider!.dealData.reviews),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 7,
                                         fontWeight: FontWeight.w700,
                                         color: Color(0xFFFFFFFF)),
                                   ),
-                                  const Text(
-                                    '0 reviews',
+                                  Text(
+                                    '(${rating == null || rating!.data!.isEmpty ? '0' : rating!.data!.length.toString()} reviews)',
                                     // '(${dealProvider!.dealData.reviews!.length} reviews)',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 4,
                                         fontWeight: FontWeight.w400,
@@ -242,5 +245,14 @@ class _dealsUserState extends State<dealsUser> {
               ),
             ),
           );
+  }
+
+  ReviewsModel? rating;
+  Future<void> getRating() async {
+    final result = await Provider.of<DealProvider>(context, listen: false)
+        .getDealRating(widget.token, dealProvider!.dealData.id.toString());
+    setState(() {
+      rating = result;
+    });
   }
 }

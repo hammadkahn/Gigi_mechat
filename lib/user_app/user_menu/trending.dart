@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/models/deal_model.dart';
+import 'package:gigi_app/models/reviews_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
 class trending_user extends StatefulWidget {
-  const trending_user({Key? key, this.data}) : super(key: key);
+  const trending_user({Key? key, this.data, required this.token})
+      : super(key: key);
   final DealData? data;
+  final String token;
 
   @override
   State<trending_user> createState() => _trending_userState();
@@ -15,6 +18,7 @@ class trending_user extends StatefulWidget {
 class _trending_userState extends State<trending_user> {
   @override
   void initState() {
+    getRating();
     super.initState();
   }
 
@@ -81,18 +85,19 @@ class _trending_userState extends State<trending_user> {
           Row(
             children: [
               Image.asset('assets/images/rating.png', width: 6, height: 6),
-              const Text(
-                '0',
-                // Reviews().getRating(widget.data!.reviews),
-                style: TextStyle(
+              Text(
+                rating == null || rating!.data!.isEmpty
+                    ? '0'
+                    : Reviews().getRating(rating!.data),
+                style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 7,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF5F5F5F)),
               ),
-              const Text(
-                '(0 reviews)',
-                style: TextStyle(
+              Text(
+                '(${rating == null || rating!.data!.isEmpty ? '0' : rating!.data!.length.toString()} reviews)',
+                style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 4,
                     fontWeight: FontWeight.w400,
@@ -114,7 +119,7 @@ class _trending_userState extends State<trending_user> {
                     color: Color(0xFFFF6767)),
               ),
               Text(
-                widget.data!.price ?? '',
+                widget.data!.price!,
                 style: const TextStyle(
                     decoration: TextDecoration.lineThrough,
                     fontFamily: 'Mulish',
@@ -147,7 +152,7 @@ class _trending_userState extends State<trending_user> {
                     borderRadius: BorderRadius.all(Radius.circular(3))),
                 child: Center(
                   child: Text(
-                    '${widget.data!.discountOnPrice ?? 0}% OFF',
+                    '${widget.data!.discountOnPrice}% OFF',
                     style: const TextStyle(
                         fontSize: 5,
                         fontFamily: 'Mulish',
@@ -172,5 +177,14 @@ class _trending_userState extends State<trending_user> {
         ],
       ),
     );
+  }
+
+  ReviewsModel? rating;
+  Future<void> getRating() async {
+    final result = await Provider.of<DealProvider>(context, listen: false)
+        .getDealRating(widget.token, widget.data!.id.toString());
+    setState(() {
+      rating = result;
+    });
   }
 }

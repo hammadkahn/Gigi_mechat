@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/merchant_model.dart';
+import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/services/user_merchant_services.dart';
-import 'package:gigi_app/user_app/user_menu/user_review.dart';
+import 'package:provider/provider.dart';
 
 import '../../apis/api_urls.dart';
 
@@ -147,24 +148,22 @@ class StoreProfile extends StatelessWidget {
                           const SizedBox(height: 20),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('48',
+                              children: const [
+                                Text('48',
                                     style: TextStyle(
                                         fontFamily: 'DMSans',
                                         fontSize: 30,
                                         fontWeight: FontWeight.w500,
                                         color: Color(0xff172995))),
-                                Image.asset('assets/images/divide.png',
-                                    width: 30, height: 30),
-                                const Text('400+',
+                                Text('|'),
+                                Text('400+',
                                     style: TextStyle(
                                         fontFamily: 'DMSans',
                                         fontSize: 30,
                                         fontWeight: FontWeight.w500,
                                         color: Color(0xff172995))),
-                                Image.asset('assets/images/divide.png',
-                                    width: 30, height: 30),
-                                const Text('2',
+                                Text('|'),
+                                Text('2',
                                     style: TextStyle(
                                         fontFamily: 'DMSans',
                                         fontSize: 30,
@@ -183,15 +182,15 @@ class StoreProfile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset('assets/images/rate.png',
-                                  width: 18, height: 18),
+                                  width: 15, height: 15),
                               Image.asset('assets/images/rate.png',
-                                  width: 18, height: 18),
+                                  width: 15, height: 15),
                               Image.asset('assets/images/rate.png',
-                                  width: 18, height: 18),
+                                  width: 15, height: 15),
                               Image.asset('assets/images/rate.png',
-                                  width: 18, height: 18),
+                                  width: 15, height: 15),
                               Image.asset('assets/images/rate.png',
-                                  width: 18, height: 18),
+                                  width: 15, height: 15),
                               const SizedBox(
                                 width: 20,
                               ),
@@ -205,19 +204,49 @@ class StoreProfile extends StatelessWidget {
                           ),
                           data.reviews == null || data.reviews!.isEmpty
                               ? const Center(child: Text('Not reviewed yet'))
-                              : ListView.builder(
-                                  itemCount: data.reviews!.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return user_review(
-                                      review: data.reviews![index].notes == null
-                                          ? ''
-                                          : data.reviews![index].notes ?? '',
-                                      reviewSender:
-                                          data.reviews![index].userName ??
-                                              'no name',
-                                    );
-                                  })
+                              : SizedBox(
+                                  width: double.infinity,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.75,
+                                  child: ListView.builder(
+                                      itemCount: data.reviews!.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          title: Text(
+                                            data.reviews![index].notes == null
+                                                ? 'no notes written'
+                                                : data.reviews![index].notes ??
+                                                    '',
+                                          ),
+                                          subtitle: Text(
+                                            data.reviews![index].userName ??
+                                                'no name',
+                                          ),
+                                          trailing: SizedBox(
+                                            width: 75,
+                                            child: Row(
+                                              children:
+                                                  Provider.of<DealProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .getStars(
+                                                int.parse(data
+                                                    .reviews![index].rating!),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                        // return user_review(
+                                        //   review: data.reviews![index].notes == null
+                                        //       ? ''
+                                        //       : data.reviews![index].notes ?? '',
+                                        //   reviewSender:
+                                        //       data.reviews![index].userName ??
+                                        //           'no name',
+                                        // );
+                                      }),
+                                )
                         ];
                       }
                     } else if (snapshot.hasError) {

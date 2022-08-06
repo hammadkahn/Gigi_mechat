@@ -7,6 +7,7 @@ import 'package:gigi_app/services/get_profile/get_user_info.dart';
 import 'package:gigi_app/user_app/splash_screen/splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../apis/api_urls.dart';
 import '../../services/auth/authentication.dart';
 
 import '../../support/support.dart';
@@ -75,11 +76,16 @@ class _ProfileState extends State<Profile> {
 
                           // print(int.parse(data.averageRating.toString()));
                           children = <Widget>[
-                            data.profilePicture == null ||
-                                    data.profilePicture!.isEmpty
-                                ? Image.asset('assets/images/kfc.png')
-                                : Image.network(
-                                    '${data.profilePicturePath}/${data.profilePicture}'),
+                            Container(
+                              child: data.profilePicture == null ||
+                                      data.profilePicture!.isEmpty
+                                  ? Image.asset('assets/images/kfc.png')
+                                  : CircleAvatar(
+                                      radius: 80,
+                                      backgroundImage: NetworkImage(
+                                          '${ApiUrls.imgBaseUrl}/${data.profilePicturePath}/${data.profilePicture}'),
+                                    ),
+                            ),
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: 13, bottom: 10),
@@ -91,7 +97,7 @@ class _ProfileState extends State<Profile> {
                                       color: Color(0xff32324D))),
                             ),
                             Text(
-                                'California, US\n${data.phone}  | ${data.email}',
+                                '${data.branches![0].address}\n${data.phone}  | ${data.email}',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontFamily: 'DMSans',

@@ -17,7 +17,7 @@ class _filter_listState extends State<filter_list> {
   final List<String> items = ['High', 'Mid', 'Low'];
   String? selectedValue;
   RangeValues values = const RangeValues(3, 20);
-  RangeValues valuess = const RangeValues(3, 20);
+  RangeValues valuess = const RangeValues(0, 100);
 
   @override
   void initState() {
@@ -185,8 +185,8 @@ class _filter_listState extends State<filter_list> {
               onChanged: (newRange) {
                 setState(() => valuess = newRange);
               },
-              min: 3,
-              max: 20,
+              min: 0,
+              max: 100,
               divisions: 5,
               labels: RangeLabels(
                 valuess.start.round().toString(),

@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/category_model.dart';
-import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
-class SearchResult extends StatelessWidget {
-  const SearchResult({Key? key, required this.searchModel}) : super(key: key);
-  final SearchModel searchModel;
+import '../constant/size_constants.dart';
+import '../providers/deal_provider.dart';
+import '../user_app/user_menu/deals_details.dart';
 
+class SearchResult extends StatelessWidget {
+  const SearchResult({Key? key, required this.searchModel, required this.token})
+      : super(key: key);
+  final SearchModel searchModel;
+  final String token;
   @override
   Widget build(BuildContext context) {
-    final dealPovider = Provider.of<DealProvider>(context, listen: false);
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF030381),
+          title: const Text('Search Result'),
+        ),
         body: SizedBox(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height,
+          width: double.maxFinite,
           child: searchModel.data!.isEmpty
               ? const Center(
                   child: Text(
@@ -24,9 +29,197 @@ class SearchResult extends StatelessWidget {
                 )
               : ListView.builder(
                   itemCount: searchModel.data!.length,
+                  shrinkWrap: true,
                   itemBuilder: ((context, index) {
-                    return ListTile(
-                      title: Text(searchModel.data![index].name ?? ''),
+                    var data = searchModel.data![index];
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 5),
+                        width: SizeConfig.screenWidth,
+                        height: 145,
+                        decoration: const BoxDecoration(
+                            color: Color(0xFF030381),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(16))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 21),
+                          child: InkWell(
+                            onTap: () => showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) => Details_deals(
+                                      data: data,
+                                      token: token,
+                                    )),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: 10),
+                                      child: Text(
+                                        'Offer of the Week',
+                                        style: TextStyle(
+                                            fontFamily: 'Mulish',
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xFFA5A5BA)),
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Text(
+                                          data.name!,
+                                          style: const TextStyle(
+                                              fontFamily: 'Mulish',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xFFFFFFFF)),
+                                        )),
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/menu_location.png',
+                                              width: 8,
+                                              height: 8,
+                                            ),
+                                            const Text(
+                                              'Cafe Bistrovia - Baku, Azerbaijan',
+                                              style: TextStyle(
+                                                  fontFamily: 'Mulish',
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0xFFFFFFFF)),
+                                            ),
+                                          ],
+                                        )),
+                                    Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                                'assets/images/rating.png',
+                                                width: 6,
+                                                height: 6),
+                                            const Text(
+                                              '4.8',
+                                              style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 7,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color(0xFFFFFFFF)),
+                                            ),
+                                            const Text(
+                                              '(30 reviews)',
+                                              style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 4,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFFFFFFFF)),
+                                            ),
+                                          ],
+                                        )),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 2.83),
+                                      child: Row(
+                                        children: [
+                                          const Text(
+                                            '\$',
+                                            style: TextStyle(
+                                                fontFamily: 'Mulish',
+                                                fontSize: 9,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xFF0D9BFF)),
+                                          ),
+                                          Text(
+                                            data.price!,
+                                            style: const TextStyle(
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                                fontFamily: 'Mulish',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFF0D9BFF)),
+                                          ),
+                                          const Text(
+                                            '\$',
+                                            style: TextStyle(
+                                                fontFamily: 'Mulish',
+                                                fontSize: 9,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xFFFFFFFF)),
+                                          ),
+                                          Text(
+                                            Provider.of<DealProvider>(context,
+                                                    listen: false)
+                                                .calculateDiscount(
+                                                    data.discountOnPrice!,
+                                                    data.price!),
+                                            style: const TextStyle(
+                                                fontFamily: 'Mulish',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFFFFFFFF)),
+                                          ),
+                                          Container(
+                                            width: 28,
+                                            height: 11,
+                                            decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(3))),
+                                            child: Center(
+                                              child: Text(
+                                                '${data.discountOnPrice} % OFF',
+                                                style: const TextStyle(
+                                                    fontSize: 5,
+                                                    fontFamily: 'Mulish',
+                                                    fontWeight: FontWeight.w900,
+                                                    color: Color(0xFF0D9BFF)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      'Discount On: ${data.type}',
+                                      style: const TextStyle(
+                                          fontFamily: 'Mulish',
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF0D9BFF)),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                Container(
+                                  height: 120,
+                                  width: 150,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: data.image == null
+                                      ? Image.asset(
+                                          'assets/images/food.png',
+                                          fit: BoxFit.cover,
+                                        )
+                                      : CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                            'https://gigiapi.zanforthstaging.com/${data.image!.path}/${data.image!.image}',
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     );
                   }),
                 ),

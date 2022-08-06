@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/cart_model.dart';
 import 'package:gigi_app/models/puchase_model.dart';
+import 'package:gigi_app/models/reviews_model.dart';
 import 'package:gigi_app/models/wish_list_model.dart';
 import 'package:http/http.dart' as http;
 import '../apis/api_urls.dart';
@@ -31,7 +32,7 @@ class DealProvider with ChangeNotifier {
   String get discountRange => _discountRange!;
   String get msg => _msg;
   RangeValues get distanceRange => _distanceRange!;
-  RangeValues get priceRange => _priceRange!;
+  RangeValues? get priceRange => _priceRange!;
 
   void setDiscount(String discount) {
     _discountRange = discount;
@@ -216,6 +217,25 @@ class DealProvider with ChangeNotifier {
     }
   }
 
+  Future<ReviewsModel> getDealRating(String token, String dealId) async {
+    try {
+      final url = Uri.parse('${ApiUrls.baseUrl}user/getDealsReviews/$dealId');
+      final response = await http.get(url,
+          headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
+      final result = ReviewsModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        return result;
+      } else {
+        _msg = result.message!;
+        debugPrint(response.reasonPhrase);
+
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   String calculateDiscount(
     String discountOnPrice,
     String price,
@@ -228,5 +248,63 @@ class DealProvider with ChangeNotifier {
     priceAfterDiscount = int.parse(price) - getPrice;
 
     return priceAfterDiscount.toString();
+  }
+
+  List<Image> getStars(int stars) {
+    List<Image> list = List.empty(growable: true);
+    switch (stars) {
+      case 1:
+        {
+          List.generate(
+            stars,
+            (index) => list.add(
+              Image.asset('assets/images/rate.png', width: 15, height: 15),
+            ),
+          );
+          return list;
+        }
+      case 2:
+        {
+          List.generate(
+              stars,
+              (index) => list.add(
+                    Image.asset('assets/images/rate.png',
+                        width: 15, height: 15),
+                  ));
+          return list;
+        }
+      case 3:
+        {
+          List.generate(
+            stars,
+            (index) => list.add(
+              Image.asset('assets/images/rate.png', width: 15, height: 15),
+            ),
+          );
+          return list;
+        }
+      case 4:
+        {
+          List.generate(
+            stars,
+            (index) => list.add(
+              Image.asset('assets/images/rate.png', width: 15, height: 15),
+            ),
+          );
+          return list;
+        }
+      case 5:
+        {
+          List.generate(
+            stars,
+            (index) => list.add(
+              Image.asset('assets/images/rate.png', width: 15, height: 15),
+            ),
+          );
+          return list;
+        }
+      default:
+        return list;
+    }
   }
 }

@@ -112,10 +112,14 @@ class Menu extends StatelessWidget {
                                 var data = snapshot.data!.data![index];
                                 return InkWell(
                                   onTap: () => showModalBottomSheet(
-                                    isScrollControlled: true,
+                                      isScrollControlled: true,
                                       context: context,
-                                      builder: (context) => sheet_deals()),
+                                      builder: (context) => sheet_deals(
+                                            dealData: data,
+                                            token: token,
+                                          )),
                                   child: Deals(
+                                    token: token,
                                     merchantListOfDeals: data,
                                   ),
                                 );

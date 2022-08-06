@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../support/contact.dart';
@@ -105,16 +106,20 @@ class _support_userState extends State<support_user> {
                             endIndent: 13,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            _launchCaller();
+                        Link(
+                          uri: Uri.parse(
+                              'https://gigifrontend.zanforthstaging.com/userChat'),
+                          builder: (context, followLink) {
+                            return GestureDetector(
+                              onTap: followLink,
+                              child: const Text("Chat Support",
+                                  style: TextStyle(
+                                      fontFamily: 'Mulish',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff32324D))),
+                            );
                           },
-                          child: const Text("Chat Support",
-                              style: TextStyle(
-                                  fontFamily: 'Mulish',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff32324D))),
                         ),
                       ]),
                 ))));

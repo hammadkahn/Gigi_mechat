@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/chat/message_list.dart';
-import 'package:gigi_app/chat/user_list_screen.dart';
 import 'package:gigi_app/screens/QR/qr.dart';
 import 'package:gigi_app/screens/full_menu/menu.dart';
 import 'package:gigi_app/screens/full_menu/profile.dart';

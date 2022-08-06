@@ -1,10 +1,44 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:gigi_app/apis/api_urls.dart';
+import 'package:provider/provider.dart';
 
-class sheet_deals extends StatelessWidget {
-  const sheet_deals({Key? key}) : super(key: key);
+import '../../models/deal_model.dart';
+import '../../models/reviews_model.dart';
+import '../../providers/deal_provider.dart';
+
+class sheet_deals extends StatefulWidget {
+  const sheet_deals({Key? key, required this.dealData, required this.token})
+      : super(key: key);
+  final Data? dealData;
+  final String token;
+
+  @override
+  State<sheet_deals> createState() => _sheet_dealsState();
+}
+
+class _sheet_dealsState extends State<sheet_deals> {
+  double? percentage;
+  double? price;
+  double? priceAfterDiscount;
+  String? totalReviews = '0';
+  int? value = 0;
+  var isLaoding = false;
+
+  @override
+  void initState() {
+    getRating();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    percentage = int.parse(widget.dealData!.discountOnPrice!) / 100;
+    price = percentage! * int.parse(widget.dealData!.price!);
+    priceAfterDiscount = int.parse(widget.dealData!.price!) - price!;
+
+    // totalReviews = Reviews().getRating(widget.data!.reviews!);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +52,19 @@ class sheet_deals extends StatelessWidget {
           indent: 120,
           endIndent: 120,
         ),
-        Image.asset(
-          'assets/images/detail.png',
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+        widget.dealData!.image == null || widget.dealData!.image!.image!.isEmpty
+            ? Image.asset(
+                'assets/images/detail.png',
+                height: 248,
+                width: MediaQuery.of(context).size.width,
+              )
+            : Image.network(
+                '${ApiUrls.imgBaseUrl}${widget.dealData!.image!.path!}/${widget.dealData!.image!.image}',
+                height: 248,
+                width: MediaQuery.of(context).size.width,
+              ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 4),
           child: Text(
             'Offer of the Week',
             style: TextStyle(
@@ -35,8 +77,8 @@ class sheet_deals extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
             child: Text(
-              'Avocado Chicken \nSalad',
-              style: TextStyle(
+              widget.dealData!.name!,
+              style: const TextStyle(
                   fontFamily: 'Mulish',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -51,7 +93,7 @@ class sheet_deals extends StatelessWidget {
                   width: 8,
                   height: 8,
                 ),
-                Text(
+                const Text(
                   'Cafe Bistrovia - Baku, Azerbaijan',
                   style: TextStyle(
                       fontFamily: 'Mulish',
@@ -67,16 +109,18 @@ class sheet_deals extends StatelessWidget {
               children: [
                 Image.asset('assets/images/rating.png', width: 6, height: 6),
                 Text(
-                  '4.8',
-                  style: TextStyle(
+                  rating == null || rating!.data!.isEmpty
+                      ? '0'
+                      : Reviews().getRating(rating!.data),
+                  style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 7,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF5F5F5F)),
                 ),
                 Text(
-                  '(30 reviews)',
-                  style: TextStyle(
+                  '(${rating == null || rating!.data!.isEmpty ? '0' : rating!.data!.length.toString()} reviews)',
+                  style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 4,
                       fontWeight: FontWeight.w400,
@@ -88,7 +132,7 @@ class sheet_deals extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
             child: Row(
               children: [
-                Text(
+                const Text(
                   '\$',
                   style: TextStyle(
                       fontFamily: 'Mulish',
@@ -97,15 +141,15 @@ class sheet_deals extends StatelessWidget {
                       color: Color(0xFFFF6767)),
                 ),
                 Text(
-                  '10.40',
-                  style: TextStyle(
+                  widget.dealData!.price!,
+                  style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       fontFamily: 'Mulish',
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFFFF6767)),
                 ),
-                Text(
+                const Text(
                   '\$',
                   style: TextStyle(
                       fontFamily: 'Mulish',
@@ -114,8 +158,8 @@ class sheet_deals extends StatelessWidget {
                       color: Color(0xFF0D9BFF)),
                 ),
                 Text(
-                  '8.40',
-                  style: TextStyle(
+                  priceAfterDiscount.toString(),
+                  style: const TextStyle(
                       fontFamily: 'Mulish',
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -126,16 +170,16 @@ class sheet_deals extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
           child: Text(
-            'Coupons Left:  100/100',
-            style: TextStyle(
+            'Discount type : ${widget.dealData!.type!}',
+            style: const TextStyle(
                 fontFamily: 'Mulish',
                 fontSize: 8,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF8E8EA9)),
+                color: Color(0xFF0D9BFF)),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 4),
           child: Text(
             'Description',
             style: TextStyle(
@@ -148,16 +192,25 @@ class sheet_deals extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
           child: Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, \nconsectetur adipiscing elit.',
-            style: TextStyle(
+            widget.dealData!.description!,
+            style: const TextStyle(
                 fontFamily: 'Mulish',
                 fontSize: 8,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF8E8EA9)),
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
+  }
+
+  ReviewsModel? rating;
+  Future<void> getRating() async {
+    final result = await Provider.of<DealProvider>(context, listen: false)
+        .getDealRating(widget.token, widget.dealData!.id.toString());
+    setState(() {
+      rating = result;
+    });
   }
 }

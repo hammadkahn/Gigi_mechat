@@ -1,3 +1,5 @@
+import 'package:gigi_app/models/deal_model.dart';
+
 import 'image_model.dart';
 
 class GetAllCategoriesModel {
@@ -82,7 +84,7 @@ class SearchModel {
   bool? status;
   int? responseCode;
   String? message;
-  List<SearchData>? data;
+  List<DealData>? data;
 
   SearchModel({this.status, this.responseCode, this.message, this.data});
 
@@ -91,9 +93,9 @@ class SearchModel {
     responseCode = json['responseCode'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <SearchData>[];
+      data = <DealData>[];
       json['data'].forEach((v) {
-        data!.add(SearchData.fromJson(v));
+        data!.add(DealData.fromJson(v));
       });
     }
   }
@@ -199,7 +201,7 @@ class SearchData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['discount'] = discount;

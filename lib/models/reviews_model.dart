@@ -1,7 +1,29 @@
 import 'package:flutter/cupertino.dart';
 
+class ReviewsModel {
+  bool? status;
+  int? responseCode;
+  String? message;
+  List<Reviews>? data;
+
+  ReviewsModel({this.status, this.responseCode, this.message, this.data});
+
+  ReviewsModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    responseCode = json['responseCode'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <Reviews>[];
+      json['data'].forEach((v) {
+        data!.add(Reviews.fromJson(v));
+      });
+    }
+  }
+}
+
 class Reviews {
   int? id;
+  String? parentId;
   String? userId;
   String? dealId;
   String? merchantId;
@@ -10,9 +32,11 @@ class Reviews {
   String? createdAt;
   String? updatedAt;
   String? userName;
+  int? child;
 
   Reviews(
       {this.id,
+      this.parentId,
       this.userId,
       this.dealId,
       this.merchantId,
@@ -20,10 +44,12 @@ class Reviews {
       this.notes,
       this.createdAt,
       this.updatedAt,
-      this.userName});
+      this.userName,
+      this.child});
 
   Reviews.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    parentId = json['parent_id'];
     userId = json['user_id'];
     dealId = json['deal_id'];
     merchantId = json['merchant_id'];
@@ -32,11 +58,13 @@ class Reviews {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     userName = json['user_name'];
+    child = json['child'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['parent_id'] = parentId;
     data['user_id'] = userId;
     data['deal_id'] = dealId;
     data['merchant_id'] = merchantId;
@@ -45,6 +73,7 @@ class Reviews {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['user_name'] = userName;
+    data['child'] = child;
     return data;
   }
 

@@ -46,7 +46,10 @@ class _all_detailsState extends State<all_details> {
     return dealData == null
         ? const Center(child: CircularProgressIndicator())
         : GestureDetector(
-            child: trending_user(data: dealData!),
+            child: trending_user(
+              data: dealData!,
+              token: widget.token,
+            ),
             onTap: () {
               debugPrint(widget.dealId);
               showModalBottomSheet(

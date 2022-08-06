@@ -88,7 +88,7 @@ class _scan_qrState extends State<scan_qr> {
                       ? showAlertDialog()
                       : QrImage(
                           data:
-                              '${widget.qrCode.purchaseId} $branchId Price ${widget.qrCode.afterDiscount} DiscountOnPrice ${widget.qrCode.discountOnPrice} Availability ${widget.qrCode.availabilityStatus} Description ${widget.qrCode.description} Qty ${widget.qrCode.purchaseQuantity}',
+                              '${widget.qrCode.purchaseId} $branchId Price ${widget.qrCode.afterDiscount} DiscountOnPrice ${widget.qrCode.discountOnPrice} Availability ${widget.qrCode.availabilityStatus} Qty ${widget.qrCode.purchaseQuantity} Type ${widget.qrCode.type}',
                           version: QrVersions.auto,
                           size: 320,
                           gapless: false,

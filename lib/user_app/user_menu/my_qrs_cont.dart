@@ -4,12 +4,17 @@ import 'package:gigi_app/user_app/user_menu/review.dart';
 import 'package:gigi_app/user_app/user_menu/scan_qr.dart';
 import 'package:intl/intl.dart';
 
-class qr_cont extends StatelessWidget {
+class qr_cont extends StatefulWidget {
   const qr_cont({Key? key, required this.cartData, required this.token})
       : super(key: key);
   final CartData cartData;
   final String token;
 
+  @override
+  State<qr_cont> createState() => _qr_contState();
+}
+
+class _qr_contState extends State<qr_cont> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,8 +30,8 @@ class qr_cont extends StatelessWidget {
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => scan_qr(
-                qrCode: cartData,
-                token: token,
+                qrCode: widget.cartData,
+                token: widget.token,
               ),
             ),
           ),
@@ -56,7 +61,7 @@ class qr_cont extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text(cartData.name!,
+                Text(widget.cartData.name!,
                     style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 14,
@@ -80,7 +85,7 @@ class qr_cont extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      cartData.availabilityStatus ?? 'Redeemed',
+                      widget.cartData.availabilityStatus ?? 'Redeemed',
                       style: const TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 10,
@@ -99,7 +104,7 @@ class qr_cont extends StatelessWidget {
                           color: Color(0xFF8E8EA9))),
                   Text(
                       DateFormat('dd-MM-yyyy')
-                          .format(DateTime.parse(cartData.createdAt!)),
+                          .format(DateTime.parse(widget.cartData.createdAt!)),
                       style: const TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 7,
@@ -112,7 +117,7 @@ class qr_cont extends StatelessWidget {
                           fontSize: 7,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFF8E8EA9))),
-                  Text(cartData.expiry!,
+                  Text(widget.cartData.expiry!,
                       style: const TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 7,
@@ -131,8 +136,9 @@ class qr_cont extends StatelessWidget {
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                               builder: (context) => review(
-                                    dealId: cartData.purchaseId.toString(),
-                                    token: token,
+                                    dealId:
+                                        widget.cartData.purchaseId.toString(),
+                                    token: widget.token,
                                   )),
                         ),
                         child: const Text('★ Write a Review',

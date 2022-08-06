@@ -6,11 +6,13 @@ class bottom_detail extends StatelessWidget {
       {Key? key,
       required this.dealData,
       required this.price,
-      required this.totalReviews})
+      required this.totalReviews,
+      required this.length})
       : super(key: key);
   final DealData dealData;
   final String price;
   final String totalReviews;
+  final String length;
 
   @override
   Widget build(BuildContext context) {
@@ -71,17 +73,17 @@ class bottom_detail extends StatelessWidget {
               child: Row(
                 children: [
                   Image.asset('assets/images/rating.png', width: 6, height: 6),
-                  const Text(
-                    '0',
-                    style: TextStyle(
+                  Text(
+                    totalReviews,
+                    style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 7,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF5F5F5F)),
                   ),
-                  const Text(
-                    '(0 reviews)',
-                    style: TextStyle(
+                  Text(
+                    '($length reviews)',
+                    style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 4,
                         fontWeight: FontWeight.w400,

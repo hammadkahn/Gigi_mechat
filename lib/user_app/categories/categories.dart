@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/category_model.dart';
 import 'package:gigi_app/services/categories/category_services.dart';
 import 'package:gigi_app/shared/loaction_user.dart';
+import 'package:gigi_app/user_app/categories/single_category.dart';
 import 'package:gigi_app/user_app/categories/widget/categories_list.dart';
 
 import 'widget/trending_deals.dart';
@@ -62,8 +63,20 @@ class Categories_user extends StatelessWidget {
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: ((context, index) {
-                                return TrendingDealsWidget(
-                                  dealName: snapshot.data!.data![index].name!,
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => SingleCategory(
+                                            categoryData:
+                                                snapshot.data!.data![index],
+                                            token: token),
+                                      ),
+                                    );
+                                  },
+                                  child: TrendingDealsWidget(
+                                    dealName: snapshot.data!.data![index].name!,
+                                  ),
                                 );
                               }),
                             );
@@ -135,6 +148,7 @@ class Categories_user extends StatelessWidget {
                         );
                       } else {
                         return AllCategoriesWidget(
+                          token: token,
                           length: snapshot.data!.data!.length,
                           direction: Axis.vertical,
                           categoryList: snapshot.data!.data!,

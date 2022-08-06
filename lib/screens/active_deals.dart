@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/deal_model.dart';
-import 'package:gigi_app/screens/offer_details.dart';
+import 'package:gigi_app/screens/full_menu/sheet_deals.dart';
 import 'package:gigi_app/services/deals/merchant_deal_services.dart';
 
 import 'full_menu/deals.dart';
@@ -41,15 +41,13 @@ class ActiveMerchantDeals extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.data![index];
                       return InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  OfferDetails(dealData: data),
-                            ),
-                          );
-                        },
+                        onTap: () => showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) =>
+                                sheet_deals(dealData: data, token: token)),
                         child: Deals(
+                          token: token,
                           merchantListOfDeals: data,
                         ),
                       );

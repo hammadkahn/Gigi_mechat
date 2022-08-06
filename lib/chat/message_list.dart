@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Message extends StatefulWidget {
@@ -79,186 +80,16 @@ class _MessageState extends State<Message> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Padding(
-            padding: const EdgeInsets.only(top: 17),
-            child: Center(
-              child: TextButton(
-                child: const Text('Start Chat'),
-                onPressed: () {
-                  _launchCaller();
-                },
-              ),
-            )
-            // : Column(
-            //     children: <Widget>[
-            //       Row(
-            //         children: [
-            //           Padding(
-            //             padding: const EdgeInsets.only(left: 24),
-            //             child: Container(
-            //               width: 44,
-            //               height: 44,
-            //               decoration: BoxDecoration(
-            //                 boxShadow: [
-            //                   BoxShadow(
-            //                     color: Colors.grey.withOpacity(0.5),
-            //                     spreadRadius: 1,
-            //                     blurRadius: 1,
-            //                     // changes position of shadow
-            //                   ),
-            //                 ],
-            //                 borderRadius: BorderRadius.circular(16),
-            //                 color: Colors.white,
-            //               ),
-            //               child: GestureDetector(
-            //                   onTap: () {
-            //                     Navigator.pop(context);
-            //                   },
-            //                   child: Image.asset(
-            //                       'assets/images/arrow-left.png')),
-            //             ),
-            //           ),
-            //           const Expanded(
-            //             child: Center(
-            //                 child: Text('G.Mamedoff',
-            //                     style: TextStyle(
-            //                         fontFamily: 'Mulish',
-            //                         fontSize: 14,
-            //                         fontWeight: FontWeight.w600))),
-            //           ),
-            //         ],
-            //       ),
-            //       const Spacer(),
-            //       const Text('1 FEB 12:00',
-            //           style: TextStyle(
-            //               fontFamily: 'Mulish',
-            //               fontSize: 12,
-            //               fontWeight: FontWeight.w400)),
-            //       const SizedBox(
-            //         height: 10,
-            //       ),
-            //       FutureBuilder<Map<String, dynamic>>(
-            //           future: Provider.of<ChatProvider>(context,
-            //                   listen: false)
-            //               .getSingleConversation(widget.token, '4'),
-            //           builder: (context, snapshot) {
-            //             switch (snapshot.connectionState) {
-            //               case ConnectionState.waiting:
-            //                 return const Center(
-            //                     child: CircularProgressIndicator());
-            //               default:
-            //                 if (snapshot.hasError || !snapshot.hasData) {
-            //                   return Center(
-            //                     child: Text(
-            //                         '${snapshot.error ?? 'No data available'}'),
-            //                   );
-            //                 } else {
-            //                   return Expanded(
-            //                     child: ListView.builder(
-            //                       itemCount: 2,
-            //                       itemBuilder: (context, index) {
-            //                         return MessageItem(
-            //                           send: int.parse(
-            //                                       snapshot.data!['data']
-            //                                           ['firstUser']) ==
-            //                                   4
-            //                               ? true
-            //                               : false,
-            //                           message: 'hello world',
-            //                         );
-            //                       },
-            //                     ),
-            //                   );
-            //                 }
-            //             }
-            //           }),
-            //       const Spacer(),
-            //       Padding(
-            //         padding: const EdgeInsets.only(top: 22),
-            //         child: Container(
-            //           color: const Color(0xFF444253),
-            //           height: 74,
-            //           child: Row(
-            //             children: <Widget>[
-            //               Padding(
-            //                 padding:
-            //                     const EdgeInsets.only(left: 4, right: 16),
-            //                 child: Container(
-            //                   height: 48,
-            //                   width: 45.28,
-            //                   decoration: BoxDecoration(
-            //                     borderRadius: BorderRadius.circular(14),
-            //                     color: const Color(0xFF323041),
-            //                   ),
-            //                   child: IconButton(
-            //                     onPressed: () {},
-            //                     icon: Icon(
-            //                       Icons.add,
-            //                       color: Colors.grey[300],
-            //                       size: 25,
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //               Expanded(
-            //                 child: InkWell(
-            //                   child: TextFormField(
-            //                     decoration: InputDecoration(
-            //                       focusedBorder: OutlineInputBorder(
-            //                         borderRadius:
-            //                             BorderRadius.circular(4),
-            //                         borderSide: const BorderSide(
-            //                             color: Colors.transparent,
-            //                             width: 0),
-            //                       ),
-            //                       enabledBorder: OutlineInputBorder(
-            //                         borderRadius:
-            //                             BorderRadius.circular(4),
-            //                         borderSide: const BorderSide(
-            //                             color: Colors.transparent,
-            //                             width: 0),
-            //                       ),
-            //                       filled: true,
-            //                       fillColor: const Color(0xFF323041),
-            //                       contentPadding:
-            //                           const EdgeInsets.symmetric(
-            //                         vertical: 10,
-            //                         horizontal: 10,
-            //                       ),
-            //                       hintText: 'Aa',
-            //                       hintStyle: TextStyle(
-            //                         color: Colors.grey[400],
-            //                       ),
-            //                     ),
-            //                     autofocus: false,
-            //                     style: const TextStyle(
-            //                       color: Color(0xffB0B0B0),
-            //                     ),
-            //                     cursorWidth: 1,
-            //                   ),
-            //                 ),
-            //               ),
-            //               IconButton(
-            //                 onPressed: () {
-            //                   onTriggerEventPressed(
-            //                       msgCtr.text, 'eventName');
-            //                   msgCtr.clear();
-            //                 },
-            //                 icon: Icon(
-            //                   Icons.send,
-            //                   //color: Colors.grey[300],
-            //                   color: const Color(0xFFB0B0B0)
-            //                       .withOpacity(0.8),
-            //                   size: 25,
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
+        body: Link(
+          target: LinkTarget.blank,
+          uri: Uri.parse('https://gigifrontend.zanforthstaging.com/MobileChat'),
+          builder: (context, followLink) => Center(
+            child: TextButton(
+              onPressed: followLink,
+              child: const Text('Start Chat'),
             ),
+          ),
+        ),
       ),
     );
   }

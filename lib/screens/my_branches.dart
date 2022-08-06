@@ -44,9 +44,6 @@ class MyBranches extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.data![index];
                       return InkWell(
-<<<<<<< HEAD
-                        onTap: () => showsimplee(context),
-=======
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -55,7 +52,6 @@ class MyBranches extends StatelessWidget {
                             ),
                           );
                         },
->>>>>>> 72f08ede5dc65f548b6ddef5c8a1ac3ff248e814
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 12),
                           child: ListTile(
@@ -104,11 +100,11 @@ class MyBranches extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Branches'),
-          content: Text('This is a demo alert dialog.'),
+          title: const Text('Branches'),
+          content: const Text('This is a demo alert dialog.'),
           actions: <Widget>[
             FlatButton(
-              child: Text('Close'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

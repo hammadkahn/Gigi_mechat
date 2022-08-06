@@ -3,8 +3,10 @@ import 'package:gigi_app/models/category_model.dart';
 import 'package:gigi_app/services/categories/category_services.dart';
 import 'package:gigi_app/shared/search_result.dart';
 import 'package:gigi_app/user_app/user_menu/filter.dart';
+import 'package:provider/provider.dart';
 
 import '../constant/size_constants.dart';
+import '../providers/deal_provider.dart';
 
 class SearchField extends StatefulWidget {
   final String searchText;
@@ -49,6 +51,7 @@ class _SearchFieldState extends State<SearchField> {
                     MaterialPageRoute(
                       builder: (context) => SearchResult(
                         searchModel: searchModel!,
+                        token: widget.token,
                       ),
                     ),
                   );
@@ -73,8 +76,16 @@ class _SearchFieldState extends State<SearchField> {
   SearchModel? searchModel;
 
   Future<void> searchData() async {
-    final result =
-        await CategoryServices().searchDeal(widget.token, controller.text);
+    double? startingDiscount =
+        Provider.of<DealProvider>(context, listen: false).priceRange!.start;
+    double? endignDiscount =
+        Provider.of<DealProvider>(context, listen: false).priceRange!.end;
+    final result = await CategoryServices().searchDeal(
+        widget.token, controller.text,
+        startingDiscount:
+            '${startingDiscount.isInfinite || startingDiscount.isNaN || startingDiscount.toString().isEmpty ? '0' : startingDiscount}',
+        endingDiscount:
+            '${endignDiscount.isInfinite || endignDiscount.isNaN || endignDiscount.toString().isEmpty ? '100' : endignDiscount}');
     if (result.message == 'success') {
       debugPrint(result.message);
       setState(() {

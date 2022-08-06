@@ -3,6 +3,7 @@ import 'package:gigi_app/models/deal_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/reviews_model.dart';
 import '../../providers/order.dart';
 import 'details_bottom.dart';
 
@@ -99,11 +100,14 @@ class _Details_dealsState extends State<Details_deals> {
               ],
             ),
           ),
-          bottom_detail(
-            totalReviews: totalReviews.toString(),
-            dealData: widget.data!,
-            price: priceAfterDiscount.toString(),
-          ),
+          rating == null || rating!.data!.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : bottom_detail(
+                  totalReviews: Reviews().getRating(rating!.data),
+                  length: rating!.data!.length.toString(),
+                  dealData: widget.data!,
+                  price: priceAfterDiscount.toString(),
+                ),
           const Divider(
             color: Color(0xFFC0C0CF),
             thickness: 1,
@@ -220,5 +224,14 @@ class _Details_dealsState extends State<Details_deals> {
         ],
       ),
     );
+  }
+
+  ReviewsModel? rating;
+  Future<void> getRating() async {
+    final result = await Provider.of<DealProvider>(context, listen: false)
+        .getDealRating(widget.token, widget.data!.id.toString());
+    setState(() {
+      rating = result;
+    });
   }
 }
