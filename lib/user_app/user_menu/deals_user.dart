@@ -208,8 +208,6 @@ class _dealsUserState extends State<dealsUser> {
                                       color: Color(0xFFFFFFFF)),
                                 ),
                                 Container(
-                                  width: 28,
-                                  height: 11,
                                   decoration: const BoxDecoration(
                                       color: Colors.white,
                                       borderRadius:
@@ -218,7 +216,7 @@ class _dealsUserState extends State<dealsUser> {
                                     child: Text(
                                       '${dealProvider!.dealData.discountOnPrice}% OFF',
                                       style: const TextStyle(
-                                          fontSize: 5,
+                                          fontSize: 10,
                                           fontFamily: 'Mulish',
                                           fontWeight: FontWeight.w900,
                                           color: Color(0xFF0D9BFF)),

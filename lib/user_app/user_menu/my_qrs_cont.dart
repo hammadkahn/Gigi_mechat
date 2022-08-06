@@ -61,12 +61,26 @@ class _qr_contState extends State<qr_cont> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text(widget.cartData.name!,
-                    style: const TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF32324D))),
+                Row(
+                  children: [
+                    Text(widget.cartData.name!,
+                        style: const TextStyle(
+                            fontFamily: 'Mulish',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF32324D))),
+                    Spacer(),
+                    Text(
+                      widget.cartData.availabilityStatus ?? 'Redeemed',
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                          fontFamily: 'Mulish',
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFFFF0D0D)),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -82,15 +96,6 @@ class _qr_contState extends State<qr_cont> {
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF848484)),
-                    ),
-                    const Spacer(),
-                    Text(
-                      widget.cartData.availabilityStatus ?? 'Redeemed',
-                      style: const TextStyle(
-                          fontFamily: 'Mulish',
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFFFF0D0D)),
                     ),
                   ],
                 ),
