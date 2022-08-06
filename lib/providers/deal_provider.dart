@@ -15,7 +15,13 @@ class DealProvider with ChangeNotifier {
   DealData? _dealData;
   CartData? _purchaseData;
   RangeValues? _distanceRange;
-  RangeValues? _priceRange;
+  double? _startingDiscount;
+  double? _endingDiscount;
+  String? _city;
+  String? _country;
+  String? _address;
+  String? _latitude;
+  String? _langitude;
 
   List<CartData> _cartData = [];
   List<String> _rating = [];
@@ -29,14 +35,26 @@ class DealProvider with ChangeNotifier {
   List<String> get ratingFilter => _rating;
 
   List<CartData> get cartData => _cartData;
-  String get discountRange => _discountRange!;
+  String get priceOrder => _discountRange!;
   String get msg => _msg;
+  String get city => _city!;
+  String get country => _country!;
+  String get address => _address!;
   RangeValues get distanceRange => _distanceRange!;
-  RangeValues? get priceRange => _priceRange!;
+  double? get startingDiscount => _startingDiscount!;
+  double? get endignDiscount => _endingDiscount!;
 
-  void setDiscount(String discount) {
-    _discountRange = discount;
-    debugPrint(discountRange);
+  void getCityCountryAddress({String? country, String? city, String? address}) {
+    _city = city;
+    _country = country;
+    _address = address;
+    debugPrint('$_city, $_country, $address');
+    notifyListeners();
+  }
+
+  void setDiscount(String? discount) {
+    _discountRange = discount ?? 'asc';
+    debugPrint(priceOrder);
     notifyListeners();
   }
 
@@ -53,9 +71,10 @@ class DealProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setPriceRange(RangeValues values) {
-    _priceRange = values;
-    debugPrint(_priceRange.toString());
+  void setPriceRange(RangeValues? values) {
+    _startingDiscount = values == null ? 0.0 : values.start;
+    _endingDiscount = values == null ? 100.0 : values.end;
+    debugPrint('$_startingDiscount, $endignDiscount');
     notifyListeners();
   }
 

@@ -17,15 +17,15 @@ class _User_barState extends State<User_bar> {
   Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('Do you want to logout?'),
+          title: const Text('Are you sure?'),
+          content: const Text('Do you want to logout?'),
           actions: <Widget>[
             FlatButton(
-              child: Text('DISCARD'),
+              child: const Text('DISCARD'),
               onPressed: () => Navigator.pop(context, false),
             ),
             FlatButton(
-              child: Text('CONTINUE'),
+              child: const Text('CONTINUE'),
               onPressed: () => Navigator.pop(context, true),
             ),
           ],
@@ -42,7 +42,8 @@ class _User_barState extends State<User_bar> {
   @override
   void initState() {
     super.initState();
-    debugPrint('build...');
+
+    debugPrint('build: ');
     currentScreen = Full_menu_user(
       token: widget.token,
     );
