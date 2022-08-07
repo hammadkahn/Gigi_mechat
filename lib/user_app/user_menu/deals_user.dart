@@ -25,6 +25,7 @@ class _dealsUserState extends State<dealsUser> {
 
   @override
   void initState() {
+    getRating();
     if (mounted) {}
     super.initState();
   }

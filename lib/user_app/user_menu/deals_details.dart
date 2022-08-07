@@ -22,12 +22,14 @@ class _Details_dealsState extends State<Details_deals> {
   double? percentage;
   double? price;
   double? priceAfterDiscount;
-  String? totalReviews = '0';
+
   int? value = 0;
   var isLaoding = false;
 
   @override
   void initState() {
+    debugPrint('id...........${widget.data!.id}');
+    getRating();
     super.initState();
   }
 
@@ -100,7 +102,7 @@ class _Details_dealsState extends State<Details_deals> {
               ],
             ),
           ),
-          rating == null || rating!.data!.isEmpty
+          rating == null
               ? const Center(child: CircularProgressIndicator())
               : bottom_detail(
                   totalReviews: Reviews().getRating(rating!.data),
@@ -230,8 +232,11 @@ class _Details_dealsState extends State<Details_deals> {
   Future<void> getRating() async {
     final result = await Provider.of<DealProvider>(context, listen: false)
         .getDealRating(widget.token, widget.data!.id.toString());
+
     setState(() {
       rating = result;
     });
+
+    debugPrint(rating!.data!.length.toString());
   }
 }

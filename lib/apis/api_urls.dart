@@ -12,7 +12,7 @@ class ApiUrls {
   //deal urls
   static final getSingleDeal = Uri.parse('${baseUrl}merchant/getDeal/');
   static final allDeals = Uri.parse(
-      '${baseUrl}merchant/getDeals?page=1&returnType=customPagination&status=1&active=1');
+      '${baseUrl}merchant/getDeals?page=&returnType=customPagination&status=1&active=1');
   static final trendingDealsUrl = Uri.parse('${baseUrl}user/getTrendingDeals');
   static final userAllDeals = Uri.parse(
     '${baseUrl}user/user/getDeals?limit=&page=&returnType=customPagination&timeSort=asc&lat=&long=&startingDiscount&endingDiscount',

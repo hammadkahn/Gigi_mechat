@@ -165,6 +165,24 @@ class _sheet_dealsState extends State<sheet_deals> {
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF0D9BFF)),
                 ),
+                Container(
+                  width: 50,
+                  height: 25,
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(3))),
+                  child: Center(
+                    child: Text(
+                      '${widget.dealData!.discountOnPrice ?? 0}% OFF',
+                      style: const TextStyle(
+                          fontSize: 8,
+                          fontFamily: 'Mulish',
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xFF0D9BFF)),
+                    ),
+                  ),
+                )
               ],
             )),
         Padding(

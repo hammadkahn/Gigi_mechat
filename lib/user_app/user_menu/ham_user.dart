@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/user_model.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/services/get_profile/get_user_info.dart';
+import 'package:gigi_app/user_app/splash_screen/splash.dart';
 import 'package:gigi_app/user_app/user_menu/my_qrs.dart';
 import 'package:gigi_app/user_app/user_menu/support_user.dart';
-import 'package:gigi_app/user_app/user_onboarding/user-onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ham_user extends StatefulWidget {
@@ -253,14 +253,16 @@ class _ham_userState extends State<ham_user> {
                           const EdgeInsets.only(left: 35, top: 100, bottom: 56),
                       child: GestureDetector(
                         onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Logging out...')));
                           signOut().whenComplete(() {
                             if (message == 'success') {
                               isLogOut();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const User_onboard()),
-                              );
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SplashScreen()),
+                                  (route) => false);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text(message!)));
@@ -316,7 +318,7 @@ class _ham_userState extends State<ham_user> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF030381),
+                    color: const Color(0xFF030381),
                   ),
                   child: ListTile(
                       leading: const Icon(
@@ -326,16 +328,16 @@ class _ham_userState extends State<ham_user> {
                       ),
                       title: Text(
                         userProfileData.name!,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF030381),
+                    color: const Color(0xFF030381),
                   ),
                   child: ListTile(
                       leading: const Icon(
@@ -345,16 +347,16 @@ class _ham_userState extends State<ham_user> {
                       ),
                       title: Text(
                         userProfileData.email!,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF030381),
+                    color: const Color(0xFF030381),
                   ),
                   child: ListTile(
                       leading: const Icon(
@@ -364,16 +366,16 @@ class _ham_userState extends State<ham_user> {
                       ),
                       title: Text(
                         userProfileData.gender!,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF030381),
+                    color: const Color(0xFF030381),
                   ),
                   child: ListTile(
                       leading: const Icon(
@@ -383,16 +385,16 @@ class _ham_userState extends State<ham_user> {
                       ),
                       title: Text(
                         userProfileData.phone!,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF030381),
+                    color: const Color(0xFF030381),
                   ),
                   child: ListTile(
                       leading: const Icon(
@@ -402,7 +404,7 @@ class _ham_userState extends State<ham_user> {
                       ),
                       title: Text(
                         userProfileData.age!,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       )),
                 ),
               ]),
