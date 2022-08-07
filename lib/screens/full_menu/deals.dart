@@ -161,7 +161,7 @@ class _DealsState extends State<Deals> {
                               child: Text(
                                 '${widget.merchantListOfDeals.discountOnPrice} % OFF',
                                 style: const TextStyle(
-                                    fontSize: 5,
+                                    fontSize: 10,
                                     fontFamily: 'Mulish',
                                     fontWeight: FontWeight.w900,
                                     color: Color(0xFF0D9BFF)),

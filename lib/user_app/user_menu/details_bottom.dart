@@ -129,8 +129,6 @@ class bottom_detail extends StatelessWidget {
                         color: Color(0xFF0D9BFF)),
                   ),
                   Container(
-                    width: 28,
-                    height: 11,
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(3))),
@@ -138,7 +136,7 @@ class bottom_detail extends StatelessWidget {
                       child: Text(
                         '${dealData.discountOnPrice ?? 0}% OFF',
                         style: const TextStyle(
-                            fontSize: 5,
+                            fontSize: 10,
                             fontFamily: 'Mulish',
                             fontWeight: FontWeight.w900,
                             color: Color(0xFF0D9BFF)),
