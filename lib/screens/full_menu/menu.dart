@@ -130,6 +130,9 @@ class Menu extends StatelessWidget {
                     },
                   ),
                 ),
+                SizedBox(
+                  height: 25,
+                )
               ],
             ),
           ),

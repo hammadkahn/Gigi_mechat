@@ -59,7 +59,7 @@ class Categories_user extends StatelessWidget {
                             //   categoryList: snapshot.data!.data!,
                             // );
                             return ListView.builder(
-                              itemCount: 3,
+                              itemCount: snapshot.data!.data!.length,
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: ((context, index) {
