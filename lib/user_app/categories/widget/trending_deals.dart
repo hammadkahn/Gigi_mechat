@@ -28,7 +28,16 @@ class TrendingDealsWidget extends StatelessWidget {
             ),
           ],
         ),
-        child: Text(dealName),
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/images/voucher.png',
+              height: 100,
+              width: 100,
+            ),
+            Text(dealName),
+          ],
+        ),
       ),
     );
   }
