@@ -68,8 +68,8 @@ class _ChatTestingScreenState extends State<ChatTestingScreen> {
         onDecryptionFailure: onDecryptionFailure,
         onMemberAdded: onMemberAdded,
         onMemberRemoved: onMemberRemoved,
-        // authEndpoint:
-        //     "https://gigiapi.zanforthstaging.com/api/channelAuthorization",
+        authEndpoint:
+            "https://gigiapi.zanforthstaging.com/api/channelAuthorization",
         onAuthorizer: onAuthorizer,
       );
       myChannel = await pusher.subscribe(channelName: _channelName.text);
@@ -120,14 +120,14 @@ class _ChatTestingScreenState extends State<ChatTestingScreen> {
   dynamic onAuthorizer(
       String channelName, String socketId, dynamic options) async {
     debugPrint('$channelName, $socketId, $options');
-    String? token = '406|hbqJi8vdmeY2Us8VhxKdyXnPhJl2xG2JO8x2mMDB';
+    String? token = '1052|pa8gWm2yKdhkOa8G4LTKSvJO1PL5jfSKhehCd9Cs';
 
     var authUrl = '${ApiUrls.baseUrl}channelAuthorization';
     var result = await post(
       Uri.parse(authUrl),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Bearer ${widget.token}',
+        'Authorization': 'Bearer $token',
       },
       body: 'socket_id=$socketId&channel_name=$channelName',
     );
@@ -153,11 +153,14 @@ class _ChatTestingScreenState extends State<ChatTestingScreen> {
     prefs.setString("eventName", _eventName.text);
     prefs.setString("data", _data.text);
     debugPrint(_channelName.text);
-    pusher.trigger(PusherEvent(
-      channelName: myChannel!.channelName,
-      eventName: _eventName.text,
-      data: _data.text,
-    ));
+    pusher
+        .trigger(PusherEvent(
+          channelName: myChannel!.channelName,
+          eventName: _eventName.text,
+          data: _data.text,
+        ))
+        .whenComplete(() => debugPrint(_data.text));
+    print(pusher.onAuthorizer);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.

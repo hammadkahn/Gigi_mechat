@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/cart_model.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/user_app/user_menu/my_qrs_cont.dart';
-import 'package:gigi_app/user_app/user_menu/scan_qr.dart';
 import 'package:provider/provider.dart';
 
-class My_Qrs extends StatelessWidget {
+class My_Qrs extends StatefulWidget {
   const My_Qrs({Key? key, required this.token}) : super(key: key);
   final String token;
 
+  @override
+  State<My_Qrs> createState() => _My_QrsState();
+}
+
+class _My_QrsState extends State<My_Qrs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +58,7 @@ class My_Qrs extends StatelessWidget {
               flex: 6,
               child: FutureBuilder<CartListModel>(
                 future: Provider.of<DealProvider>(context, listen: false)
-                    .getCartItemsList(token),
+                    .getCartItemsList(widget.token),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
@@ -79,7 +83,7 @@ class My_Qrs extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return qr_cont(
                                 cartData: snapshot.data!.data![index],
-                                token: token,
+                                token: widget.token,
                               );
                             },
                           );

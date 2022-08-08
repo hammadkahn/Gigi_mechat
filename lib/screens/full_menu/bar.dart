@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/chat/message_list.dart';
+import 'package:gigi_app/chat/user_list_screen.dart';
 import 'package:gigi_app/screens/QR/qr.dart';
 import 'package:gigi_app/screens/full_menu/menu.dart';
 import 'package:gigi_app/screens/full_menu/profile.dart';
@@ -18,15 +19,15 @@ class _BarState extends State<Bar> {
   Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('Do you want to logout?'),
+          title: const Text('Are you sure?'),
+          content: const Text('Do you want to logout?'),
           actions: <Widget>[
             FlatButton(
-              child: Text('DISCARD'),
+              child: const Text('DISCARD'),
               onPressed: () => Navigator.pop(context, false),
             ),
             FlatButton(
-              child: Text('CONTINUE'),
+              child: const Text('CONTINUE'),
               onPressed: () => Navigator.pop(context, true),
             ),
           ],
@@ -53,7 +54,7 @@ class _BarState extends State<Bar> {
         isFromBottomNav: true,
       ),
       QR(token: widget.token),
-      const Message(),
+      UserListScreen(token: widget.token),
       Profile(
         token: widget.token,
       ),
@@ -132,7 +133,7 @@ class _BarState extends State<Bar> {
                         onPressed: () {
                           setState(() {
                             currentIndex = 2;
-                            currentScreen = const Message();
+                            currentScreen = UserListScreen(token: widget.token);
                           });
                         },
                         child: Image.asset(

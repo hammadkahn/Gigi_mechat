@@ -170,8 +170,8 @@ class _ProfileState extends State<Profile> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const Support()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => Support(token: widget.token)));
                   },
                   title: const Text(
                     "Support",
@@ -186,6 +186,8 @@ class _ProfileState extends State<Profile> {
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Logging out...')));
                     MerchantAuthServices().logOut(widget.token).then((value) {
                       if (value == 'success') {
                         isLogOut();

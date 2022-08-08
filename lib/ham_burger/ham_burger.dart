@@ -97,7 +97,9 @@ class Ham_burger extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const Support()));
+                              builder: (_) => Support(
+                                    token: token,
+                                  )));
                         },
                         child: const Text("Support",
                             style: TextStyle(

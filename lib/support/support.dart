@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/chat/user_list_screen.dart';
 import 'package:gigi_app/support/contact.dart';
 
-import '../chat/message_list.dart';
-
 class Support extends StatelessWidget {
-  const Support({Key? key}) : super(key: key);
+  const Support({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,9 @@ class Support extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const Message()));
+                                    builder: (context) => UserListScreen(
+                                          token: token,
+                                        )));
                           },
                           child: const Text("Chat Support",
                               style: TextStyle(

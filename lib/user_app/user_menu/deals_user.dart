@@ -25,6 +25,7 @@ class _dealsUserState extends State<dealsUser> {
 
   @override
   void initState() {
+    dealProvider = Provider.of<DealProvider>(context, listen: false);
     getRating();
     if (mounted) {}
     super.initState();
@@ -33,7 +34,6 @@ class _dealsUserState extends State<dealsUser> {
   @override
   void didChangeDependencies() {
     if (mounted) {
-      dealProvider = Provider.of<DealProvider>(context, listen: false);
       dealProvider!
           .singleDealDetails(widget.token, widget.dealData)
           .whenComplete(() {

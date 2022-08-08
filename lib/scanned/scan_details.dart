@@ -49,14 +49,6 @@ class _Scanned_detailsState extends State<Scanned_details> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                widget.scannedData.code!,
-                style: const TextStyle(
-                  fontFamily: 'DMSans',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
               const SizedBox(height: 15),
               Text(
                   'This user Have ${details![4]}% OFF on\n${details![6]} \n\nCoupon : GiGi12345',

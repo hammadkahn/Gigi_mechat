@@ -69,7 +69,7 @@ class _qr_contState extends State<qr_cont> {
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: Color(0xFF32324D))),
-                    Spacer(),
+                    const Spacer(),
                     Text(
                       widget.cartData.availabilityStatus ?? 'Redeemed',
                       textAlign: TextAlign.right,
@@ -130,8 +130,8 @@ class _qr_contState extends State<qr_cont> {
                           color: Color(0xFF0D9BFF))),
                   const Spacer(),
                   Container(
-                    width: 55,
-                    height: 11,
+                    width: 80,
+                    height: 15,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       color: const Color(0xFF0D9BFF),
@@ -149,7 +149,7 @@ class _qr_contState extends State<qr_cont> {
                         child: const Text('★ Write a Review',
                             style: TextStyle(
                                 fontFamily: 'Mulish',
-                                fontSize: 5,
+                                fontSize: 7.5,
                                 fontWeight: FontWeight.w900,
                                 color: Color(0xFFFFFFFF))),
                       ),

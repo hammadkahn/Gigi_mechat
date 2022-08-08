@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Message extends StatefulWidget {
   const Message({Key? key}) : super(key: key);
@@ -65,15 +64,15 @@ class _MessageState extends State<Message> {
   //   ));
   // }
 
-  _launchCaller() async {
-    if (await canLaunchUrl(
-        Uri.parse('https://gigifrontend.zanforthstaging.com/MobileChat'))) {
-      await launchUrl(
-          Uri.parse('https://gigifrontend.zanforthstaging.com/MobileChat'));
-    } else {
-      throw 'Could not launch the url';
-    }
-  }
+  // _launchCaller() async {
+  //   if (await canLaunchUrl(
+  //       Uri.parse('https://gigifrontend.zanforthstaging.com/MobileChat'))) {
+  //     await launchUrl(
+  //         Uri.parse('https://gigifrontend.zanforthstaging.com/MobileChat'));
+  //   } else {
+  //     throw 'Could not launch the url';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +81,8 @@ class _MessageState extends State<Message> {
         backgroundColor: Colors.white,
         body: Link(
           target: LinkTarget.blank,
-          uri: Uri.parse('https://gigifrontend.zanforthstaging.com/MobileChat'),
+          uri: Uri.parse(
+              'https://gigifrontend.zanforthstaging.com/MobileChatLogin'),
           builder: (context, followLink) => Center(
             child: TextButton(
               onPressed: followLink,
