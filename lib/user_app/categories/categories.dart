@@ -75,7 +75,7 @@ class Categories_user extends StatelessWidget {
                                     );
                                   },
                                   child: TrendingDealsWidget(
-                                    dealName: snapshot.data!.data![index].name!,
+                                    categoryData: snapshot.data!.data![index],
                                   ),
                                 );
                               }),

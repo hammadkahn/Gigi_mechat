@@ -96,12 +96,20 @@ class _auth_pageState extends State<auth_page> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 121),
+                padding: const EdgeInsets.only(bottom: 70),
                 child: CustomButton(
                     isLoading: isLoading,
                     text: 'Sign In',
                     onPressed: loginUsers),
               ),
+              InkWell(
+                onTap: showsimple,
+                child: const Text(
+                  'Forgot Your Password?',
+                  style: TextStyle(color: Color(0xff0096FF)),
+                ),
+              ),
+              const SizedBox(height: 12),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
@@ -116,7 +124,7 @@ class _auth_pageState extends State<auth_page> {
                       color: Color(0xFF8981AE)),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               )
             ],
@@ -184,5 +192,51 @@ class _auth_pageState extends State<auth_page> {
         ),
       ));
     }
+  }
+
+  void showsimple() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Recover Password'),
+          content: TextFormField(
+            controller: emailCtr,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              hintText: 'Email',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              return null;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Reset Password'),
+              onPressed: () {
+                MerchantAuthServices()
+                    .resetPassword(emailCtr.text)
+                    .then((value) => ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(value))))
+                    .whenComplete(() {
+                  Navigator.pop(context);
+                });
+              },
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

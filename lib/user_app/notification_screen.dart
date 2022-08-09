@@ -43,7 +43,7 @@ class NotificationScreen extends StatelessWidget {
                       var data = snapshot.data!.data![index];
                       return InkWell(
                           hoverColor: Colors.lightBlue,
-                          onTap: () => showsimple(context),
+                          onTap: () => showsimple(context, data),
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 12),
                             child: ListTile(
@@ -80,16 +80,28 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
-  void showsimple(BuildContext context) {
+  void showsimple(BuildContext context, Data data) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Notification'),
-          content: Text('This is a demo alert dialog.'),
+          title: Text(data.subject ?? 'Notification'),
+          content: RichText(
+            text: TextSpan(
+                text: '${data.message ?? 'no message'}\n\n',
+                style: const TextStyle(
+                  color: Color(0xff0D9BFF),
+                ),
+                children: [
+                  TextSpan(
+                      text: 'type: ${data.type ?? 'type not specified'}',
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 90, 154, 199)))
+                ]),
+          ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Close'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

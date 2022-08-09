@@ -139,14 +139,14 @@ class _status_1State extends State<status_1> {
     );
   }
 
-  Future<void> addToCart(String id, String qty, String price, String totalPrice,
-      String discount, BuildContext context) async {
+  Future<void> addToCart(String id, String qty, String? price,
+      String? totalPrice, String discount, BuildContext context) async {
     final dealProvider = Provider.of<DealProvider>(context, listen: false);
     Map<String, dynamic> data = {
       "deals[0][id]": id,
       "deals[0][quantity]": qty,
-      "deals[0][price]": price,
-      "deals[0][total_price]": totalPrice,
+      "deals[0][price]": price ?? '0',
+      "deals[0][total_price]": totalPrice ?? '0',
       "deals[0][discount]": discount,
     };
     print(data);

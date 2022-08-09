@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/apis/api_urls.dart';
+import 'package:gigi_app/models/category_model.dart';
 
 class TrendingDealsWidget extends StatelessWidget {
-  const TrendingDealsWidget({Key? key, required this.dealName})
+  const TrendingDealsWidget({Key? key, required this.categoryData})
       : super(key: key);
-  final String dealName;
+
+  final CategoryData categoryData;
   @override
   Widget build(BuildContext context) {
+    debugPrint(
+        '${ApiUrls.imgBaseUrl}${categoryData.imagePath}/${categoryData.image}');
     return Padding(
       padding: const EdgeInsets.only(
         left: 5,
@@ -30,12 +35,18 @@ class TrendingDealsWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Image.asset(
-              'assets/images/voucher.png',
-              height: 100,
-              width: 100,
-            ),
-            Text(dealName),
+            categoryData.image == null || categoryData.image!.isEmpty
+                ? Image.asset(
+                    'assets/images/voucher.png',
+                    height: 100,
+                    width: 100,
+                  )
+                : Image.network(
+                    '${ApiUrls.imgBaseUrl}${categoryData.imagePath}/${categoryData.image}',
+                    height: 100,
+                    width: 100,
+                  ),
+            Text(categoryData.name!),
           ],
         ),
       ),

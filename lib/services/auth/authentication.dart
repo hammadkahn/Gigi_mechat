@@ -157,4 +157,21 @@ class MerchantAuthServices {
       throw Exception(e);
     }
   }
+
+  Future<String> resetPassword(String email) async {
+    try {
+      final url = Uri.parse('${ApiUrls.baseUrl}sendResetPassword');
+      final response = await http.post(url, body: {'email': email});
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        return 'Password sent ${result['message']}fully, please check your email';
+      } else {
+        return result['error'];
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

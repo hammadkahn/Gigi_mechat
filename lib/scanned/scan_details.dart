@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gigi_app/ham_burger/ham_burger.dart';
+import 'package:gigi_app/screens/full_menu/profile.dart';
 import 'package:gigi_app/services/deals/merchant_deal_services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -114,7 +114,7 @@ class _Scanned_detailsState extends State<Scanned_details> {
                           redeemResult().whenComplete(() {
                             if (msg == 'success') {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => Ham_burger(
+                                  builder: (_) => Profile(
                                         token: widget.token,
                                       )));
                             } else {

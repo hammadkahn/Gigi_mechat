@@ -45,7 +45,7 @@ class MessageItem extends StatelessWidget {
                   bottomRight: Radius.circular(send ? 0 : 20),
                 ),
                 color: send
-                    ? const Color(0xff0D9BFF)
+                    ? const Color(0xFF030381)
                     : const Color(0xFFE9E9E9).withOpacity(0.8),
               ),
               child: SelectableText(

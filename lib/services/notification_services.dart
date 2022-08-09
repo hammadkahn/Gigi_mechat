@@ -10,7 +10,8 @@ import '../apis/api_urls.dart';
 class NotificationServices {
   Future<NotificationModel> getNotifications({required String token}) async {
     try {
-      final url = Uri.parse('${ApiUrls.baseUrl}getNotifications');
+      final url = Uri.parse(
+          '${ApiUrls.baseUrl}getNotifications?limit=&page=&timeSort=desc&toDate&fromDate');
       final response = await http.get(
         url,
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},

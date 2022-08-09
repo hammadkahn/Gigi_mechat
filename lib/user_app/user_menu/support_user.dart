@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/chat/user_list_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../support/contact.dart';
-
 class support_user extends StatefulWidget {
   const support_user({Key? key, required this.phoneNumber, required this.token})
       : super(key: key);
@@ -71,7 +69,7 @@ class _support_userState extends State<support_user> {
                                   child: Image.asset(
                                       'assets/images/arrow-left.png')),
                             ),
-                            const Spacer(),
+                            const SizedBox(width: 20),
                             const Text('Support',
                                 style: TextStyle(
                                     fontFamily: 'Mulish',
@@ -79,33 +77,34 @@ class _support_userState extends State<support_user> {
                                     fontWeight: FontWeight.w600)),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 42),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Contact()));
-                            },
-                            child: const Text("Contact Support",
-                                style: TextStyle(
-                                    fontFamily: 'Mulish',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff32324D))),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 18, bottom: 18),
-                          child: Divider(
-                            color: Color(0xFFE6E6E6),
-                            thickness: 1,
-                            // height: 214,
-                            indent: 25,
-                            endIndent: 13,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 42),
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //               builder: (context) => const Contact()));
+                        //     },
+                        //     child: const Text("Contact Support",
+                        //         style: TextStyle(
+                        //             fontFamily: 'Mulish',
+                        //             fontSize: 12,
+                        //             fontWeight: FontWeight.w600,
+                        //             color: Color(0xff32324D))),
+                        //   ),
+                        // ),
+                        // const Padding(
+                        //   padding: EdgeInsets.only(top: 18, bottom: 18),
+                        //   child: Divider(
+                        //     color: Color(0xFFE6E6E6),
+                        //     thickness: 1,
+                        //     // height: 214,
+                        //     indent: 25,
+                        //     endIndent: 13,
+                        //   ),
+                        // ),
+                        const SizedBox(height: 20),
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(

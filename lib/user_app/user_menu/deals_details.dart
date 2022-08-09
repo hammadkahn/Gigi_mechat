@@ -75,8 +75,7 @@ class _Details_dealsState extends State<Details_deals> {
                 Align(
                   alignment: Alignment.topRight,
                   child: Container(
-                    margin: const EdgeInsets.only(right: 12),
-                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.only(right: 12, top: 8),
                     decoration: const BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
                     child: IconButton(
@@ -85,6 +84,7 @@ class _Details_dealsState extends State<Details_deals> {
                             ? Icons.favorite_border
                             : Icons.favorite,
                         color: isLaoding == false ? Colors.black : Colors.red,
+                        size: 20,
                       ),
                       onPressed: () {
                         Provider.of<DealProvider>(context, listen: false)

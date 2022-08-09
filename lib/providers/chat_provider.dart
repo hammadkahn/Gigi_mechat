@@ -242,6 +242,7 @@ class OppositeUser {
 }
 
 class ChatProvider with ChangeNotifier {
+  String? _conversationId;
   Conversation? _conversation;
   SingleConversation? _singleConversation;
   CurrentUserConversation? _currentUserConversation;
@@ -250,6 +251,8 @@ class ChatProvider with ChangeNotifier {
   SingleConversation get singleConversation => _singleConversation!;
   CurrentUserConversation get currentUserConversation =>
       _currentUserConversation!;
+
+  String get conversationId => _conversationId!;
 
   Future<Conversation> getAllConversation(String token) async {
     try {
@@ -321,14 +324,35 @@ class ChatProvider with ChangeNotifier {
           Uri.parse(
               'https://gigiapi.zanforthstaging.com/api/getConversationMessages/$id'),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
-      print(response.body);
+
       final result =
           CurrentUserConversation.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         debugPrint('current user : ${result.data!.length}');
         // _currentUserConversation = result;
-        notifyListeners();
         return result;
+      } else {
+        debugPrint(response.reasonPhrase);
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> createCoversation(String token, String msg) async {
+    try {
+      final url = Uri.parse('${ApiUrls.baseUrl}createConversation');
+      final response = await http.post(
+        url,
+        body: {'message': msg, 'receiver': '19'},
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      );
+      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        _conversationId = result['data']['id'];
+        return result['data']['id'].toString();
       } else {
         debugPrint(response.reasonPhrase);
         throw Exception(response.statusCode);

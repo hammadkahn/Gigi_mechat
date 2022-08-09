@@ -3,14 +3,19 @@ import 'package:gigi_app/chat/chat_screen.dart';
 import 'package:gigi_app/providers/chat_provider.dart';
 import 'package:provider/provider.dart';
 
-class UserListScreen extends StatelessWidget {
+class UserListScreen extends StatefulWidget {
   const UserListScreen({Key? key, required this.token}) : super(key: key);
   final String token;
 
   @override
+  State<UserListScreen> createState() => _UserListScreenState();
+}
+
+class _UserListScreenState extends State<UserListScreen> {
+  @override
   Widget build(BuildContext context) {
     final chatProvider = Provider.of<ChatProvider>(context, listen: false)
-        .getAllConversation(token);
+        .getAllConversation(widget.token);
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
@@ -22,8 +27,35 @@ class UserListScreen extends StatelessWidget {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
+
               default:
-                if (snapshot.hasError) {
+                if (snapshot.data == null || snapshot.data!.data!.isEmpty) {
+                  return Center(
+                    child: TextButton(
+                      child: const Text('Start Chat with Admin'),
+                      onPressed: () {
+                        createConversation().whenComplete(() {
+                          if (conversationId != null ||
+                              conversationId!.isNotEmpty) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => ChatScreen(
+                                  token: widget.token,
+                                  conversationId: conversationId!,
+                                ),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Error while contacting with admin')));
+                          }
+                        });
+                      },
+                    ),
+                  );
+                } else if (snapshot.hasError) {
                   return Center(
                     child: Text(snapshot.error.toString()),
                   );
@@ -36,20 +68,51 @@ class UserListScreen extends StatelessWidget {
                       // setState(() {
                       //   name = data[index].oppositeUser!.name;
                       // });
-                      return ListTile(
-                        onTap: () {
-                          // onConnectPressed(userId!);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (ctx) => ChatScreen(
-                                    token: token,
-                                    conversationId: snapshot
-                                        .data!.data![index].id
-                                        .toString(),
-                                  )));
-                        },
-                        title: Text(data[index].oppositeUser!.name!),
-                        leading: const Icon(Icons.person, size: 20),
-                      );
+                      if (data[index].oppositeUser!.id == 19 ||
+                          data[index].oppositeUser!.name == 'Admin') {
+                        return ListTile(
+                          onTap: () {
+                            // onConnectPressed(userId!);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (ctx) => ChatScreen(
+                                  token: widget.token,
+                                  conversationId:
+                                      snapshot.data!.data![index].id.toString(),
+                                ),
+                              ),
+                            );
+                          },
+                          title: Text(data[index].oppositeUser!.name!),
+                          leading: const Icon(Icons.person, size: 20),
+                        );
+                      } else {
+                        return SizedBox(
+                          child: TextButton(
+                            child: const Text('Start Chat with Admin'),
+                            onPressed: () {
+                              createConversation().whenComplete(() {
+                                if (conversationId != null ||
+                                    conversationId!.isNotEmpty) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => ChatScreen(
+                                        token: widget.token,
+                                        conversationId: conversationId!,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'Error while contacting with admin')));
+                                }
+                              });
+                            },
+                          ),
+                        );
+                      }
                     }),
                   );
                 }
@@ -58,5 +121,16 @@ class UserListScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String? conversationId;
+  Future<void> createConversation() async {
+    final result = await Provider.of<ChatProvider>(context, listen: false)
+        .createCoversation(widget.token, 'hello');
+
+    setState(() {
+      conversationId = result;
+    });
+    debugPrint(conversationId);
   }
 }

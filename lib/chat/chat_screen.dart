@@ -22,6 +22,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   String? userId;
+
   Future<void> getCurrentUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -32,14 +33,16 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     getCurrentUserId();
-    debugPrint('chat screen: ${widget.conversationId}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      appBar: AppBar(
+        title: const Text('Chat'),
+        backgroundColor: const Color(0xFF030381),
+      ),
       body: userId == null
           ? const Center(child: CircularProgressIndicator())
           : Container(
@@ -50,44 +53,41 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     Expanded(
                         flex: 6,
-                        child: Consumer<ChatProvider>(
-                          builder: ((context, value, child) =>
-                              FutureBuilder<CurrentUserConversation>(
-                                future: value.getCurrentConversation(
-                                    widget.token, widget.conversationId),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    if (snapshot.data!.data == null) {
-                                      return const Center(
-                                          child:
-                                              Text('Empty, No Messages found'));
-                                    } else {
-                                      return ListView.builder(
-                                        itemCount: snapshot.data!.data!.length,
-                                        itemBuilder: ((context, index) {
-                                          return MessageItem(
-                                            message: snapshot
-                                                .data!.data![index].message!,
-                                            send: snapshot.data!.data![index]
-                                                        .userId ==
-                                                    userId
-                                                ? true
-                                                : false,
-                                          );
-                                        }),
-                                      );
-                                    }
-                                  } else if (snapshot.hasError) {
-                                    return Center(
-                                      child: Text(snapshot.error.toString()),
+                        child: FutureBuilder<CurrentUserConversation>(
+                          future: Provider.of<ChatProvider>(context)
+                              .getCurrentConversation(
+                                  widget.token, widget.conversationId),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              if (snapshot.data!.data == null) {
+                                return const Center(
+                                    child: Text('Empty, No Messages found'));
+                              } else {
+                                return ListView.builder(
+                                  itemCount: snapshot.data!.data!.length,
+                                  itemBuilder: ((context, index) {
+                                    return MessageItem(
+                                      message:
+                                          snapshot.data!.data![index].message!,
+                                      send:
+                                          snapshot.data!.data![index].userId ==
+                                                  userId
+                                              ? true
+                                              : false,
                                     );
-                                  } else {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                },
-                              )),
+                                  }),
+                                );
+                              }
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text(snapshot.error.toString()),
+                              );
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
                         )),
                     Expanded(
                       flex: 1,
