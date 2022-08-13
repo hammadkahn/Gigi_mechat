@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/screens/authentication/sign_up_screen.dart';
 
 import 'package:gigi_app/shared/custom_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/size_constants.dart';
 import '../../services/auth/authentication.dart';
@@ -145,14 +146,13 @@ class _auth_pageState extends State<auth_page> {
           content: const Text('Processing Data'),
           backgroundColor: Colors.green.shade300,
         ));
-
+        final prefs = await SharedPreferences.getInstance();
         //get response from ApiClient
         dynamic res =
             await MerchantAuthServices().login(emailCtr.text, passwordCtr.text);
-        checkLoginResult(res);
+        checkLoginResult(res, prefs);
       }
     } catch (e) {
-      print(e);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
@@ -162,11 +162,11 @@ class _auth_pageState extends State<auth_page> {
     }
   }
 
-  void checkLoginResult(dynamic res) {
+  void checkLoginResult(dynamic res, SharedPreferences prefs) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     //if there is no error, get the user's accesstoken and pass it to HomeScreen
-    if (res['message'] == 'success') {
+    if (res['message'] == 'success' && res['data']['type'] == '2') {
       String accessToken = res['data']['token'];
 
       Navigator.of(context).pushAndRemoveUntil(
@@ -174,21 +174,28 @@ class _auth_pageState extends State<auth_page> {
           (route) => false);
     } else {
       //if an error occurs, show snackbar with error message
+      prefs.clear();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Message: ${res['error']}'),
+        content: Text(
+            'Message: ${res['error'] ?? 'you can\'t sign-in as a merchant by entering user credientials'}'),
         backgroundColor: Colors.red.shade300,
         action: SnackBarAction(
           label: res['error'] ==
                   'Your account is not verified. Please verify your account'
               ? 'Verify'
               : 'Close',
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        User_Verification(email: emailCtr.text)));
-          },
+          onPressed: res['error'] ==
+                  'Your account is not verified. Please verify your account'
+              ? () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              User_Verification(email: emailCtr.text)));
+                }
+              : () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
         ),
       ));
     }

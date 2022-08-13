@@ -3,14 +3,14 @@ import 'package:gigi_app/models/branch_model.dart';
 
 class BranchDetails extends StatelessWidget {
   const BranchDetails({Key? key, required this.branchData}) : super(key: key);
-  final BranchData branchData;
+  final BranchData? branchData;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          branchData.name!,
+          branchData!.name!,
         ),
         backgroundColor: const Color(0xFF030381),
       ),
@@ -27,13 +27,14 @@ class BranchDetails extends StatelessWidget {
               //     '${branchData.logoPath}/${branchData.logoPath}'),
               const SizedBox(height: 12),
               ListTile(
-                title: Text(branchData.name!, textScaleFactor: 1.2),
-                subtitle: Text(branchData.address!),
+                title:
+                    Text(branchData!.name ?? 'no name', textScaleFactor: 1.2),
+                subtitle: Text(branchData!.address ?? 'no address given'),
               ),
               const SizedBox(height: 20),
               const Text('Description'),
               const SizedBox(height: 8),
-              Text(branchData.description!,
+              Text(branchData!.description ?? 'no description provided',
                   style: TextStyle(fontSize: 11, color: Colors.grey[400]))
             ],
           ),

@@ -71,6 +71,7 @@ class _UserListScreenState extends State<UserListScreen> {
                       if (data[index].oppositeUser!.id == 19 ||
                           data[index].oppositeUser!.name == 'Admin') {
                         return ListTile(
+                          tileColor: const Color(0xFF030381),
                           onTap: () {
                             // onConnectPressed(userId!);
                             Navigator.of(context).push(
@@ -83,35 +84,42 @@ class _UserListScreenState extends State<UserListScreen> {
                               ),
                             );
                           },
-                          title: Text(data[index].oppositeUser!.name!),
-                          leading: const Icon(Icons.person, size: 20),
-                        );
-                      } else {
-                        return SizedBox(
-                          child: TextButton(
-                            child: const Text('Start Chat with Admin'),
-                            onPressed: () {
-                              createConversation().whenComplete(() {
-                                if (conversationId != null ||
-                                    conversationId!.isNotEmpty) {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (ctx) => ChatScreen(
-                                        token: widget.token,
-                                        conversationId: conversationId!,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Error while contacting with admin')));
-                                }
-                              });
-                            },
+                          title: Text(
+                            data[index].oppositeUser!.name ?? 'no name',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          leading: const Icon(
+                            Icons.person,
+                            size: 20,
+                            color: Colors.white,
                           ),
                         );
+                      } else {
+                        return const SizedBox(
+                            // child: TextButton(
+                            //   child: const Text('Start Chat with Admin'),
+                            //   onPressed: () {
+                            //     createConversation().whenComplete(() {
+                            //       if (conversationId != null ||
+                            //           conversationId!.isNotEmpty) {
+                            //         Navigator.of(context).push(
+                            //           MaterialPageRoute(
+                            //             builder: (ctx) => ChatScreen(
+                            //               token: widget.token,
+                            //               conversationId: conversationId!,
+                            //             ),
+                            //           ),
+                            //         );
+                            //       } else {
+                            //         ScaffoldMessenger.of(context).showSnackBar(
+                            //             const SnackBar(
+                            //                 content: Text(
+                            //                     'Error while contacting with admin')));
+                            //       }
+                            //     });
+                            //   },
+                            // ),
+                            );
                       }
                     }),
                   );

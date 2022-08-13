@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MessageItem extends StatelessWidget {
   final bool send;
-  final String message;
+  final String? message;
 
   const MessageItem({Key? key, required this.send, required this.message})
       : super(key: key);
@@ -49,7 +49,7 @@ class MessageItem extends StatelessWidget {
                     : const Color(0xFFE9E9E9).withOpacity(0.8),
               ),
               child: SelectableText(
-                message,
+                message ?? '',
                 style: TextStyle(
                     color: send ? Colors.white : Colors.black,
                     fontSize: 12,

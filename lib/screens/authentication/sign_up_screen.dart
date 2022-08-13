@@ -314,17 +314,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: 'Next',
                   onPressed: _handleRegister,
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 12),
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF0096FF)),
-                  ),
-                ),
               ],
             ),
           ),

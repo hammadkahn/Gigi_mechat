@@ -13,7 +13,7 @@ class ChatScreen extends StatefulWidget {
     required this.conversationId,
     required this.token,
   }) : super(key: key);
-  final String conversationId;
+  final String? conversationId;
   final String token;
 
   @override
@@ -56,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: FutureBuilder<CurrentUserConversation>(
                           future: Provider.of<ChatProvider>(context)
                               .getCurrentConversation(
-                                  widget.token, widget.conversationId),
+                                  widget.token, widget.conversationId!),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               if (snapshot.data!.data == null) {
@@ -68,7 +68,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                   itemBuilder: ((context, index) {
                                     return MessageItem(
                                       message:
-                                          snapshot.data!.data![index].message!,
+                                          snapshot.data!.data![index].message ??
+                                              '',
                                       send:
                                           snapshot.data!.data![index].userId ==
                                                   userId

@@ -3,8 +3,10 @@ import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/user_app/user_menu/my_qrs.dart';
 
 class stats3 extends StatelessWidget {
-  const stats3({Key? key, required this.token}) : super(key: key);
+  const stats3({Key? key, required this.token, required this.productName})
+      : super(key: key);
   final String token;
+  final String productName;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +33,8 @@ class stats3 extends StatelessWidget {
                       fontFamily: 'Mulish',
                       color: Color(0xFF8E8EA9)),
                 ),
-                const Text('Avocado Chicken Salad',
-                    style: TextStyle(
+                Text(productName,
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'Mulish',

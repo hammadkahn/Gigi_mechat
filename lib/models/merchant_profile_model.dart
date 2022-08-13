@@ -97,7 +97,9 @@ class Data {
         branches!.add(BranchData.fromJson(v));
       });
     }
-    averageRating = json['averageRating'];
+    if (averageRating.runtimeType == int) {
+      averageRating = double.parse(json['averageRating']);
+    }
     if (json['reviews'] != null) {
       reviews = <Reviews>[];
       json['reviews'].forEach((v) {

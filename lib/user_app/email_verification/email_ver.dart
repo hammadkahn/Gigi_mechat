@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/user_app/user_menu/user_menu.dart';
 import 'package:gigi_app/user_app/verify%20_code/user_verification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/size_constants.dart';
 import '../../services/auth/authentication.dart';
@@ -124,11 +125,11 @@ class _Email_verState extends State<Email_ver> {
           content: const Text('Processing Data'),
           backgroundColor: Colors.green.shade300,
         ));
-
+        final prefs = await SharedPreferences.getInstance();
         //get response from ApiClient
         dynamic res =
             await MerchantAuthServices().login(emailCtr.text, passwordCtr.text);
-        checkLoginResult(res);
+        checkLoginResult(res, prefs);
       }
     } catch (e) {
       ScaffoldMessenger.of(context)
@@ -140,32 +141,39 @@ class _Email_verState extends State<Email_ver> {
     }
   }
 
-  void checkLoginResult(dynamic res) {
+  void checkLoginResult(dynamic res, SharedPreferences prefs) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     //if there is no error, get the user's accesstoken and pass it to HomeScreen
-    if (res['message'] == 'success') {
+    if (res['message'] == 'success' && res['data']['type'] == '1') {
       String accessToken = res['data']['token'];
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => User_bar(token: accessToken)),
           (route) => false);
     } else {
+      prefs.clear();
       //if an error occurs, show snackbar with error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Message: ${res['error']}'),
+        content: Text(
+            'Message: ${res['error'] ?? 'you can\'t sign-in as a user by entering merchant credientials'}}'),
         backgroundColor: Colors.red.shade300,
         action: SnackBarAction(
           label: res['error'] ==
                   'Your account is not verified. Please verify your account'
               ? 'Verify'
               : 'Close',
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        User_Verification(email: emailCtr.text)));
-          },
+          onPressed: res['error'] ==
+                  'Your account is not verified. Please verify your account'
+              ? () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              User_Verification(email: emailCtr.text)));
+                }
+              : () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
         ),
       ));
     }

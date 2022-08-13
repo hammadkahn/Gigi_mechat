@@ -18,7 +18,7 @@ class Categories_user extends StatelessWidget {
         padding: const EdgeInsets.only(
           left: 24,
         ),
-        child: ListView(
+        child: Column(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 24),
@@ -133,29 +133,31 @@ class Categories_user extends StatelessWidget {
             const SizedBox(
               height: 24,
             ),
-            SizedBox(
-              width: double.infinity,
-              child: FutureBuilder<GetAllCategoriesModel>(
-                future: CategoryServices().getAllCategories(token),
-                builder: ((context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return const Center(child: CircularProgressIndicator());
-                    default:
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text(snapshot.error.toString()),
-                        );
-                      } else {
-                        return AllCategoriesWidget(
-                          token: token,
-                          length: snapshot.data!.data!.length,
-                          direction: Axis.vertical,
-                          categoryList: snapshot.data!.data!,
-                        );
-                      }
-                  }
-                }),
+            Expanded(
+              child: SizedBox(
+                width: double.infinity,
+                child: FutureBuilder<GetAllCategoriesModel>(
+                  future: CategoryServices().getAllCategories(token),
+                  builder: ((context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return const Center(child: CircularProgressIndicator());
+                      default:
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text(snapshot.error.toString()),
+                          );
+                        } else {
+                          return AllCategoriesWidget(
+                            token: token,
+                            length: snapshot.data!.data!.length,
+                            direction: Axis.vertical,
+                            categoryList: snapshot.data!.data!,
+                          );
+                        }
+                    }
+                  }),
+                ),
               ),
             ),
           ],
