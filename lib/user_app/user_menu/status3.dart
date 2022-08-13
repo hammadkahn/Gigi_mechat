@@ -6,7 +6,7 @@ class stats3 extends StatelessWidget {
   const stats3({Key? key, required this.token, required this.productName})
       : super(key: key);
   final String token;
-  final String productName;
+  final String? productName;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class stats3 extends StatelessWidget {
                       fontFamily: 'Mulish',
                       color: Color(0xFF8E8EA9)),
                 ),
-                Text(productName,
+                Text(productName ?? '"title is empty"',
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,

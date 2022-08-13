@@ -36,6 +36,7 @@ class CartData {
   String? merchantName;
   String? purchaseId;
   String? purchaseQuantity;
+  String? purchaseDate;
   int? id;
   String? name;
   String? discount;
@@ -63,6 +64,7 @@ class CartData {
       {this.merchantName,
       this.purchaseId,
       this.purchaseQuantity,
+      this.purchaseDate,
       this.id,
       this.name,
       this.discount,
@@ -90,6 +92,7 @@ class CartData {
     merchantName = json['merchant_name'];
     purchaseId = json['purchase_id'];
     purchaseQuantity = json['purchase_quantity'];
+    purchaseDate = json['purchase_date'];
     id = json['id'];
     name = json['name'];
     discount = json['discount'];
@@ -119,6 +122,7 @@ class CartData {
     data['merchant_name'] = merchantName;
     data['purchase_id'] = purchaseId;
     data['purchase_quantity'] = purchaseQuantity;
+    data['purchase_date'] = purchaseDate;
     data['id'] = id;
     data['name'] = name;
     data['discount'] = discount;

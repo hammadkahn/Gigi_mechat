@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/providers/order.dart';
+import 'package:gigi_app/user_app/user_menu/status3.dart';
 
 import 'package:provider/provider.dart';
 
 import '../../shared/custom_button.dart';
 import 'order_detials.dart';
-import 'status3.dart';
 
 class status_1 extends StatefulWidget {
   const status_1({Key? key, required this.token, required this.id})
@@ -95,7 +95,7 @@ class _status_1State extends State<status_1> {
                     });
                     final cart =
                         Provider.of<Cart>(key.currentContext!, listen: false);
-
+                    String title = cart.cartMap.values.toList()[0].title!;
                     String price =
                         (int.parse(cart.cartMap.values.toList()[0].price!) *
                                 int.parse(cart.cartMap.values.toList()[0].qty!))
@@ -108,6 +108,7 @@ class _status_1State extends State<status_1> {
                         .toString();
                     String discount =
                         cart.cartMap.values.toList()[0].discountOnPrice!;
+
                     addToCart(
                       cart.cartMap.values.toList()[0].id!,
                       cart.cartMap.values.toList()[0].qty!,
@@ -116,14 +117,11 @@ class _status_1State extends State<status_1> {
                       discount,
                       context,
                     ).whenComplete(() {
-                      setState(() {
-                        isLoading = false;
-                      });
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => stats3(
                             token: widget.token,
-                            productName: cart.cartMap.values.toList()[0].title!,
+                            productName: title,
                           ),
                         ),
                       );

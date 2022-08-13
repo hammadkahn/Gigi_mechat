@@ -108,8 +108,8 @@ class _qr_contState extends State<qr_cont> {
                           fontWeight: FontWeight.w500,
                           color: Color(0xFF8E8EA9))),
                   Text(
-                      DateFormat('dd-MM-yyyy')
-                          .format(DateTime.parse(widget.cartData.createdAt!)),
+                      DateFormat('dd-MM-yyyy').format(
+                          DateTime.parse(widget.cartData.purchaseDate!)),
                       style: const TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 7,

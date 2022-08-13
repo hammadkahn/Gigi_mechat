@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/screens/onboarding/onboard.dart';
 import 'package:gigi_app/user_app/user_auth/user_auth.dart';
 
 import '../../shared/custom_button.dart';
@@ -46,7 +47,7 @@ class User_onboard extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => const user_auth()));
+                  .push(MaterialPageRoute(builder: (_) => const onBoard()));
             },
             child: const Padding(
               padding: EdgeInsets.only(bottom: 38, top: 10),

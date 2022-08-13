@@ -97,7 +97,7 @@ class _user_authState extends State<user_auth> {
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => const User_create_acc())),
                   child: const Text(
-                    'Sign up later',
+                    'Sign up',
                     style: TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 16,
