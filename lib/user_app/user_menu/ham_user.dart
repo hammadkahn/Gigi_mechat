@@ -7,6 +7,8 @@ import 'package:gigi_app/user_app/user_menu/my_qrs.dart';
 import 'package:gigi_app/user_app/user_menu/support_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../apis/api_urls.dart';
+
 class ham_user extends StatefulWidget {
   const ham_user({Key? key, required this.token}) : super(key: key);
   final String token;
@@ -16,6 +18,23 @@ class ham_user extends StatefulWidget {
 }
 
 class _ham_userState extends State<ham_user> {
+  String? address = 'Laoding...';
+
+  Future<void> getUserAddress() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      address =
+          '${preferences.getString('city')}, ${preferences.getString('country')}';
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getUserAddress();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,7 +81,7 @@ class _ham_userState extends State<ham_user> {
                                     width: 100,
                                   )
                                 : Image.network(
-                                    '${data.profilePicturePath}/${data.profilePicture}',
+                                    '${ApiUrls.imgBaseUrl}${data.profilePicturePath}/${data.profilePicture}',
                                     height: 100,
                                     width: 100,
                                   ),
@@ -76,8 +95,7 @@ class _ham_userState extends State<ham_user> {
                                       fontWeight: FontWeight.w500,
                                       color: Color(0xff32324D))),
                             ),
-                            Text(
-                                'California, US\n${data.phone!}  |   ${data.email}',
+                            Text('$address\n${data.phone!}  |   ${data.email}',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontFamily: 'DMSans',

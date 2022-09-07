@@ -4,6 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/shared/custom_button.dart';
 import 'package:intl/intl.dart';
+import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
 import '../verify _code/user_verification.dart';
 
 class User_create_acc extends StatefulWidget {
@@ -28,10 +30,18 @@ class _User_create_accState extends State<User_create_acc> {
 
   double? latitued = 0.0;
   double? longitude = 0.0;
-
+  Country? selectedCountry;
   @override
   void initState() {
-    debugPrint(_key.currentState.toString());
+    selectedCountry = const Country(
+      name: "Azerbaijan",
+      flag: "🇦🇿",
+      code: "AZ",
+      dialCode: "994",
+      minLength: 9,
+      maxLength: 9,
+    );
+    debugPrint(countryCtr.text);
     super.initState();
   }
 
@@ -67,6 +77,7 @@ class _User_create_accState extends State<User_create_acc> {
                 ),
                 TextFormField(
                   controller: nameCtr,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -85,6 +96,9 @@ class _User_create_accState extends State<User_create_acc> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   child: TextFormField(
                     controller: phoneNumberCtr,
+                    textInputAction: TextInputAction.next,
+                    maxLength: 11,
+                    keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -102,6 +116,7 @@ class _User_create_accState extends State<User_create_acc> {
                 ),
                 TextFormField(
                   controller: genderCtr,
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -120,6 +135,7 @@ class _User_create_accState extends State<User_create_acc> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   child: TextField(
                     controller: dobCtr,
+                    textInputAction: TextInputAction.next,
                     readOnly: true,
                     decoration: InputDecoration(
                         icon: const Icon(Icons.calendar_today_rounded),
@@ -151,6 +167,8 @@ class _User_create_accState extends State<User_create_acc> {
                 ),
                 TextFormField(
                   controller: emailCtr,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -159,7 +177,9 @@ class _User_create_accState extends State<User_create_acc> {
                     hintText: 'Email',
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !value.contains('@')) {
                       return 'email is required';
                     }
                     return null;
@@ -168,6 +188,7 @@ class _User_create_accState extends State<User_create_acc> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 26),
                   child: TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: passCtr,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -214,9 +235,30 @@ class _User_create_accState extends State<User_create_acc> {
                 Padding(
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   child: TextFormField(
+                    textInputAction: TextInputAction.next,
                     controller: countryCtr,
-                    readOnly: true,
                     decoration: InputDecoration(
+                      prefixIcon: IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: () => showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) => SizedBox(
+                            height: MediaQuery.of(context).size.height / 1.3,
+                            child: CountryPickerDialog(
+                                searchText: 'Search Country',
+                                countryList: countries,
+                                onCountryChanged: (value) {
+                                  setState(() {
+                                    selectedCountry = value;
+                                    countryCtr.text = value.name;
+                                  });
+                                },
+                                selectedCountry: selectedCountry!,
+                                filteredCountries: countries),
+                          ),
+                        ),
+                      ),
                       labelText: 'Country',
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -234,7 +276,7 @@ class _User_create_accState extends State<User_create_acc> {
                 ),
                 TextFormField(
                   controller: cityCtr,
-                  readOnly: true,
+                  textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     labelText: 'City',
                     enabledBorder: OutlineInputBorder(
@@ -250,6 +292,23 @@ class _User_create_accState extends State<User_create_acc> {
                     return null;
                   },
                 ),
+                // SelectState(
+                //   onCountryChanged: (value) {
+                //     setState(() {
+                //       // countryValue = value;
+                //     });
+                //   },
+                //   onStateChanged: (value) {
+                //     setState(() {
+                //       // stateValue = value;
+                //     });
+                //   },
+                //   onCityChanged: (value) {
+                //     setState(() {
+                //       // cityValue = value;
+                //     });
+                //   },
+                // ),
                 CustomButton(
                   isLoading: isLoading,
                   text: 'Next',

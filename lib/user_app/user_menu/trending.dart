@@ -6,9 +6,9 @@ import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
 class trending_user extends StatefulWidget {
-  const trending_user({Key? key, this.data, required this.token})
+  const trending_user({Key? key, required this.data, required this.token})
       : super(key: key);
-  final DealData? data;
+  final DealData data;
   final String token;
 
   @override
@@ -16,10 +16,25 @@ class trending_user extends StatefulWidget {
 }
 
 class _trending_userState extends State<trending_user> {
+  // String? merchantAddress = 'Loading...';
+
+  // Future<void> getMerchantAddress() async {
+  //   final result = await UserMerchantServices().singleMerchantProfile(
+  //     id: widget.data.merchantId.toString(),
+  //     token: widget.token,
+  //   );
+
+  //   setState(() {
+  //     merchantAddress = result.data!.branches![0].address;
+  //   });
+  // }
+
   @override
-  void initState() {
-    getRating();
-    super.initState();
+  void didChangeDependencies() {
+    // Future.microtask(
+    //     () => getRating().whenComplete(() => getMerchantAddress()));
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -39,12 +54,12 @@ class _trending_userState extends State<trending_user> {
           ClipRRect(
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-            child: widget.data!.image != null &&
-                    widget.data!.image!.image!.isNotEmpty
+            child: widget.data.image != null &&
+                    widget.data.image!.image!.isNotEmpty
                 ? Image.network(
-                    '${ApiUrls.imgBaseUrl}${widget.data!.image!.path!}/${widget.data!.image!.image}',
+                    '${ApiUrls.imgBaseUrl}${widget.data.image!.path!}/${widget.data.image!.image}',
                     height: 120,
-                    width: 120)
+                    width: double.maxFinite)
                 : Image.asset(
                     'assets/images/menu.png',
                     height: 120,
@@ -53,29 +68,26 @@ class _trending_userState extends State<trending_user> {
                   ),
           ),
           Text(
-            widget.data!.name!,
+            widget.data.name ?? 'no name',
+            softWrap: true,
             style: const TextStyle(
                 fontFamily: 'Mulish',
-                fontSize: 12,
-                fontWeight: FontWeight.w700),
+                fontSize: 10,
+                fontWeight: FontWeight.w600),
           ),
           const SizedBox(
             height: 4,
           ),
           Row(
             children: [
-              Image.asset(
-                'assets/images/menu_location.png',
-                width: 8,
-                height: 8,
-              ),
-              const Text(
-                'Beauty Parlor - Baku, Azerbaijan',
-                style: TextStyle(
+              Text(
+                widget.data.type!,
+                softWrap: true,
+                style: const TextStyle(
                     fontFamily: 'Mulish',
                     fontSize: 7,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF848484)),
+                    color: Color(0xFFFF6767)),
               ),
             ],
           ),
@@ -84,11 +96,9 @@ class _trending_userState extends State<trending_user> {
           ),
           Row(
             children: [
-              Image.asset('assets/images/rating.png', width: 6, height: 6),
+              // Image.asset('assets/images/rating.png', width: 6, height: 6),
               Text(
-                rating == null || rating!.data!.isEmpty
-                    ? '0'
-                    : Reviews().getRating(rating!.data),
+                widget.data.categoryName!,
                 style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 7,
@@ -96,7 +106,7 @@ class _trending_userState extends State<trending_user> {
                     color: Color(0xFF5F5F5F)),
               ),
               Text(
-                '(${rating == null || rating!.data!.isEmpty ? '0' : rating!.data!.length.toString()} reviews)',
+                'Merchant: ${widget.data.merchantName}',
                 style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 4,
@@ -119,7 +129,7 @@ class _trending_userState extends State<trending_user> {
                     color: Color(0xFFFF6767)),
               ),
               Text(
-                widget.data!.price!,
+                widget.data.price ?? '0',
                 style: const TextStyle(
                     decoration: TextDecoration.lineThrough,
                     fontFamily: 'Mulish',
@@ -137,7 +147,8 @@ class _trending_userState extends State<trending_user> {
               ),
               Text(
                 Provider.of<DealProvider>(context).calculateDiscount(
-                    widget.data!.discountOnPrice!, widget.data!.price!),
+                    widget.data.discountOnPrice ?? '0',
+                    widget.data.price ?? '0'),
                 style: const TextStyle(
                     fontFamily: 'Mulish',
                     fontSize: 16,
@@ -152,7 +163,7 @@ class _trending_userState extends State<trending_user> {
                     borderRadius: BorderRadius.all(Radius.circular(3))),
                 child: Center(
                   child: Text(
-                    '${widget.data!.discountOnPrice}% OFF',
+                    '${widget.data.discountOnPrice ?? 0}% OFF',
                     style: const TextStyle(
                         fontSize: 5,
                         fontFamily: 'Mulish',
@@ -182,7 +193,7 @@ class _trending_userState extends State<trending_user> {
   ReviewsModel? rating;
   Future<void> getRating() async {
     final result = await Provider.of<DealProvider>(context, listen: false)
-        .getDealRating(widget.token, widget.data!.id.toString());
+        .getDealRating(widget.token, widget.data.id.toString());
     setState(() {
       rating = result;
     });

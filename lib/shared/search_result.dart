@@ -9,7 +9,7 @@ import '../user_app/user_menu/deals_details.dart';
 class SearchResult extends StatelessWidget {
   const SearchResult({Key? key, required this.searchModel, required this.token})
       : super(key: key);
-  final SearchModel searchModel;
+  final SearchModel? searchModel;
   final String token;
   @override
   Widget build(BuildContext context) {
@@ -20,18 +20,18 @@ class SearchResult extends StatelessWidget {
         ),
         body: SizedBox(
           width: double.maxFinite,
-          child: searchModel.data!.isEmpty
+          child: searchModel == null || searchModel!.data!.isEmpty
               ? const Center(
                   child: Text(
-                    'Not found',
+                    'Not deals found in your area',
                     textScaleFactor: 1.1,
                   ),
                 )
               : ListView.builder(
-                  itemCount: searchModel.data!.length,
+                  itemCount: searchModel!.data!.length,
                   shrinkWrap: true,
                   itemBuilder: ((context, index) {
-                    var data = searchModel.data![index];
+                    var data = searchModel!.data![index];
                     return Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Container(
@@ -50,7 +50,7 @@ class SearchResult extends StatelessWidget {
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (context) => Details_deals(
-                                      data: data,
+                                      dealId: data.id.toString(),
                                       token: token,
                                     )),
                             child: Row(
@@ -71,56 +71,57 @@ class SearchResult extends StatelessWidget {
                                     ),
                                     Padding(
                                         padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          data.name!,
-                                          style: const TextStyle(
-                                              fontFamily: 'Mulish',
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xFFFFFFFF)),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              180,
+                                          child: Text(
+                                            data.name!,
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                                fontFamily: 'Mulish',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFFFFFFFF)),
+                                          ),
                                         )),
+                                    // Padding(
+                                    //     padding: const EdgeInsets.only(top: 4),
+                                    //     child: Row(
+                                    //       children: [
+                                    //         Image.asset(
+                                    //           'assets/images/menu_location.png',
+                                    //           width: 8,
+                                    //           height: 8,
+                                    //         ),
+                                    //         const Text(
+                                    //           'Cafe Bistrovia - Baku, Azerbaijan',
+                                    //           style: TextStyle(
+                                    //               fontFamily: 'Mulish',
+                                    //               fontSize: 10,
+                                    //               fontWeight: FontWeight.w600,
+                                    //               color: Color(0xFFFFFFFF)),
+                                    //         ),
+                                    //       ],
+                                    //     )),
                                     Padding(
                                         padding: const EdgeInsets.only(top: 4),
                                         child: Row(
                                           children: [
-                                            Image.asset(
-                                              'assets/images/menu_location.png',
-                                              width: 8,
-                                              height: 8,
-                                            ),
                                             const Text(
-                                              'Cafe Bistrovia - Baku, Azerbaijan',
+                                              'Expiry:',
                                               style: TextStyle(
-                                                  fontFamily: 'Mulish',
+                                                  fontSize: 9,
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              searchModel!.data![index].expiry!,
+                                              style: const TextStyle(
+                                                  fontFamily: 'Poppins',
                                                   fontSize: 10,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xFFFFFFFF)),
-                                            ),
-                                          ],
-                                        )),
-                                    Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                                'assets/images/rating.png',
-                                                width: 6,
-                                                height: 6),
-                                            const Text(
-                                              '4.8',
-                                              style: TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 7,
                                                   fontWeight: FontWeight.w700,
-                                                  color: Color(0xFFFFFFFF)),
-                                            ),
-                                            const Text(
-                                              '(30 reviews)',
-                                              style: TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 4,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color(0xFFFFFFFF)),
+                                                  color: Color(0xFF0D9BFF)),
                                             ),
                                           ],
                                         )),
@@ -187,20 +188,31 @@ class SearchResult extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    Text(
-                                      'Discount On: ${data.type}',
-                                      style: const TextStyle(
-                                          fontFamily: 'Mulish',
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xFF0D9BFF)),
+                                    RichText(
+                                      text: TextSpan(
+                                          text: 'Discount On:',
+                                          style: const TextStyle(
+                                              fontFamily: 'Mulish',
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white),
+                                          children: [
+                                            TextSpan(
+                                              text: data.type,
+                                              style: const TextStyle(
+                                                  fontFamily: 'Mulish',
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFF0D9BFF)),
+                                            )
+                                          ]),
                                     ),
                                   ],
                                 ),
                                 const Spacer(),
                                 Container(
                                   height: 120,
-                                  width: 150,
+                                  width: 135,
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),

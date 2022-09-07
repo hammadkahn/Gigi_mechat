@@ -7,60 +7,45 @@ import 'package:gigi_app/models/puchase_model.dart';
 import 'package:gigi_app/models/reviews_model.dart';
 import 'package:gigi_app/models/wish_list_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../apis/api_urls.dart';
 import '../models/deal_model.dart';
+import '../services/user_merchant_services.dart';
 
 class DealProvider with ChangeNotifier {
   TrendingDealsModel? dealsDataList;
-  DealData? _dealData;
+  DealDetails? _dealData;
   CartData? _purchaseData;
-  RangeValues? _distanceRange;
-  double? _startingDiscount;
-  double? _endingDiscount;
-  String? _city;
-  String? _country;
-  String? _address;
-  String? _latitude;
-  String? _langitude;
+  // List<CartData>? _uniqueList;
 
-  List<CartData> _cartData = [];
+  final List<CartData> _cartData = [];
   List<String> _rating = [];
-  String? _discountRange;
+  List<String>? _filters;
+  bool _filterCheck = false;
+
+  List<String>? get filters => _filters!;
 
   String _msg = 'purchase fail';
+  String? merchantAddress = 'Loading...';
 
+  String? get address => merchantAddress;
   TrendingDealsModel get deals => dealsDataList!;
-  DealData get dealData => _dealData!;
+  DealDetails get dealData => _dealData!;
   CartData get purchaseData => _purchaseData!;
   List<String> get ratingFilter => _rating;
+  bool get filterCheck => _filterCheck;
 
   List<CartData> get cartData => _cartData;
-  String get priceOrder => _discountRange!;
+  // List<CartData> get uniqueList => _uniqueList!;
+
   String get msg => _msg;
-  String get city => _city!;
-  String get country => _country!;
-  String get address => _address!;
-  RangeValues get distanceRange => _distanceRange!;
-  double? get startingDiscount => _startingDiscount!;
-  double? get endignDiscount => _endingDiscount!;
 
-  void getCityCountryAddress({String? country, String? city, String? address}) {
-    _city = city;
-    _country = country;
-    _address = address;
-    debugPrint('$_city, $_country, $address');
-    notifyListeners();
-  }
+  void setFitlers(List<String> data) {
+    _filters = data;
+    debugPrint('$_filters');
+    _filterCheck = true;
 
-  void setDiscount(String? discount) {
-    _discountRange = discount ?? 'asc';
-    debugPrint(priceOrder);
-    notifyListeners();
-  }
-
-  void setDistanceRange(RangeValues values) {
-    _distanceRange = values;
-    debugPrint(_distanceRange.toString());
+    debugPrint('$_filterCheck');
     notifyListeners();
   }
 
@@ -68,13 +53,6 @@ class DealProvider with ChangeNotifier {
     if (stars.length <= 5) {
       _rating = stars;
     }
-    notifyListeners();
-  }
-
-  void setPriceRange(RangeValues? values) {
-    _startingDiscount = values == null ? 0.0 : values.start;
-    _endingDiscount = values == null ? 100.0 : values.end;
-    debugPrint('$_startingDiscount, $endignDiscount');
     notifyListeners();
   }
 
@@ -141,7 +119,11 @@ class DealProvider with ChangeNotifier {
       );
       final result = CartListModel.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
-        _cartData = result.data!;
+        for (var element in result.data!) {
+          _cartData.removeWhere((e) => element.name == e.name);
+          _cartData.add(element);
+        }
+        notifyListeners();
         return result;
       } else {
         throw Exception(result.message);
@@ -172,7 +154,7 @@ class DealProvider with ChangeNotifier {
     }
   }
 
-  Future<void> singleDealDetails(String token, String id) async {
+  Future<SingleDeal> singleDealDetails(String token, String id) async {
     try {
       final url = Uri.parse('${ApiUrls.baseUrl}user/getDeal/$id');
       final response = await http.get(
@@ -183,6 +165,7 @@ class DealProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         _dealData = result.data;
         notifyListeners();
+        return result;
       } else {
         throw Exception(response.statusCode);
       }
@@ -255,6 +238,76 @@ class DealProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getMerchantAddress(String merchantId, String token) async {
+    final result = await UserMerchantServices().singleMerchantProfile(
+      id: merchantId,
+      token: token,
+    );
+    merchantAddress = result.data!.branches![0].address;
+    notifyListeners();
+  }
+
+  TrendingDealsModel? _userListOfDeals;
+
+  TrendingDealsModel get userListOfDeals => _userListOfDeals!;
+
+  Future<void> getAllUserDeals(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    debugPrint('statement: ${prefs.getString('long')}');
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'https://gigiapi.zanforthstaging.com/api/user/getTrendingDeals?country=${prefs.getString('country') ?? ''}&cities[0]=${prefs.getString('city') ?? ''}&cities[1]=${prefs.getString('city') ?? ''}'),
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+      );
+      debugPrint('status code : ${response.statusCode}');
+      final result = TrendingDealsModel.fromJson(jsonDecode(response.body));
+
+      if (response.statusCode == 429) {
+        debugPrint(
+            'user has sent too many requests in a given amount of time ("rate limiting")');
+        throw Exception('error 429');
+      }
+
+      if (response.statusCode == 200) {
+        debugPrint(result.message);
+        _userListOfDeals = result;
+        notifyListeners();
+      } else {
+        debugPrint(response.reasonPhrase);
+        debugPrint(response.body);
+        throw Exception(response.statusCode);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+
+    // try {
+    //   final response = await http.get(
+    //     Uri.parse(
+    //         '${ApiUrls.baseUrl}user/getDeals?limit=&page=&returnType=customPagination&timeSort=desc&lat=${prefs.getString('lat') ?? ''}&long=${prefs.getString('long') ?? ''}'),
+    //     headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
+    //   );
+
+    //   final result = UserListOfDeals.fromJson(jsonDecode(response.body));
+
+    //   if (response.statusCode == 429) {
+    //     throw Exception('429 error');
+    //   }
+
+    //   if (response.statusCode == 200) {
+    //     _userListOfDeals = result;
+    //     notifyListeners();
+    //   } else {
+    //     debugPrint(response.reasonPhrase);
+    //     debugPrint(response.body);
+    //     throw Exception(response.statusCode);
+    //   }
+    // } catch (e) {
+    //   throw Exception(e);
+    // }
+  }
+
   String calculateDiscount(
     String discountOnPrice,
     String price,
@@ -264,9 +317,9 @@ class DealProvider with ChangeNotifier {
     double? percentage;
     percentage = int.parse(discountOnPrice) / 100;
     getPrice = percentage * int.parse(price);
-    priceAfterDiscount = int.parse(price) - getPrice;
+    priceAfterDiscount = (int.parse(price) - getPrice);
 
-    return priceAfterDiscount.toString();
+    return priceAfterDiscount.toStringAsFixed(2);
   }
 
   List<Image> getStars(int stars) {

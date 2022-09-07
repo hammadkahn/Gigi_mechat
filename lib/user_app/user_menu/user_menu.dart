@@ -18,7 +18,7 @@ class _User_barState extends State<User_bar> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Are you sure?'),
-          content: const Text('Do you want to logout?'),
+          content: const Text('Do you want to exit?'),
           actions: <Widget>[
             FlatButton(
               child: const Text('DISCARD'),
@@ -54,11 +54,6 @@ class _User_barState extends State<User_bar> {
       Fav_user(token: widget.token),
       Cart_user(token: widget.token),
     ];
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

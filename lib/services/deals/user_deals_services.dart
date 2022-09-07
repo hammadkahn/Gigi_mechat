@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:gigi_app/apis/api_urls.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/deal_model.dart';
 import '../../models/puchase_model.dart';
 
@@ -16,8 +17,14 @@ class UserDealServices {
             'https://gigiapi.zanforthstaging.com/api/user/getTrendingDeals?lat&long&country=$country&cities[0]=$city&cities[1]=$city&priceSort=&timeSort='),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
-      print('body : ${response.statusCode}');
+      debugPrint('status code : ${response.statusCode}');
       final result = TrendingDealsModel.fromJson(jsonDecode(response.body));
+
+      if (response.statusCode == 429) {
+        debugPrint(
+            'user has sent too many requests in a given amount of time ("rate limiting")');
+        throw Exception('error 429');
+      }
 
       if (response.statusCode == 200) {
         debugPrint(result.message);
@@ -32,19 +39,26 @@ class UserDealServices {
   }
 
   Future<UserListOfDeals> getAllUserDeals(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    debugPrint('statement: ${prefs.getString('long')}');
     try {
       final response = await http.get(
         Uri.parse(
-            '${ApiUrls.baseUrl}user/getDeals?limit=&page=&returnType=customPagination&timeSort=desc'),
+            '${ApiUrls.baseUrl}user/getDeals?limit=&page=&returnType=customPagination&timeSort=desc&lat=${prefs.getString('lat') ?? ''}&long=${prefs.getString('long') ?? ''}&startingDiscount&endingDiscount'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
 
       final result = UserListOfDeals.fromJson(jsonDecode(response.body));
-      print(result.data);
+
+      if (response.statusCode == 429) {
+        throw Exception('429 error');
+      }
+
       if (response.statusCode == 200) {
         return result;
       } else {
         debugPrint(response.reasonPhrase);
+        debugPrint(response.body);
         return result;
       }
     } catch (e) {
@@ -81,7 +95,6 @@ class UserDealServices {
       );
       debugPrint(response.statusCode.toString());
       final result = SinglePurchaseModel.fromJson(jsonDecode(response.body));
-      final mapResult = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
         debugPrint('single deal : ${result.message}');

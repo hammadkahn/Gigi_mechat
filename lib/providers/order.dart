@@ -12,9 +12,11 @@ class CartItems {
   String? reviewsCount;
   String? path;
   String? purchasedDate;
+  String? merchantId;
 
   CartItems({
     this.id,
+    this.merchantId,
     this.purchasedDate,
     this.reviewsCount,
     this.priceAfterDiscount,
@@ -45,11 +47,13 @@ class Cart with ChangeNotifier {
     required String? reviews,
     required String? discountOnPrice,
     required String? path,
+    required String? merchantId,
     String? afterDiscount = '0',
     String? reviewsCount = '0',
     bool isWishList = false,
   }) {
     print('id : $id');
+
     if (_cartMap.containsKey(id)) {
       _cartMap.update(
           id!,
@@ -64,6 +68,7 @@ class Cart with ChangeNotifier {
                 reviews: cartItem.reviews ?? '0',
                 discountOnPrice: cartItem.discountOnPrice,
                 title: cartItem.title!,
+                merchantId: merchantId,
               ));
     } else {
       print('id : $id');
@@ -80,6 +85,7 @@ class Cart with ChangeNotifier {
           reviews: reviews ?? '0',
           discountOnPrice: discountOnPrice,
           title: title!,
+          merchantId: merchantId,
         ),
       );
       print(cartMap[id]!.title ?? 'null values');

@@ -63,6 +63,12 @@ class UserMerchantServices {
         },
       );
       final result = TopMerchantModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 429) {
+        debugPrint(
+            'user has sent too many requests in a given amount of time ("rate limiting")');
+        throw Exception(
+            'user has sent too many requests in a given amount of time ("rate limiting")');
+      }
       if (response.statusCode == 200) {
         return result;
       } else {

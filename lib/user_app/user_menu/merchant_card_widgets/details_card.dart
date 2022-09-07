@@ -70,40 +70,32 @@ class _DetailsCardWidgetState extends State<DetailsCardWidget> {
                   fontSize: 12,
                   fontWeight: FontWeight.w700),
             ),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/menu_location.png',
-                  width: 8,
-                  height: 8,
-                ),
-                const Text(
-                  'Beauty Parlor - Baku, Azerbaijan',
-                  style: TextStyle(
-                      fontFamily: 'Mulish',
-                      fontSize: 7,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF848484)),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Image.asset(
+            //       'assets/images/menu_location.png',
+            //       width: 8,
+            //       height: 8,
+            //     ),
+            //     Text(
+            //       widget.data.,
+            //       style: TextStyle(
+            //           fontFamily: 'Mulish',
+            //           fontSize: 7,
+            //           fontWeight: FontWeight.w600,
+            //           color: Color(0xFF848484)),
+            //     ),
+            //   ],
+            // ),
             Row(
               children: [
                 Image.asset('assets/images/rating.png', width: 6, height: 6),
                 Text(
-                  widget.data.averageRating.toString(),
+                  widget.data.averageRating.toStringAsFixed(2),
                   style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 7,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF5F5F5F)),
-                ),
-                const Text(
-                  '(0 reviews)',
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 4,
-                      fontWeight: FontWeight.w400,
                       color: Color(0xFF5F5F5F)),
                 ),
               ],

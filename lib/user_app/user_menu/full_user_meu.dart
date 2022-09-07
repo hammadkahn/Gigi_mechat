@@ -1,9 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gigi_app/models/deal_model.dart';
+import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/services/deals/user_deals_services.dart';
 import 'package:gigi_app/user_app/user_menu/details_with_all.dart';
-import 'package:gigi_app/user_app/user_menu/merchant_card_widgets/merchant_details.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/size_constants.dart';
@@ -11,6 +12,7 @@ import '../../shared/search_field.dart';
 import '../notification_screen.dart';
 import 'ham_user.dart';
 import 'l.dart';
+import 'merchant_card_widgets/merchant_details.dart';
 
 class Full_menu_user extends StatefulWidget {
   const Full_menu_user({Key? key, required this.token}) : super(key: key);
@@ -21,6 +23,7 @@ class Full_menu_user extends StatefulWidget {
 }
 
 class _Full_menu_userState extends State<Full_menu_user> {
+  DealProvider? dealProvider;
   String? selectedValue;
   String? country;
   List<dynamic>? items;
@@ -40,12 +43,20 @@ class _Full_menu_userState extends State<Full_menu_user> {
     });
   }
 
+  bool productLoaded = false;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    dealProvider = Provider.of<DealProvider>(context, listen: false);
     getCountry().whenComplete(() {
-      fetchCitiesAndCountries();
+      fetchCitiesAndCountries().whenComplete(
+          () => dealProvider!.getAllUserDeals(widget.token).whenComplete(() {
+                setState(() {
+                  productLoaded = true;
+                });
+              }));
     });
+    super.didChangeDependencies();
   }
 
   @override
@@ -76,37 +87,16 @@ class _Full_menu_userState extends State<Full_menu_user> {
                 ),
                 SearchField(
                   token: widget.token,
-                  searchText: 'Search',
                 ),
                 SizedBox(
-                  child: FutureBuilder<UserListOfDeals>(
-                    future: UserDealServices().getAllUserDeals(widget.token),
-                    builder: ((context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.waiting:
-                          return const Center(
-                              child: CircularProgressIndicator());
-
-                        default:
-                          if (snapshot.hasError) {
-                            return Center(
-                              child: Text(snapshot.error.toString()),
-                            );
-                          } else if (snapshot.data == null ||
-                              snapshot.data!.data!.isEmpty) {
-                            return const Center(
-                              child:
-                                  Text('No recent offers added in last 7 days'),
-                            );
-                          } else {
-                            return C_slider(
-                              token: widget.token,
-                              merchantList: snapshot.data!.data!,
-                            );
-                          }
-                      }
-                    }),
-                  ),
+                  child: productLoaded == false
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : C_slider(
+                          token: widget.token,
+                          merchantList: dealProvider!.userListOfDeals.data!,
+                        ),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -170,8 +160,8 @@ class _Full_menu_userState extends State<Full_menu_user> {
             return const Center(child: CircularProgressIndicator());
           default:
             if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
+              return const Center(
+                child: CircularProgressIndicator(),
               );
             } else {
               if (snapshot.data!.data == null || snapshot.data!.data!.isEmpty) {
@@ -180,12 +170,15 @@ class _Full_menu_userState extends State<Full_menu_user> {
                 );
               } else {
                 return ListView.builder(
+                  // itemCount: snapshot.data!.data!.length >= 7
+                  //     ? 7
+                  //     : snapshot.data!.data!.length,
                   itemCount: snapshot.data!.data!.length,
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   itemBuilder: ((context, index) {
                     return all_details(
-                      dealId: snapshot.data!.data![index].id!.toString(),
+                      dealId: snapshot.data!.data![index],
                       token: widget.token,
                     );
                   }),

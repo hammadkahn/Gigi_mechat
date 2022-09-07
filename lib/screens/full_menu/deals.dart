@@ -57,26 +57,31 @@ class _DealsState extends State<Deals> {
                   ),
                   Padding(
                       padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        widget.merchantListOfDeals.name!,
-                        style: const TextStyle(
-                            fontFamily: 'Mulish',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFFFFFFFF)),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 200,
+                        child: Text(
+                          widget.merchantListOfDeals.name!,
+                          style: const TextStyle(
+                              fontFamily: 'Mulish',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFFFFFFFF)),
+                        ),
                       )),
                   Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Row(
                         children: [
-                          Image.asset(
-                            'assets/images/menu_location.png',
-                            width: 8,
-                            height: 8,
-                          ),
                           const Text(
-                            'Cafe Bistrovia - Baku, Azerbaijan',
+                            'Remaining Qty: ',
                             style: TextStyle(
+                              fontSize: 7,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            widget.merchantListOfDeals.remaining.toString(),
+                            style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
@@ -175,7 +180,7 @@ class _DealsState extends State<Deals> {
               const Spacer(),
               Container(
                 height: 120,
-                width: 150,
+                width: 100,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                 ),

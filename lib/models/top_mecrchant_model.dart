@@ -44,7 +44,7 @@ class TopMerchantData {
   String? status;
   String? createdAt;
   String? updatedAt;
-  int? averageRating;
+  dynamic averageRating;
   String? profilePicturePath;
   String? statusName;
 
@@ -80,9 +80,7 @@ class TopMerchantData {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    if (averageRating.runtimeType == double) {
-      averageRating = int.tryParse(json['averageRating']);
-    }
+    averageRating = json['averageRating'];
     profilePicturePath = json['profilePicturePath'];
     statusName = json['StatusName'];
   }

@@ -44,7 +44,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
   List<BranchData>? branches;
-  double? averageRating;
+  dynamic averageRating;
   List<Reviews>? reviews;
   int? activeOffers;
   int? dealRadeems;
@@ -97,9 +97,7 @@ class Data {
         branches!.add(BranchData.fromJson(v));
       });
     }
-    if (averageRating.runtimeType == int) {
-      averageRating = double.parse(json['averageRating']);
-    }
+    averageRating = json['averageRating'];
     if (json['reviews'] != null) {
       reviews = <Reviews>[];
       json['reviews'].forEach((v) {

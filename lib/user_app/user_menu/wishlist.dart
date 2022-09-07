@@ -5,15 +5,40 @@ import 'package:provider/provider.dart';
 import '../../constant/size_constants.dart';
 import '../../models/wish_list_model.dart';
 import '../../providers/order.dart';
+import '../../services/user_merchant_services.dart';
 import '../../shared/custom_button.dart';
 import 'cart_user.dart';
 
-class Wishlist extends StatelessWidget {
+class Wishlist extends StatefulWidget {
   const Wishlist({Key? key, required this.wishData, required this.token})
       : super(key: key);
   final WishData wishData;
   final String token;
   static const url = 'https://gigiapi.zanforthstaging.com/';
+
+  @override
+  State<Wishlist> createState() => _WishlistState();
+}
+
+class _WishlistState extends State<Wishlist> {
+  String? address = 'Loading...';
+
+  Future<void> getMerchantAddress() async {
+    final result = await UserMerchantServices().singleMerchantProfile(
+      id: widget.wishData.merchantId.toString(),
+      token: widget.token,
+    );
+
+    setState(() {
+      address = result.data!.branches![0].address;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getMerchantAddress();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +51,26 @@ class Wishlist extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(16))),
       child: Row(
         children: [
-          wishData.image == null
+          widget.wishData.image == null
               ? Image.asset(
                   'assets/images/cart_deal.png',
                   height: 119,
                 )
-              : Expanded(
+              : SizedBox(
+                  width: 90,
+                  height: 119,
                   child: Image.network(
-                      '$url${wishData.image!.path}/${wishData.image!.image}'),
+                      '${Wishlist.url}${widget.wishData.image!.path}/${widget.wishData.image!.image}'),
                 ),
           Padding(
-            padding: const EdgeInsets.only(left: 21),
+            padding: const EdgeInsets.only(left: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                     padding: const EdgeInsets.only(top: 15),
                     child: Text(
-                      wishData.name!,
+                      widget.wishData.name!,
                       style: const TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 14,
@@ -59,13 +86,17 @@ class Wishlist extends StatelessWidget {
                           width: 8,
                           height: 8,
                         ),
-                        const Text(
-                          'Cafe Bistrovia - Baku, Azerbaijan',
-                          style: TextStyle(
-                              fontFamily: 'Mulish',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF848484)),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 200,
+                          child: Text(
+                            address ?? 'Loading',
+                            softWrap: true,
+                            style: const TextStyle(
+                                fontFamily: 'Mulish',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF848484)),
+                          ),
                         ),
                       ],
                     )),
@@ -106,7 +137,7 @@ class Wishlist extends StatelessWidget {
                               color: Color(0xFFFF6767)),
                         ),
                         Text(
-                          wishData.price!,
+                          widget.wishData.price!,
                           style: const TextStyle(
                               decoration: TextDecoration.lineThrough,
                               fontFamily: 'Mulish',
@@ -124,8 +155,8 @@ class Wishlist extends StatelessWidget {
                         ),
                         Text(
                           Provider.of<DealProvider>(context).calculateDiscount(
-                            wishData.discountOnPrice!,
-                            wishData.price!,
+                            widget.wishData.discountOnPrice!,
+                            widget.wishData.price!,
                           ),
                           style: const TextStyle(
                               fontFamily: 'Mulish',
@@ -142,7 +173,7 @@ class Wishlist extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(3))),
                           child: Center(
                             child: Text(
-                              '${wishData.discountOnPrice}% OFF',
+                              '${widget.wishData.discountOnPrice}% OFF',
                               style: const TextStyle(
                                   fontSize: 5,
                                   fontFamily: 'Mulish',
@@ -159,19 +190,22 @@ class Wishlist extends StatelessWidget {
                     text: 'Add to Cart ➔',
                     onPressed: () {
                       Provider.of<Cart>(context, listen: false).addTCart(
-                        id: wishData.id.toString(),
-                        price: wishData.price,
-                        title: wishData.name,
-                        image: wishData.image!.image ?? '',
+                        merchantId: widget.wishData.merchantId.toString(),
+                        id: widget.wishData.id.toString(),
+                        price: widget.wishData.price,
+                        title: widget.wishData.name,
+                        image: widget.wishData.image!.image ?? '',
                         reviews: '0',
-                        discountOnPrice: wishData.discountOnPrice,
-                        path: wishData.image!.path ?? '',
+                        discountOnPrice: widget.wishData.discountOnPrice,
+                        path: widget.wishData.image!.path ?? '',
                         isWishList: true,
                       );
                       Provider.of<DealProvider>(context, listen: false)
-                          .removeFromWishList(wishData.wishlistId!, token);
+                          .removeFromWishList(
+                              widget.wishData.wishlistId!, widget.token);
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Cart_user(token: token)));
+                          builder: (context) =>
+                              Cart_user(token: widget.token)));
                     })
               ],
             ),

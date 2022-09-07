@@ -33,7 +33,6 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
       decoration: const BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -82,7 +81,7 @@ class _ProfileState extends State<Profile> {
                                 : CircleAvatar(
                                     radius: 70,
                                     backgroundImage: NetworkImage(
-                                        '${ApiUrls.imgBaseUrl}/${data.profilePicturePath}/${data.profilePicture}'),
+                                        '${ApiUrls.imgBaseUrl}${data.profilePicturePath}/${data.profilePicture}'),
                                   ),
                           ),
                           Padding(
@@ -211,7 +210,7 @@ class _ProfileState extends State<Profile> {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontFamily: 'Mulish',
-                            fontSize: 12,
+                            fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff9E9E9E),
                           ),
@@ -219,7 +218,8 @@ class _ProfileState extends State<Profile> {
                       ],
                     ),
                   ),
-                )
+                ),
+                const SizedBox(height: 25),
               ],
             ),
           ),

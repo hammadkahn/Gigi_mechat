@@ -8,9 +8,9 @@ import '../../providers/order.dart';
 import 'details_bottom.dart';
 
 class Details_deals extends StatefulWidget {
-  const Details_deals({Key? key, this.data, required this.token})
+  const Details_deals({Key? key, this.dealId, required this.token})
       : super(key: key);
-  final DealData? data;
+  final String? dealId;
   final String token;
 
   @override
@@ -25,21 +25,31 @@ class _Details_dealsState extends State<Details_deals> {
 
   int? value = 0;
   var isLaoding = false;
+  DealProvider? dealProvider;
+
+  // String? merchantAddress = 'Loading...';
+
+  // Future<void> getMerchantAddress() async {
+  //   final result = await UserMerchantServices().singleMerchantProfile(
+  //     id: dealProvider!.dealData.merchantId.toString(),
+  //     token: widget.token,
+  //   );
+
+  //   setState(() {
+  //     merchantAddress = result.data!.branches![0].address;
+  //   });
+  // }
 
   @override
   void initState() {
-    debugPrint('id...........${widget.data!.id}');
+    dealProvider = Provider.of<DealProvider>(context, listen: false);
     getRating();
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    percentage = int.parse(widget.data!.discountOnPrice!) / 100;
-    price = percentage! * int.parse(widget.data!.price!);
-    priceAfterDiscount = int.parse(widget.data!.price!) - price!;
-    print(widget.data);
-    // totalReviews = Reviews().getRating(widget.data!.reviews!);
+    // totalReviews = Reviews().getRating(dealProvider!.dealData.reviews!);
     super.didChangeDependencies();
   }
 
@@ -57,64 +67,120 @@ class _Details_dealsState extends State<Details_deals> {
             endIndent: 120,
           ),
           SizedBox(
-            width: double.infinity,
-            height: 250,
-            child: Stack(
-              children: [
-                widget.data!.image == null || widget.data!.image!.image!.isEmpty
-                    ? Image.asset(
-                        'assets/images/detail.png',
-                        height: 248,
-                        width: MediaQuery.of(context).size.width,
-                      )
-                    : Image.network(
-                        '$baseUrl${widget.data!.image!.path!}/${widget.data!.image!.image}',
-                        height: 248,
-                        width: MediaQuery.of(context).size.width,
+            width: double.maxFinite,
+            height: MediaQuery.of(context).size.height - 200,
+            child: FutureBuilder<SingleDeal>(
+              future:
+                  dealProvider!.singleDealDetails(widget.token, widget.dealId!),
+              builder: ((context, snapshot) {
+                List<Widget> children;
+                if (snapshot.hasData) {
+                  var data = snapshot.data!.data!;
+                  percentage = int.parse(data.discountOnPrice!) / 100;
+                  price = percentage! * int.parse(data.price!);
+                  priceAfterDiscount = int.parse(data.price!) - price!;
+
+                  children = [
+                    SizedBox(
+                      width: double.infinity,
+                      height: 250,
+                      child: Stack(
+                        children: [
+                          data.images == null || data.images![0].image!.isEmpty
+                              ? Image.asset(
+                                  'assets/images/detail.png',
+                                  height: 248,
+                                  width: MediaQuery.of(context).size.width,
+                                )
+                              : Image.network(
+                                  '$baseUrl${data.images![0].path!}/${data.images![0].image}',
+                                  height: 248,
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 12, top: 8),
+                              decoration: const BoxDecoration(
+                                  color: Colors.white, shape: BoxShape.circle),
+                              child: IconButton(
+                                icon: Icon(
+                                  isLaoding == false
+                                      ? Icons.favorite_border
+                                      : Icons.favorite,
+                                  color: isLaoding == false
+                                      ? Colors.black
+                                      : Colors.red,
+                                  size: 20,
+                                ),
+                                onPressed: () {
+                                  Provider.of<DealProvider>(context,
+                                          listen: false)
+                                      .wishList(widget.token, {
+                                    "deals[0]":
+                                        dealProvider!.dealData.id.toString()
+                                  }).whenComplete(() {
+                                    setState(() {
+                                      isLaoding = true;
+                                    });
+                                  });
+                                },
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 12, top: 8),
-                    decoration: const BoxDecoration(
-                        color: Colors.white, shape: BoxShape.circle),
-                    child: IconButton(
-                      icon: Icon(
-                        isLaoding == false
-                            ? Icons.favorite_border
-                            : Icons.favorite,
-                        color: isLaoding == false ? Colors.black : Colors.red,
-                        size: 20,
-                      ),
-                      onPressed: () {
-                        Provider.of<DealProvider>(context, listen: false)
-                            .wishList(widget.token, {
-                          "deals[0]": widget.data!.id.toString()
-                        }).whenComplete(() {
-                          setState(() {
-                            isLaoding = true;
-                          });
-                        });
-                      },
                     ),
+                    rating == null
+                        ? const Center(child: CircularProgressIndicator())
+                        : bottom_detail(
+                            token: widget.token,
+                            totalReviews: Reviews().getRating(rating!.data),
+                            length: rating!.data!.length.toString(),
+                            dealData: data,
+                            price: priceAfterDiscount!.toStringAsFixed(2),
+                          ),
+                    const Divider(
+                      color: Color(0xFFC0C0CF),
+                      thickness: 1,
+                      indent: 24,
+                      endIndent: 24,
+                    ),
+                  ];
+                } else if (snapshot.hasError) {
+                  children = <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ];
+                } else {
+                  children = const <Widget>[
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Awaiting result...'),
+                    )
+                  ];
+                }
+                return SizedBox(
+                  width: double.maxFinite,
+                  height: MediaQuery.of(context).size.height - 100,
+                  child: Column(
+                    children: children,
                   ),
-                )
-              ],
+                );
+              }),
             ),
-          ),
-          rating == null
-              ? const Center(child: CircularProgressIndicator())
-              : bottom_detail(
-                  totalReviews: Reviews().getRating(rating!.data),
-                  length: rating!.data!.length.toString(),
-                  dealData: widget.data!,
-                  price: priceAfterDiscount.toString(),
-                ),
-          const Divider(
-            color: Color(0xFFC0C0CF),
-            thickness: 1,
-            indent: 24,
-            endIndent: 24,
           ),
           Container(
             width: double.infinity,
@@ -189,23 +255,45 @@ class _Details_dealsState extends State<Details_deals> {
                                                   'Please add at least one quantity')));
                                     }
                                   : () {
-                                      value.addTCart(
-                                          id: widget.data!.id.toString(),
-                                          price: widget.data!.price!,
-                                          discountOnPrice:
-                                              widget.data!.discountOnPrice!,
-                                          title: widget.data!.name!,
-                                          reviews: '0',
-                                          image: widget.data!.image == null ||
-                                                  widget.data!.image!.image!
-                                                      .isEmpty
-                                              ? ''
-                                              : widget.data!.image!.image!,
-                                          reviewsCount: '0',
-                                          path: widget.data!.image == null
-                                              ? ''
-                                              : widget.data!.image!.path!);
-                                      value.checkIsAddedToCart(context);
+                                      if (dealProvider!
+                                              .dealData.dealIsExpired ==
+                                          0) {
+                                        value.addTCart(
+                                            id: dealProvider!.dealData.id
+                                                .toString(),
+                                            merchantId: dealProvider!
+                                                .dealData.merchantId
+                                                .toString(),
+                                            price:
+                                                dealProvider!.dealData.price!,
+                                            discountOnPrice: dealProvider!
+                                                .dealData.discountOnPrice!,
+                                            title: dealProvider!.dealData.name!,
+                                            reviews: '0',
+                                            image:
+                                                dealProvider!.dealData.images ==
+                                                            null ||
+                                                        dealProvider!
+                                                            .dealData
+                                                            .images![0]
+                                                            .image!
+                                                            .isEmpty
+                                                    ? ''
+                                                    : dealProvider!.dealData
+                                                        .images![0].image!,
+                                            reviewsCount: '0',
+                                            path: dealProvider!.dealData.images ==
+                                                    null
+                                                ? ''
+                                                : dealProvider!
+                                                    .dealData.images![0].path!);
+                                        value.checkIsAddedToCart(context);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content:
+                                                    Text('Deal is expired')));
+                                      }
                                     },
                               child: const Text(
                                 'Add to Cart',
@@ -231,12 +319,10 @@ class _Details_dealsState extends State<Details_deals> {
   ReviewsModel? rating;
   Future<void> getRating() async {
     final result = await Provider.of<DealProvider>(context, listen: false)
-        .getDealRating(widget.token, widget.data!.id.toString());
+        .getDealRating(widget.token, widget.dealId.toString());
 
     setState(() {
       rating = result;
     });
-
-    debugPrint(rating!.data!.length.toString());
   }
 }

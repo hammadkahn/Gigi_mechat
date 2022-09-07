@@ -22,11 +22,6 @@ class _C_sliderState extends State<C_slider> {
   CarouselController? controller = CarouselController();
 
   getDealsDate(DateTime now, DateTime nowW1) {
-    int lenght = nowW1.day;
-    debugPrint('length $lenght');
-    int current = now.day;
-    debugPrint(current.toString());
-
     for (int i = 0; i < widget.merchantList.length; i++) {
       DateTime createdDate =
           DateTime.parse(widget.merchantList[i].createdAt.toString());
@@ -54,7 +49,7 @@ class _C_sliderState extends State<C_slider> {
   void initState() {
     now_1w = now.subtract(const Duration(days: 7));
     getDealsDate(now, now_1w!);
-    print(weekDeals);
+
     super.initState();
   }
 
@@ -62,7 +57,6 @@ class _C_sliderState extends State<C_slider> {
   void dispose() {
     super.dispose();
     getDealsDate(now, now_1w!);
-    controller!.stopAutoPlay();
   }
 
   int activeIndex = 0;
@@ -84,22 +78,23 @@ class _C_sliderState extends State<C_slider> {
               itemBuilder: ((context, index, realIndex) {
                 return dealsUser(
                   token: widget.token,
-                  dealData: weekDeals[index].id.toString(),
+                  dealData: weekDeals[index],
                 );
               }),
               options: CarouselOptions(
+                pauseAutoPlayInFiniteScroll: true,
                 aspectRatio: 2.0,
                 height: carouselheight,
 
                 // width: MediaQuery.of(context).size.width,
                 autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 3),
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayInterval: const Duration(seconds: 5),
+                autoPlayAnimationDuration: const Duration(milliseconds: 3000),
                 autoPlayCurve: Curves.fastOutSlowIn,
                 enlargeCenterPage: true,
                 viewportFraction: 1,
                 initialPage: 0,
-                enableInfiniteScroll: true,
+                enableInfiniteScroll: weekDeals.length > 5 ? false : true,
                 reverse: false,
                 scrollDirection: Axis.horizontal,
                 onPageChanged: (index, reason) {

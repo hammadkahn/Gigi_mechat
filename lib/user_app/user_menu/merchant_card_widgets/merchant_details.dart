@@ -21,8 +21,8 @@ class MerchantDetails extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           default:
             if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
+              return const Center(
+                child: CircularProgressIndicator(),
               );
             } else {
               return ListView.builder(

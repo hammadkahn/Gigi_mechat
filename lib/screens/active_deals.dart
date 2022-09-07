@@ -44,8 +44,8 @@ class ActiveMerchantDeals extends StatelessWidget {
                         onTap: () => showModalBottomSheet(
                             isScrollControlled: true,
                             context: context,
-                            builder: (context) =>
-                                sheet_deals(dealData: data, token: token)),
+                            builder: (context) => sheet_deals(
+                                dealId: data.id.toString(), token: token)),
                         child: Deals(
                           token: token,
                           merchantListOfDeals: data,

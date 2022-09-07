@@ -1,8 +1,7 @@
 import 'package:gigi_app/models/branch_model.dart';
+import 'package:gigi_app/models/category_model.dart';
 
 import 'image_model.dart';
-import 'reviews_model.dart';
-import 'tags_model.dart';
 
 class MerchantListOfDeals {
   bool? status;
@@ -44,15 +43,17 @@ class Data {
   String? type;
   String? price;
   String? additionalDiscount;
-  String? additionalDiscountDate;
+  dynamic additionalDiscountDate;
   String? discountOnPrice;
   String? afterDiscount;
   String? actualPrice;
   String? categoryId;
+  String? limit;
   String? description;
   String? status;
   String? rejectReason;
   String? active;
+  String? activiationRequest;
   String? merchantId;
   String? createdBy;
   String? createdAt;
@@ -66,6 +67,7 @@ class Data {
   int? remaining;
   int? dealIsExpired;
   String? typeName;
+  String? activationRequestFor;
 
   Data(
       {this.id,
@@ -79,10 +81,12 @@ class Data {
       this.afterDiscount,
       this.actualPrice,
       this.categoryId,
+      this.limit,
       this.description,
       this.status,
       this.rejectReason,
       this.active,
+      this.activiationRequest,
       this.merchantId,
       this.createdBy,
       this.createdAt,
@@ -95,7 +99,8 @@ class Data {
       this.totalRadeem,
       this.remaining,
       this.dealIsExpired,
-      this.typeName});
+      this.typeName,
+      this.activationRequestFor});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -109,10 +114,12 @@ class Data {
     afterDiscount = json['after_discount'];
     actualPrice = json['actual_price'];
     categoryId = json['category_id'];
+    limit = json['limit'];
     description = json['description'];
     status = json['status'];
     rejectReason = json['reject_reason'];
     active = json['active'];
+    activiationRequest = json['activiation_request'];
     merchantId = json['merchant_id'];
     createdBy = json['created_by'];
     createdAt = json['created_at'];
@@ -126,6 +133,7 @@ class Data {
     remaining = json['remaining'];
     dealIsExpired = json['dealIsExpired'];
     typeName = json['TypeName'];
+    activationRequestFor = json['activationRequestFor'];
   }
 
   Map<String, dynamic> toJson() {
@@ -141,10 +149,12 @@ class Data {
     data['after_discount'] = afterDiscount;
     data['actual_price'] = actualPrice;
     data['category_id'] = categoryId;
+    data['limit'] = limit;
     data['description'] = description;
     data['status'] = status;
     data['reject_reason'] = rejectReason;
     data['active'] = active;
+    data['activiation_request'] = activiationRequest;
     data['merchant_id'] = merchantId;
     data['created_by'] = createdBy;
     data['created_at'] = createdAt;
@@ -160,10 +170,12 @@ class Data {
     data['remaining'] = remaining;
     data['dealIsExpired'] = dealIsExpired;
     data['TypeName'] = typeName;
+    data['activationRequestFor'] = activationRequestFor;
     return data;
   }
 }
 
+//user deal detials
 class TrendingDealsModel {
   bool? status;
   int? responseCode;
@@ -232,7 +244,7 @@ class SingleDeal {
   bool? status;
   int? responseCode;
   String? message;
-  DealData? data;
+  DealDetails? data;
 
   SingleDeal({this.status, this.responseCode, this.message, this.data});
 
@@ -240,7 +252,7 @@ class SingleDeal {
     status = json['status'];
     responseCode = json['responseCode'];
     message = json['message'];
-    data = json['data'] != null ? DealData.fromJson(json['data']) : null;
+    data = json['data'] != null ? DealDetails.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -267,10 +279,12 @@ class DealData {
   String? afterDiscount;
   String? actualPrice;
   String? categoryId;
+  String? limit;
   String? description;
   String? status;
   String? rejectReason;
   String? active;
+  String? activiationRequest;
   String? merchantId;
   String? createdBy;
   String? createdAt;
@@ -281,6 +295,7 @@ class DealData {
   ImageModel? image;
   int? dealIsExpired;
   String? typeName;
+  String? activationRequestFor;
 
   DealData(
       {this.id,
@@ -294,10 +309,12 @@ class DealData {
       this.afterDiscount,
       this.actualPrice,
       this.categoryId,
+      this.limit,
       this.description,
       this.status,
       this.rejectReason,
       this.active,
+      this.activiationRequest,
       this.merchantId,
       this.createdBy,
       this.createdAt,
@@ -307,7 +324,8 @@ class DealData {
       this.categoryName,
       this.image,
       this.dealIsExpired,
-      this.typeName});
+      this.typeName,
+      this.activationRequestFor});
 
   DealData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -321,10 +339,12 @@ class DealData {
     afterDiscount = json['after_discount'];
     actualPrice = json['actual_price'];
     categoryId = json['category_id'];
+    limit = json['limit'];
     description = json['description'];
     status = json['status'];
     rejectReason = json['reject_reason'];
     active = json['active'];
+    activiationRequest = json['activiation_request'];
     merchantId = json['merchant_id'];
     createdBy = json['created_by'];
     createdAt = json['created_at'];
@@ -335,6 +355,7 @@ class DealData {
     image = json['image'] != null ? ImageModel.fromJson(json['image']) : null;
     dealIsExpired = json['dealIsExpired'];
     typeName = json['TypeName'];
+    activationRequestFor = json['activationRequestFor'];
   }
 
   Map<String, dynamic> toJson() {
@@ -350,10 +371,12 @@ class DealData {
     data['after_discount'] = afterDiscount;
     data['actual_price'] = actualPrice;
     data['category_id'] = categoryId;
+    data['limit'] = limit;
     data['description'] = description;
     data['status'] = status;
     data['reject_reason'] = rejectReason;
     data['active'] = active;
+    data['activiation_request'] = activiationRequest;
     data['merchant_id'] = merchantId;
     data['created_by'] = createdBy;
     data['created_at'] = createdAt;
@@ -366,6 +389,153 @@ class DealData {
     }
     data['dealIsExpired'] = dealIsExpired;
     data['TypeName'] = typeName;
+    data['activationRequestFor'] = activationRequestFor;
+    return data;
+  }
+}
+
+class DealDetails {
+  int? id;
+  String? name;
+  String? discount;
+  String? type;
+  String? price;
+  String? additionalDiscount;
+  dynamic additionalDiscountDate;
+  String? discountOnPrice;
+  String? afterDiscount;
+  String? actualPrice;
+  String? categoryId;
+  String? limit;
+  String? description;
+  String? status;
+  String? rejectReason;
+  String? active;
+  String? activiationRequest;
+  String? merchantId;
+  String? createdBy;
+  String? createdAt;
+  String? updatedAt;
+  String? expiry;
+  List<ImageModel>? images;
+  List<Tags>? tags;
+  List<BranchData>? branches;
+  int? dealIsExpired;
+  String? typeName;
+  String? activationRequestFor;
+
+  DealDetails(
+      {this.id,
+      this.name,
+      this.discount,
+      this.type,
+      this.price,
+      this.additionalDiscount,
+      this.additionalDiscountDate,
+      this.discountOnPrice,
+      this.afterDiscount,
+      this.actualPrice,
+      this.categoryId,
+      this.limit,
+      this.description,
+      this.status,
+      this.rejectReason,
+      this.active,
+      this.activiationRequest,
+      this.merchantId,
+      this.createdBy,
+      this.createdAt,
+      this.updatedAt,
+      this.expiry,
+      this.images,
+      this.tags,
+      this.branches,
+      this.dealIsExpired,
+      this.typeName,
+      this.activationRequestFor});
+
+  DealDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    discount = json['discount'];
+    type = json['type'];
+    price = json['price'];
+    additionalDiscount = json['additional_discount'];
+    additionalDiscountDate = json['additional_discount_date'];
+    discountOnPrice = json['discount_on_price'];
+    afterDiscount = json['after_discount'];
+    actualPrice = json['actual_price'];
+    categoryId = json['category_id'];
+    limit = json['limit'];
+    description = json['description'];
+    status = json['status'];
+    rejectReason = json['reject_reason'];
+    active = json['active'];
+    activiationRequest = json['activiation_request'];
+    merchantId = json['merchant_id'];
+    createdBy = json['created_by'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    expiry = json['expiry'];
+    if (json['images'] != null) {
+      images = <ImageModel>[];
+      json['images'].forEach((v) {
+        images!.add(ImageModel.fromJson(v));
+      });
+    }
+    if (json['tags'] != null) {
+      tags = <Tags>[];
+      json['tags'].forEach((v) {
+        tags!.add(Tags.fromJson(v));
+      });
+    }
+    if (json['branches'] != null) {
+      branches = <BranchData>[];
+      json['branches'].forEach((v) {
+        branches!.add(BranchData.fromJson(v));
+      });
+    }
+    dealIsExpired = json['dealIsExpired'];
+    typeName = json['TypeName'];
+    activationRequestFor = json['activationRequestFor'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['discount'] = discount;
+    data['type'] = type;
+    data['price'] = price;
+    data['additional_discount'] = additionalDiscount;
+    data['additional_discount_date'] = additionalDiscountDate;
+    data['discount_on_price'] = discountOnPrice;
+    data['after_discount'] = afterDiscount;
+    data['actual_price'] = actualPrice;
+    data['category_id'] = categoryId;
+    data['limit'] = limit;
+    data['description'] = description;
+    data['status'] = status;
+    data['reject_reason'] = rejectReason;
+    data['active'] = active;
+    data['activiation_request'] = activiationRequest;
+    data['merchant_id'] = merchantId;
+    data['created_by'] = createdBy;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['expiry'] = expiry;
+    if (images != null) {
+      data['images'] = images!.map((v) => v.toJson()).toList();
+    }
+    if (tags != null) {
+      data['tags'] = tags!.map((v) => v.toJson()).toList();
+    }
+    if (branches != null) {
+      data['branches'] = branches!.map((v) => v.toJson()).toList();
+    }
+    data['dealIsExpired'] = dealIsExpired;
+    data['TypeName'] = typeName;
+    data['activationRequestFor'] = activationRequestFor;
     return data;
   }
 }

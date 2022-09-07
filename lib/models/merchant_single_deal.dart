@@ -1,26 +1,23 @@
-import 'package:gigi_app/models/deal_model.dart';
+import 'package:gigi_app/models/category_model.dart';
 
+import 'branch_model.dart';
 import 'image_model.dart';
 
-class GetAllCategoriesModel {
+class MerchantSingleDeal {
   bool? status;
   int? responseCode;
   String? message;
-  List<CategoryData>? data;
+  MerchantSingleDealData? data;
 
-  GetAllCategoriesModel(
-      {this.status, this.responseCode, this.message, this.data});
+  MerchantSingleDeal({this.status, this.responseCode, this.message, this.data});
 
-  GetAllCategoriesModel.fromJson(Map<String, dynamic> json) {
+  MerchantSingleDeal.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     responseCode = json['responseCode'];
     message = json['message'];
-    if (json['data'] != null) {
-      data = <CategoryData>[];
-      json['data'].forEach((v) {
-        data!.add(CategoryData.fromJson(v));
-      });
-    }
+    data = json['data'] != null
+        ? MerchantSingleDealData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,101 +26,25 @@ class GetAllCategoriesModel {
     data['responseCode'] = responseCode;
     data['message'] = message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class CategoryData {
-  int? id;
-  String? name;
-  String? image;
-  String? parentId;
-  String? status;
-  String? createdAt;
-  String? updatedAt;
-  String? imagePath;
-
-  CategoryData(
-      {this.id,
-      this.name,
-      this.image,
-      this.parentId,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.imagePath});
-
-  CategoryData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    image = json['image'];
-    parentId = json['parent_id'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    imagePath = json['imagePath'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['image'] = image;
-    data['parent_id'] = parentId;
-    data['status'] = status;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['imagePath'] = imagePath;
-    return data;
-  }
-}
-
-class SearchModel {
-  bool? status;
-  int? responseCode;
-  String? message;
-  List<DealData>? data;
-
-  SearchModel({this.status, this.responseCode, this.message, this.data});
-
-  SearchModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    responseCode = json['responseCode'];
-    message = json['message'];
-    if (json['data'] != null) {
-      data = <DealData>[];
-      json['data'].forEach((v) {
-        data!.add(DealData.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['responseCode'] = responseCode;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class SearchData {
+class MerchantSingleDealData {
   int? id;
   String? name;
   String? discount;
   String? type;
   String? price;
   String? additionalDiscount;
-  String? additionalDiscountDate;
+  dynamic additionalDiscountDate;
   String? discountOnPrice;
   String? afterDiscount;
   String? actualPrice;
   String? categoryId;
+  String? limit;
   String? description;
   String? status;
   String? rejectReason;
@@ -134,14 +55,15 @@ class SearchData {
   String? createdAt;
   String? updatedAt;
   String? expiry;
-  String? merchantName;
   String? categoryName;
-  ImageModel? image;
+  List<ImageModel>? images;
+  List<Tags>? tags;
+  List<BranchData>? branches;
   int? dealIsExpired;
   String? typeName;
   String? activationRequestFor;
 
-  SearchData(
+  MerchantSingleDealData(
       {this.id,
       this.name,
       this.discount,
@@ -153,6 +75,7 @@ class SearchData {
       this.afterDiscount,
       this.actualPrice,
       this.categoryId,
+      this.limit,
       this.description,
       this.status,
       this.rejectReason,
@@ -163,14 +86,15 @@ class SearchData {
       this.createdAt,
       this.updatedAt,
       this.expiry,
-      this.merchantName,
       this.categoryName,
-      this.image,
+      this.images,
+      this.tags,
+      this.branches,
       this.dealIsExpired,
       this.typeName,
       this.activationRequestFor});
 
-  SearchData.fromJson(Map<String, dynamic> json) {
+  MerchantSingleDealData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     discount = json['discount'];
@@ -182,6 +106,7 @@ class SearchData {
     afterDiscount = json['after_discount'];
     actualPrice = json['actual_price'];
     categoryId = json['category_id'];
+    limit = json['limit'];
     description = json['description'];
     status = json['status'];
     rejectReason = json['reject_reason'];
@@ -192,9 +117,25 @@ class SearchData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     expiry = json['expiry'];
-    merchantName = json['merchant_name'];
     categoryName = json['category_name'];
-    image = json['image'] != null ? ImageModel.fromJson(json['image']) : null;
+    if (json['images'] != null) {
+      images = <ImageModel>[];
+      json['images'].forEach((v) {
+        images!.add(ImageModel.fromJson(v));
+      });
+    }
+    if (json['tags'] != null) {
+      tags = <Tags>[];
+      json['tags'].forEach((v) {
+        tags!.add(Tags.fromJson(v));
+      });
+    }
+    if (json['branches'] != null) {
+      branches = <BranchData>[];
+      json['branches'].forEach((v) {
+        branches!.add(BranchData.fromJson(v));
+      });
+    }
     dealIsExpired = json['dealIsExpired'];
     typeName = json['TypeName'];
     activationRequestFor = json['activationRequestFor'];
@@ -213,6 +154,7 @@ class SearchData {
     data['after_discount'] = afterDiscount;
     data['actual_price'] = actualPrice;
     data['category_id'] = categoryId;
+    data['limit'] = limit;
     data['description'] = description;
     data['status'] = status;
     data['reject_reason'] = rejectReason;
@@ -223,42 +165,19 @@ class SearchData {
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['expiry'] = expiry;
-    data['merchant_name'] = merchantName;
     data['category_name'] = categoryName;
-    if (image != null) {
-      data['image'] = image!.toJson();
+    if (images != null) {
+      data['images'] = images!.map((v) => v.toJson()).toList();
+    }
+    if (tags != null) {
+      data['tags'] = tags!.map((v) => v.toJson()).toList();
+    }
+    if (branches != null) {
+      data['branches'] = branches!.map((v) => v.toJson()).toList();
     }
     data['dealIsExpired'] = dealIsExpired;
     data['TypeName'] = typeName;
     data['activationRequestFor'] = activationRequestFor;
-    return data;
-  }
-}
-
-class Tags {
-  int? id;
-  String? dealId;
-  String? tag;
-  String? createdAt;
-  String? updatedAt;
-
-  Tags({this.id, this.dealId, this.tag, this.createdAt, this.updatedAt});
-
-  Tags.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    dealId = json['deal_id'];
-    tag = json['tag'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['deal_id'] = dealId;
-    data['tag'] = tag;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
     return data;
   }
 }

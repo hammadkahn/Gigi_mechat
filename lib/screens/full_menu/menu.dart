@@ -20,7 +20,7 @@ class Menu extends StatelessWidget {
     SizeConfig.init(context);
     return SafeArea(
         bottom: false,
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.only(top: 27, left: 24, right: 24),
           child: SingleChildScrollView(
             child: Column(
@@ -31,7 +31,7 @@ class Menu extends StatelessWidget {
                 const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.50,
+                  height: MediaQuery.of(context).size.height / 2.5,
                   child: FutureBuilder<Map<String, dynamic>>(
                     future: DashBoardStats().getDashBoardStats(token),
                     builder: (context, snapshot) {
@@ -39,19 +39,27 @@ class Menu extends StatelessWidget {
                       if (snapshot.hasData) {
                         children = [
                           Dashboard(
-                            totalSale: snapshot.data!['data']['totalDealSale']
-                                .toString(),
+                            totalSale:
+                                snapshot.data!['data']['totalSale'].toString(),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
                           Stacked_container(
                             discountAvailed: snapshot.data!['data']
                                     ['totalDealRadeem']
                                 .toString(),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
                           Stacked_container2(
+                            title: 'Total Active Deals',
                             totalActiveDeals: snapshot.data!['data']
                                     ['totalActiveDeals']
+                                .toString(),
+                          ),
+                          const SizedBox(height: 8),
+                          Stacked_container2(
+                            title: 'Total Deal Sale',
+                            totalActiveDeals: snapshot.data!['data']
+                                    ['totalDealSale']
                                 .toString(),
                           ),
                         ];
@@ -84,10 +92,8 @@ class Menu extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(height: 10),
                 SizedBox(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height / 2,
+                  height: MediaQuery.of(context).size.height / 1.5,
                   child: FutureBuilder<MerchantListOfDeals>(
                     future: DealServices().getAllDeals(token: token),
                     builder: (context, snapshot) {
@@ -111,13 +117,16 @@ class Menu extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 var data = snapshot.data!.data![index];
                                 return InkWell(
-                                  onTap: () => showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      context: context,
-                                      builder: (context) => sheet_deals(
-                                            dealData: data,
-                                            token: token,
-                                          )),
+                                  onTap: () {
+                                    print(data.id);
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        builder: (context) => sheet_deals(
+                                              dealId: data.id.toString(),
+                                              token: token,
+                                            ));
+                                  },
                                   child: Deals(
                                     token: token,
                                     merchantListOfDeals: data,
@@ -130,9 +139,6 @@ class Menu extends StatelessWidget {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 25,
-                )
               ],
             ),
           ),

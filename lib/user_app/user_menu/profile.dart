@@ -94,7 +94,7 @@ class StoreProfile extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '${data.averageRating ?? 0}',
+                                  '${data.averageRating.toStringAsFixed(2) ?? 0}',
                                   style: const TextStyle(
                                       fontSize: 30, color: Color(0xff172995)),
                                   textAlign: TextAlign.center,

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/models/deal_model.dart';
+import 'package:gigi_app/models/merchant_single_deal.dart';
 import 'package:http/http.dart' as http;
 
 class DealServices {
@@ -24,7 +25,7 @@ class DealServices {
     }
   }
 
-  Future<Map<String, dynamic>> getSingleDeal({
+  Future<MerchantSingleDeal> getSingleDeal({
     required String dealId,
     required String token,
   }) async {
@@ -35,12 +36,9 @@ class DealServices {
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
 
-      final result = jsonDecode(response.body) as Map<String, dynamic>;
+      final result = MerchantSingleDeal.fromJson(jsonDecode(response.body));
 
       if (response.statusCode == 200) {
-        if (kDebugMode) {
-          print(response.body);
-        }
         return result;
       } else {
         if (kDebugMode) {
@@ -71,6 +69,7 @@ class DealServices {
         return result['error'];
       }
     } catch (e) {
+      debugPrint('err: $e');
       throw Exception(e);
     }
   }

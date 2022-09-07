@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:gigi_app/models/category_model.dart';
 import 'package:gigi_app/services/auth/authentication.dart';
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:intl/intl.dart';
+import '../../services/categories/category_services.dart';
 import '../../user_app/verify _code/user_verification.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -26,15 +27,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final desCtr = TextEditingController();
   final branchCtr = TextEditingController();
   final catCtr = TextEditingController();
+  final catCtr2 = TextEditingController();
 
   double? longitude;
   double? latitued;
 
   var isLoading = false;
+  bool catLoaded = false;
+  List<CategoryData>? catData;
+
+  Future<void> loadAllCategories() async {
+    final result = await CategoryServices().getAllCategories();
+
+    setState(() {
+      catData = result.data;
+    });
+  }
 
   @override
   void initState() {
-    debugPrint(_key.currentState.toString());
+    loadAllCategories().whenComplete(() {
+      setState(() {
+        catLoaded = true;
+      });
+    });
+
     super.initState();
   }
 
@@ -88,6 +105,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.only(top: 16, bottom: 16),
                   child: TextFormField(
                     controller: phoneNumberCtr,
+                    keyboardType: TextInputType.phone,
+                    maxLength: 11,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -119,40 +138,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //     return null;
                 //   },
                 // ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 16),
-                  child: TextField(
-                    controller: dobCtr,
-                    decoration: InputDecoration(
-                        icon: const Icon(Icons.calendar_today_rounded),
-                        labelText: 'Date of Birth',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Color(0xFFEAEAEF)),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Color(0xFFEAEAEF)),
-                          borderRadius: BorderRadius.circular(16),
-                        )),
-                    onTap: () async {
-                      DateTime? pickdate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1970),
-                          lastDate: DateTime(2030));
-                      if (pickdate != null) {
-                        setState(() {
-                          dobCtr.text =
-                              DateFormat('dd-MM-yyyy').format(pickdate);
-                        });
-                      }
-                    },
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 16, bottom: 16),
+                //   child: TextField(
+                //     controller: dobCtr,
+                //     decoration: InputDecoration(
+                //         icon: const Icon(Icons.calendar_today_rounded),
+                //         labelText: 'Date of Birth',
+                //         enabledBorder: OutlineInputBorder(
+                //           borderSide:
+                //               const BorderSide(color: Color(0xFFEAEAEF)),
+                //           borderRadius: BorderRadius.circular(16),
+                //         ),
+                //         focusedBorder: OutlineInputBorder(
+                //           borderSide:
+                //               const BorderSide(color: Color(0xFFEAEAEF)),
+                //           borderRadius: BorderRadius.circular(16),
+                //         )),
+                //     onTap: () async {
+                //       DateTime? pickdate = await showDatePicker(
+                //           context: context,
+                //           initialDate: DateTime.now(),
+                //           firstDate: DateTime(1970),
+                //           lastDate: DateTime(2030));
+                //       if (pickdate != null) {
+                //         setState(() {
+                //           dobCtr.text =
+                //               DateFormat('dd-MM-yyyy').format(pickdate);
+                //         });
+                //       }
+                //     },
+                //   ),
+                // ),
                 TextFormField(
                   controller: emailCtr,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -161,7 +181,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Email',
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !value.contains('@')) {
                       return 'email is required';
                     }
                     return null;
@@ -279,6 +301,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.only(bottom: 26),
                   child: TextFormField(
                     controller: desCtr,
+                    maxLines: 3,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
@@ -289,16 +312,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  child: catLoaded == false
+                      ? const Center(child: CircularProgressIndicator())
+                      : GridView.builder(
+                          itemCount: catData!.length,
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 8,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 10),
+                            mainAxisSpacing: 8,
+                          ),
+                          itemBuilder: (context, index) {
+                            return Text(
+                                '${catData![index].id}: ${catData![index].name}');
+                          }),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 26),
                   child: TextFormField(
                     controller: catCtr,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      hintText: 'Categories',
+                      hintText: 'Enter only one Category id from above list',
                       // suffix: Icon(Icons.visibility)
                     ),
                     validator: (value) {
@@ -309,6 +357,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 26),
+                //   child: TextFormField(
+                //     controller: catCtr2,
+                //     keyboardType: TextInputType.number,
+                //     decoration: InputDecoration(
+                //       enabledBorder: OutlineInputBorder(
+                //         borderSide: const BorderSide(color: Color(0xFFEAEAEF)),
+                //         borderRadius: BorderRadius.circular(16),
+                //       ),
+                //       hintText: 'Enter Second Category id',
+                //       // suffix: Icon(Icons.visibility)
+                //     ),
+                //     validator: (value) {
+                //       if (value == null || value.isEmpty) {
+                //         return 'Please enter category';
+                //       }
+                //       return null;
+                //     },
+                //   ),
+                // ),
                 CustomButton(
                   isLoading: isLoading,
                   text: 'Next',
@@ -398,6 +467,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'lat': '${latitued ?? ''}',
         'long': '${longitude ?? ''}',
         'categories[0]': catCtr.text,
+        'categories[1]': catCtr2.text,
       };
 
       //get response from ApiClient

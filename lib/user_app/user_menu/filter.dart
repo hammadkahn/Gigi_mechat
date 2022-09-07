@@ -2,26 +2,68 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:gigi_app/shared/custom_button.dart';
+import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../services/deals/user_deals_services.dart';
 
 class filter_list extends StatefulWidget {
-  const filter_list({Key? key}) : super(key: key);
+  const filter_list({Key? key, required this.token}) : super(key: key);
+  final String token;
 
   @override
   State<filter_list> createState() => _filter_listState();
 }
 
 class _filter_listState extends State<filter_list> {
-  DealProvider? dealProvider;
   final List<String> items = ['asc', 'desc'];
   String? selectedValue;
-  RangeValues values = const RangeValues(3, 20);
+  Country? selectedCountry;
+  String? currentCountry = 'Loading...';
+  String? currentCity;
+  List<dynamic>? systemCitiesDropdown;
+
+  Future<void> getCountryAndCity() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      // currentCity = pref.getString('city');
+      currentCountry = pref.getString('country');
+      // address = pref.getString('address');
+    });
+  }
+
+  Future<void> fetchCitiesAndCountries() async {
+    final result = await UserDealServices()
+        .getSystemCities(widget.token, currentCountry ?? '');
+    debugPrint('country : $currentCountry');
+    setState(() {
+      systemCitiesDropdown = result['data'];
+    });
+  }
+
   RangeValues valuess = const RangeValues(0, 100);
+  bool countryFetched = false;
 
   @override
-  void initState() {
-    super.initState();
-    dealProvider = Provider.of<DealProvider>(context, listen: false);
+  void didChangeDependencies() {
+    getCountryAndCity()
+        .whenComplete(() => fetchCitiesAndCountries().whenComplete(() {
+              setState(() {
+                countryFetched = true;
+              });
+            }));
+
+    selectedCountry = const Country(
+      name: "Azerbaijan",
+      flag: "🇦🇿",
+      code: "AZ",
+      dialCode: "994",
+      minLength: 9,
+      maxLength: 9,
+    );
+    super.didChangeDependencies();
   }
 
   @override
@@ -42,7 +84,7 @@ class _filter_listState extends State<filter_list> {
               endIndent: 120,
             ),
             const SizedBox(
-              height: 30,
+              height: 8,
             ),
             const Center(
               child: Text(
@@ -80,7 +122,6 @@ class _filter_listState extends State<filter_list> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -103,7 +144,7 @@ class _filter_listState extends State<filter_list> {
               onChanged: (value) {
                 setState(() {
                   selectedValue = value as String;
-                  dealProvider!.setDiscount(value);
+                  // dealProvider!.setDiscount(value);
                 });
               },
               icon: const Icon(
@@ -117,7 +158,7 @@ class _filter_listState extends State<filter_list> {
               buttonPadding: const EdgeInsets.only(left: 14, right: 14),
               buttonDecoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
-                color: Colors.blue,
+                color: const Color(0xFF030381),
               ),
               buttonElevation: 2,
               itemHeight: 40,
@@ -127,16 +168,145 @@ class _filter_listState extends State<filter_list> {
               dropdownPadding: null,
               dropdownDecoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
-                color: Colors.blue,
+                color: const Color(0xFF030381),
               ),
               dropdownElevation: 8,
               scrollbarRadius: const Radius.circular(40),
               scrollbarThickness: 6,
               scrollbarAlwaysShow: true,
               offset: const Offset(-20, 0),
+              underline: const SizedBox(),
             ),
             const SizedBox(
               height: 30,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    onPressed: () => showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) => SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.3,
+                        child: CountryPickerDialog(
+                            searchText: 'Search Country',
+                            countryList: countries,
+                            onCountryChanged: (value) {
+                              setState(() {
+                                selectedCountry = value;
+                                currentCountry = value.name;
+                              });
+                              fetchCitiesAndCountries().whenComplete(() {
+                                if (systemCitiesDropdown == null ||
+                                    systemCitiesDropdown!.isEmpty) {
+                                  setState(() {
+                                    countryFetched = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    countryFetched = true;
+                                  });
+                                }
+                              });
+                              debugPrint('selected: $currentCountry');
+                            },
+                            selectedCountry: selectedCountry!,
+                            filteredCountries: countries),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                      primary: const Color(0xFF030381),
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 15, bottom: 15),
+                        child: Text(currentCountry ?? 'Loading...')),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                currentCountry != null && countryFetched == true
+                    ? Expanded(
+                        flex: 2,
+                        child: systemCitiesDropdown == null
+                            ? const Text('no city found')
+                            : DropdownButton2(
+                                isExpanded: true,
+                                hint: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        systemCitiesDropdown![0],
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                items: systemCitiesDropdown!
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: currentCity,
+                                onChanged: (value) {
+                                  setState(() {
+                                    currentCity = value as String;
+                                    // dealProvider!.setDiscount(value);
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_drop_down_outlined,
+                                ),
+                                iconSize: 14,
+                                iconEnabledColor: Colors.white,
+                                iconDisabledColor: Colors.grey,
+                                buttonHeight: 50,
+                                buttonWidth: 160,
+                                buttonPadding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                buttonDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: const Color(0xFF030381),
+                                ),
+                                buttonElevation: 2,
+                                itemHeight: 40,
+                                itemPadding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                dropdownMaxHeight: 200,
+                                dropdownWidth: 200,
+                                dropdownPadding: null,
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: const Color(0xFF030381),
+                                ),
+                                dropdownElevation: 8,
+                                scrollbarRadius: const Radius.circular(40),
+                                scrollbarThickness: 6,
+                                scrollbarAlwaysShow: true,
+                                offset: const Offset(-20, 0),
+                                underline: const SizedBox(),
+                              ),
+                      )
+                    : const Text('Loading...'),
+              ],
             ),
             const SizedBox(
               height: 20,
@@ -168,7 +338,19 @@ class _filter_listState extends State<filter_list> {
             CustomButton(
                 text: 'Submit',
                 onPressed: () {
-                  dealProvider!.setPriceRange(valuess);
+                  Provider.of<DealProvider>(context, listen: false).setFitlers([
+                    '${valuess.end}',
+                    valuess.start.toString(),
+                    selectedValue ?? 'asc',
+                    currentCountry ?? '',
+                    currentCity ?? systemCitiesDropdown![0]
+                  ]);
+                  // SearchFilter().setFitlers(
+                  //     '${valuess.end}',
+                  //     valuess.start.toString(),
+                  //     selectedValue ?? 'asc',
+                  //     currentCountry,
+                  //     currentCity);
                   Navigator.of(context).pop();
                 }),
             const SizedBox(

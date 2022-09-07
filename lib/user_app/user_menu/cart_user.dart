@@ -4,8 +4,10 @@ import 'package:gigi_app/shared/custom_button.dart';
 import 'package:gigi_app/user_app/user_menu/order_status1.dart';
 import 'package:gigi_app/user_app/user_menu/user_menu.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../providers/order.dart';
+import '../../services/user_merchant_services.dart';
 import 'cart_deals.dart';
 
 class Cart_user extends StatefulWidget {
@@ -18,6 +20,23 @@ class Cart_user extends StatefulWidget {
 
 class _Cart_userState extends State<Cart_user> {
   String? productId;
+
+  String userLocation = 'Loading...';
+
+  Future<void> getUserAddress() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      userLocation =
+          '${preferences.getString('city')}, ${preferences.getString('country')}';
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getUserAddress();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,17 +75,17 @@ class _Cart_userState extends State<Cart_user> {
                     padding: const EdgeInsets.only(left: 22),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          'Cafe Bistrovia',
-                          style: TextStyle(
+                          userLocation,
+                          style: const TextStyle(
                               fontFamily: 'Mulish',
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Color(0xFF8E8EA9)),
                         ),
-                        SizedBox(height: 4),
-                        Text(
+                        const SizedBox(height: 4),
+                        const Text(
                           'Your cart',
                           style: TextStyle(
                               fontFamily: 'Mulish',

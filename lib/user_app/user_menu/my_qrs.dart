@@ -13,6 +13,14 @@ class My_Qrs extends StatefulWidget {
 }
 
 class _My_QrsState extends State<My_Qrs> {
+  DealProvider? provider;
+
+  @override
+  void didChangeDependencies() {
+    provider = Provider.of<DealProvider>(context, listen: false);
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +65,7 @@ class _My_QrsState extends State<My_Qrs> {
             Expanded(
               flex: 6,
               child: FutureBuilder<CartListModel>(
-                future: Provider.of<DealProvider>(context, listen: false)
-                    .getCartItemsList(widget.token),
+                future: provider!.getCartItemsList(widget.token),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
@@ -79,12 +86,19 @@ class _My_QrsState extends State<My_Qrs> {
                         } else {
                           return ListView.builder(
                             reverse: true,
-                            itemCount: snapshot.data!.data!.length,
+                            itemCount: provider!.cartData.length,
                             itemBuilder: (context, index) {
-                              return qr_cont(
-                                cartData: snapshot.data!.data![index],
-                                token: widget.token,
-                              );
+                              if (provider!
+                                      .cartData[index].availabilityStatus ==
+                                  "Available") {
+                                return qr_cont(
+                                  key: Key(snapshot.data!.data![index].name!),
+                                  cartData: provider!.cartData[index],
+                                  token: widget.token,
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
                             },
                           );
                         }

@@ -72,11 +72,14 @@ class MerchantAuthServices {
         preferences.setString('status', result['data']['StatusName']);
         preferences.setString('user_type', result['data']['type']);
         preferences.setInt('userId', result['data']['id']);
-        print(result['data']);
+
         if (result['data']['type'] == '1') {
           preferences.setString(
               'country', result['data']['location']['country']);
           preferences.setString('city', result['data']['location']['city']);
+          preferences.setString('lat', result['data']['location']['lat']);
+          preferences.setString('long', result['data']['location']['long']);
+
           if (result['data']['location']['address'] != null) {
             preferences.setString('address',
                 result['data']['location']['address'] ?? 'no address given');

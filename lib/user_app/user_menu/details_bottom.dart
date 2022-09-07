@@ -7,12 +7,14 @@ class bottom_detail extends StatelessWidget {
       required this.dealData,
       required this.price,
       required this.totalReviews,
-      required this.length})
+      required this.length,
+      required this.token})
       : super(key: key);
-  final DealData dealData;
-  final String price;
+  final DealDetails dealData;
+  final String? price;
   final String totalReviews;
   final String length;
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,11 @@ class bottom_detail extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 10),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
             child: Text(
-              'Offer of the Week',
-              style: TextStyle(
+              dealData.dealIsExpired == 0 ? 'Available' : 'Expired',
+              style: const TextStyle(
                   fontFamily: 'Mulish',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
@@ -37,13 +39,16 @@ class bottom_detail extends StatelessWidget {
               padding: const EdgeInsets.only(top: 4),
               child: Row(
                 children: [
-                  Text(
-                    dealData.name ?? 'no name',
-                    style: const TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF4A4A6A)),
+                  Expanded(
+                    child: Text(
+                      dealData.name ?? 'no name',
+                      softWrap: true,
+                      style: const TextStyle(
+                          fontFamily: 'Mulish',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF4A4A6A)),
+                    ),
                   ),
                   const Spacer(),
                   Radio(value: 1, groupValue: value, onChanged: (value) {})
@@ -58,13 +63,16 @@ class bottom_detail extends StatelessWidget {
                     width: 8,
                     height: 8,
                   ),
-                  const Text(
-                    'Cafe Bistrovia - Baku, Azerbaijan',
-                    style: TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF8E8EA9)),
+                  Expanded(
+                    child: Text(
+                      dealData.branches![0].address ?? 'loading',
+                      softWrap: true,
+                      style: const TextStyle(
+                          fontFamily: 'Mulish',
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF8E8EA9)),
+                    ),
                   ),
                 ],
               )),
@@ -121,7 +129,7 @@ class bottom_detail extends StatelessWidget {
                         color: Color(0xFF0D9BFF)),
                   ),
                   Text(
-                    price,
+                    price ?? '0',
                     style: const TextStyle(
                         fontFamily: 'Mulish',
                         fontSize: 16,
@@ -145,11 +153,11 @@ class bottom_detail extends StatelessWidget {
                   )
                 ],
               )),
-          const Text(
-            'Coupons Left:  100/100',
-            style: TextStyle(
+          Text(
+            'Coupons Left:  ${dealData.limit ?? 0}/100',
+            style: const TextStyle(
                 fontFamily: 'Mulish',
-                fontSize: 7,
+                fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF8E8EA9)),
           ),

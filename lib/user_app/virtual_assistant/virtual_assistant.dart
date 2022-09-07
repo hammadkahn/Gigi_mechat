@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/shared/custom_button.dart';
-import 'package:gigi_app/shared/search_field.dart';
 import 'package:gigi_app/shared/toggle_button.dart';
 
 class Virtual_user extends StatelessWidget {
@@ -75,10 +74,10 @@ class Virtual_user extends StatelessWidget {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xff8E8EA9))),
-                          const SearchField(
-                            searchText: 'Search',
-                            token: '',
-                          ),
+                          // const SearchField(
+                          //   searchText: 'Search',
+                          //   token: '',
+                          // ),
                           const Toggle_Button(),
                           const Spacer(),
                           CustomButton(

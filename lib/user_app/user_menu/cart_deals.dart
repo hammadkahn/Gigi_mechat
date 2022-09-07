@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/providers/order.dart';
 import 'package:provider/provider.dart';
 
 import '../../constant/size_constants.dart';
+import '../../services/user_merchant_services.dart';
 
-class cart_deals extends StatelessWidget {
+class cart_deals extends StatefulWidget {
   const cart_deals({
     Key? key,
     required this.token,
@@ -18,13 +20,37 @@ class cart_deals extends StatelessWidget {
   static const String baseUrl = 'https://gigiapi.zanforthstaging.com/';
 
   @override
+  State<cart_deals> createState() => _cart_dealsState();
+}
+
+class _cart_dealsState extends State<cart_deals> {
+  String? address = 'Loading...';
+
+  Future<void> getMerchantAddress() async {
+    final result = await UserMerchantServices().singleMerchantProfile(
+      id: widget.cart.merchantId.toString(),
+      token: widget.token,
+    );
+
+    setState(() {
+      address = result.data!.branches![0].address;
+    });
+  }
+
+  @override
+  void initState() {
+    getMerchantAddress().whenComplete(() => debugPrint(address));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // final dealProvider = Provider.of<DealProvider>(context, listen: false);
 
     SizeConfig.init(context);
     return Container(
       width: SizeConfig.screenWidth,
-      height: 120,
+      height: 170,
       margin: const EdgeInsets.only(top: 8, bottom: 8),
       decoration: const BoxDecoration(
           color: Color(0xFFFFFFFF),
@@ -33,19 +59,17 @@ class cart_deals extends StatelessWidget {
         children: [
           Expanded(
             flex: 2,
-            child: // dealProvider!.dealData.images == null ||
-                //     dealProvider!.dealData.images == null
-                // ?
-                Image.asset(
-              'assets/images/cart_deal.png',
-              height: 119,
-              fit: BoxFit.cover,
-            ),
-            // : Image.network(
-            //     '$baseUrl${dealProvider!.dealData.images![0].path}/${dealProvider!.dealData.images![0].image}',
-            //     height: 119,
-            //     width: 80,
-            //   ),,
+            child: widget.cart.image == null
+                ? Image.asset(
+                    'assets/images/cart_deal.png',
+                    height: 119,
+                    fit: BoxFit.cover,
+                  )
+                : Image.network(
+                    '${ApiUrls.imgBaseUrl}${widget.cart.path}/${widget.cart.image}',
+                    height: 119,
+                    width: 80,
+                  ),
           ),
           Expanded(
             flex: 4,
@@ -57,7 +81,7 @@ class cart_deals extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
-                        cart.title!,
+                        widget.cart.title!,
                         style: const TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 14,
@@ -73,13 +97,17 @@ class cart_deals extends StatelessWidget {
                             width: 8,
                             height: 8,
                           ),
-                          const Text(
-                            'Cafe Bistrovia - Baku, Azerbaijan',
-                            style: TextStyle(
-                                fontFamily: 'Mulish',
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF848484)),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 270,
+                            child: Text(
+                              address!,
+                              softWrap: true,
+                              style: const TextStyle(
+                                  fontFamily: 'Mulish',
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF848484)),
+                            ),
                           ),
                         ],
                       )),
@@ -90,7 +118,7 @@ class cart_deals extends StatelessWidget {
                           Image.asset('assets/images/rating.png',
                               width: 6, height: 6),
                           Text(
-                            cart.reviews!,
+                            widget.cart.reviews!,
                             style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 7,
@@ -98,7 +126,7 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFF5F5F5F)),
                           ),
                           Text(
-                            '(${cart.reviewsCount} reviews)',
+                            '(${widget.cart.reviewsCount} reviews)',
                             style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 4,
@@ -120,7 +148,7 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFFFF6767)),
                           ),
                           Text(
-                            cart.price!,
+                            widget.cart.price!,
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 fontFamily: 'Mulish',
@@ -137,7 +165,8 @@ class cart_deals extends StatelessWidget {
                                 color: Color(0xFF0D9BFF)),
                           ),
                           Text(
-                            cart.priceAfterDiscount!,
+                            double.parse(widget.cart.priceAfterDiscount!)
+                                .toStringAsFixed(2),
                             style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 16,
@@ -153,7 +182,7 @@ class cart_deals extends StatelessWidget {
                                     BorderRadius.all(Radius.circular(3))),
                             child: Center(
                               child: Text(
-                                '${cart.discountOnPrice}% OFF',
+                                '${widget.cart.discountOnPrice}% OFF',
                                 style: const TextStyle(
                                     fontSize: 5,
                                     fontFamily: 'Mulish',
@@ -175,7 +204,7 @@ class cart_deals extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                          onTap: () => value.removeSingleItem(cart.id!),
+                          onTap: () => value.removeSingleItem(widget.cart.id!),
                           child: Container(
                             height: 32,
                             width: 32,
@@ -196,7 +225,7 @@ class cart_deals extends StatelessWidget {
                           borderRadius: BorderRadius.circular(3),
                         ),
                         child: Text(
-                          cart.qty!,
+                          widget.cart.qty!,
                           style: const TextStyle(
                               color: Color(0xff666687),
                               fontSize: 14,
@@ -207,13 +236,14 @@ class cart_deals extends StatelessWidget {
                       InkWell(
                           onTap: () {
                             value.addTCart(
-                                id: cart.id,
-                                price: cart.price,
-                                title: cart.title,
-                                image: cart.image ?? '',
+                                merchantId: widget.cart.merchantId,
+                                id: widget.cart.id,
+                                price: widget.cart.price,
+                                title: widget.cart.title,
+                                image: widget.cart.image ?? '',
                                 reviews: '0',
-                                discountOnPrice: cart.discountOnPrice,
-                                path: cart.path ?? '');
+                                discountOnPrice: widget.cart.discountOnPrice,
+                                path: widget.cart.path ?? '');
                           },
                           child: Container(
                             height: 32,

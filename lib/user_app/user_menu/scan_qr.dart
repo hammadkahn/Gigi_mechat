@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gigi_app/models/branch_model.dart';
 import 'package:gigi_app/models/cart_model.dart';
-import 'package:gigi_app/models/merchant_model.dart';
-import 'package:gigi_app/services/user_merchant_services.dart';
+import 'package:gigi_app/providers/deal_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class scan_qr extends StatefulWidget {
@@ -15,15 +16,14 @@ class scan_qr extends StatefulWidget {
 }
 
 class _scan_qrState extends State<scan_qr> {
-  SingleMerchant? merchant;
+  DealProvider? _provider;
+  List<BranchData>? branchData;
 
   Future<void> getMerchantDetails() async {
-    final result = await UserMerchantServices().singleMerchantProfile(
-      id: widget.qrCode.merchantId.toString(),
-      token: widget.token,
-    );
+    final result = await _provider!
+        .singleDealDetails(widget.token, widget.qrCode.id.toString());
     setState(() {
-      merchant = result;
+      branchData = _provider!.dealData.branches;
     });
   }
 
@@ -32,20 +32,25 @@ class _scan_qrState extends State<scan_qr> {
   showAlertDialog() {
     return SizedBox(
       width: double.infinity,
-      height: 100,
+      height: 200,
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: merchant!.data!.branches!.length,
+          itemCount: branchData!.length,
           itemBuilder: ((context, index) {
             return ListTile(
               onTap: () {
                 setState(() {
                   selectedIndex = index;
-                  branchId = merchant!.data!.branches![selectedIndex!].id;
+                  branchId = branchData![index].id;
                   isLoaded = true;
                 });
               },
-              title: Text(merchant!.data!.branches![index].name!),
+              title: Text(branchData![index].name!),
+              subtitle: Text(
+                branchData![index].address ?? 'no address',
+                softWrap: true,
+                style: const TextStyle(),
+              ),
               trailing: Icon(
                 selectedIndex == index ? Icons.circle : Icons.circle_outlined,
                 color: Colors.red,
@@ -58,6 +63,7 @@ class _scan_qrState extends State<scan_qr> {
   bool? isLoaded = false;
   @override
   void initState() {
+    _provider = Provider.of<DealProvider>(context, listen: false);
     getMerchantDetails().whenComplete(() {});
     super.initState();
   }
@@ -68,7 +74,7 @@ class _scan_qrState extends State<scan_qr> {
       child: Scaffold(
         body: Padding(
           padding:
-              const EdgeInsets.only(right: 24, left: 24, top: 55, bottom: 100),
+              const EdgeInsets.only(right: 24, left: 24, top: 15, bottom: 100),
           child: Column(
             children: [
               const Text(
@@ -79,8 +85,8 @@ class _scan_qrState extends State<scan_qr> {
                     fontFamily: 'DMSans',
                     color: Color(0xFF32324D)),
               ),
-              const SizedBox(height: 55),
-              merchant == null
+              const SizedBox(height: 25),
+              branchData == null
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
@@ -88,7 +94,7 @@ class _scan_qrState extends State<scan_qr> {
                       ? showAlertDialog()
                       : QrImage(
                           data:
-                              '${widget.qrCode.purchaseId}:$branchId:${widget.qrCode.purchaseQuantity}:x:${widget.qrCode.discountOnPrice}:${widget.qrCode.price}:${widget.qrCode.type}:Availability: ${widget.qrCode.availabilityStatus}',
+                              '${widget.qrCode.purchaseId}:$branchId:${widget.qrCode.purchaseQuantity}:${widget.qrCode.discountOnPrice}:${widget.qrCode.price}:${widget.qrCode.type}:${widget.qrCode.availabilityStatus}:${widget.qrCode.name}',
                           version: QrVersions.auto,
                           size: 320,
                           gapless: false,
@@ -124,7 +130,7 @@ class _scan_qrState extends State<scan_qr> {
                           color: Color(0xFF343434))),
                   Text(
                       DateFormat('dd-MM-yyyy')
-                          .format(DateTime.parse(widget.qrCode.createdAt!)),
+                          .format(DateTime.parse(widget.qrCode.purchaseDate!)),
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,

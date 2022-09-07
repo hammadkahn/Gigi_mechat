@@ -7,13 +7,17 @@ import 'package:gigi_app/models/category_model.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryServices {
-  Future<GetAllCategoriesModel> getAllCategories(String token) async {
+  Future<GetAllCategoriesModel> getAllCategories({String? token}) async {
     try {
       final response = await http.get(
         ApiUrls.getAllCat,
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       final result = GetAllCategoriesModel.fromJson(jsonDecode(response.body));
+      if (response.statusCode == 429) {
+        throw Exception(
+            'user has sent too many requests in a given amount of time ("rate limiting")');
+      }
       if (response.statusCode == 200) {
         return result;
       } else {
@@ -27,10 +31,12 @@ class CategoryServices {
 
   Future<SearchModel> searchDeal(
       String token, String search, String country, String city,
-      {String? startingDiscount = '0',
-      String? endingDiscount = '100',
-      String? priceOrder = 'asc'}) async {
+      {String? startingDiscount,
+      String? endingDiscount,
+      String? priceOrder}) async {
     try {
+      debugPrint(
+          'city and country : $country, $city, $endingDiscount, $startingDiscount, $priceOrder');
       final response = await http.get(
         Uri.parse(
             '${ApiUrls.baseUrl}user/getNearByDeals?cities[0]=$city&cities[1]=$city&returnType=customPagination&priceSort=$priceOrder&searchText=$search&country=$country&startingDiscount=$startingDiscount&endingDiscount=$endingDiscount'),

@@ -41,7 +41,7 @@ class Categories_user extends StatelessWidget {
               child: SizedBox(
                 height: 131,
                 child: FutureBuilder<GetAllCategoriesModel>(
-                    future: CategoryServices().getAllCategories(token),
+                    future: CategoryServices().getAllCategories(token: token),
                     builder: ((context, snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
@@ -49,8 +49,8 @@ class Categories_user extends StatelessWidget {
                               child: CircularProgressIndicator());
                         default:
                           if (snapshot.hasError) {
-                            return Center(
-                              child: Text(snapshot.error.toString()),
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
                           } else {
                             // return AllCategoriesWidget(
@@ -137,15 +137,15 @@ class Categories_user extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: FutureBuilder<GetAllCategoriesModel>(
-                  future: CategoryServices().getAllCategories(token),
+                  future: CategoryServices().getAllCategories(token: token),
                   builder: ((context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
                         return const Center(child: CircularProgressIndicator());
                       default:
                         if (snapshot.hasError) {
-                          return Center(
-                            child: Text(snapshot.error.toString()),
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
                         } else {
                           return AllCategoriesWidget(
