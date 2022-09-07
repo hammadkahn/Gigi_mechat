@@ -31,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   double? longitude;
   double? latitued;
-
+  //Signup
   var isLoading = false;
   bool catLoaded = false;
   List<CategoryData>? catData;
