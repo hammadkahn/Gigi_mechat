@@ -3,6 +3,7 @@ import 'package:gigi_app/providers/chat_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../apis/api_urls.dart';
 import '../models/current_user_chat_model.dart';
 import 'message_box.dart';
 import 'message_write.dart';
@@ -70,11 +71,18 @@ class _ChatScreenState extends State<ChatScreen> {
                                       message:
                                           snapshot.data!.data![index].message ??
                                               '',
-                                      send:
-                                          snapshot.data!.data![index].userId ==
-                                                  userId
-                                              ? true
-                                              : false,
+                                      send: snapshot.data!.data![index].userId
+                                                  .toString() ==
+                                              userId
+                                          ? true
+                                          : false,
+                                      url1: snapshot.data!.data![index].user !=
+                                                  null &&
+                                              snapshot.data!.data![index].user!
+                                                      .profilePicture !=
+                                                  null
+                                          ? '${ApiUrls.imgBaseUrl}${snapshot.data!.data![index].user!.profilePicturePath}/${snapshot.data!.data![index].user!.profilePicture}'
+                                          : '',
                                     );
                                   }),
                                 );

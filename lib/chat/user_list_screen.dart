@@ -35,7 +35,7 @@ class _UserListScreenState extends State<UserListScreen> {
                       child: const Text('Start Chat with Admin'),
                       onPressed: () {
                         createConversation().whenComplete(() {
-                          if (conversationId != null ||
+                          if (conversationId != null &&
                               conversationId!.isNotEmpty) {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -68,8 +68,7 @@ class _UserListScreenState extends State<UserListScreen> {
                       // setState(() {
                       //   name = data[index].oppositeUser!.name;
                       // });
-                      if (data[index].oppositeUser!.id == 19 ||
-                          data[index].oppositeUser!.name == 'Admin') {
+                      if (data[index].oppositeUser!.name == 'Admin') {
                         return ListTile(
                           tileColor: const Color(0xFF030381),
                           onTap: () {

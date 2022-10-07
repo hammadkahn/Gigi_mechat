@@ -19,7 +19,7 @@ class NotificationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['responseCode'] = responseCode;
     data['message'] = message;
@@ -32,12 +32,12 @@ class NotificationModel {
 
 class Data {
   int? id;
-  String? userId;
-  String? typeId;
+  int? userId;
+  int? typeId;
   String? type;
   String? subject;
   String? message;
-  String? seen;
+  int? seen;
   String? createdAt;
   String? updatedAt;
 
@@ -65,7 +65,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['user_id'] = userId;
     data['type_id'] = typeId;

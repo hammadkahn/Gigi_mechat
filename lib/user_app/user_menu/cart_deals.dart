@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigi_app/apis/api_urls.dart';
 import 'package:gigi_app/providers/order.dart';
-import 'package:provider/provider.dart';
 
 import '../../constant/size_constants.dart';
 import '../../services/user_merchant_services.dart';
@@ -16,8 +15,6 @@ class cart_deals extends StatefulWidget {
   final String token;
   final int index;
   final CartItems cart;
-
-  static const String baseUrl = 'https://gigiapi.zanforthstaging.com/';
 
   @override
   State<cart_deals> createState() => _cart_dealsState();
@@ -197,70 +194,70 @@ class _cart_dealsState extends State<cart_deals> {
               ),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Consumer<Cart>(
-              builder: ((__, value, _) => Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                          onTap: () => value.removeSingleItem(widget.cart.id!),
-                          child: Container(
-                            height: 32,
-                            width: 32,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFEAFFFA)),
-                            child: const Icon(
-                              Icons.remove,
-                              color: Color(0xFF0D9BFF),
-                              size: 16,
-                            ),
-                          )),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                        child: Text(
-                          widget.cart.qty!,
-                          style: const TextStyle(
-                              color: Color(0xff666687),
-                              fontSize: 14,
-                              fontFamily: 'Mulish',
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            value.addTCart(
-                                merchantId: widget.cart.merchantId,
-                                id: widget.cart.id,
-                                price: widget.cart.price,
-                                title: widget.cart.title,
-                                image: widget.cart.image ?? '',
-                                reviews: '0',
-                                discountOnPrice: widget.cart.discountOnPrice,
-                                path: widget.cart.path ?? '');
-                          },
-                          child: Container(
-                            height: 32,
-                            width: 32,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFEAFFFA)),
-                            child: const Icon(
-                              Icons.add,
-                              color: Color(0xFF0D9BFF),
-                              size: 16,
-                            ),
-                          )),
-                    ],
-                  )),
-            ),
-          ),
+          // Expanded(
+          //   flex: 2,
+          //   child: Consumer<Cart>(
+          //     builder: ((__, value, _) => Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             InkWell(
+          //                 onTap: () => value.removeSingleItem(widget.cart.id!),
+          //                 child: Container(
+          //                   height: 32,
+          //                   width: 32,
+          //                   decoration: const BoxDecoration(
+          //                       shape: BoxShape.circle,
+          //                       color: Color(0xFFEAFFFA)),
+          //                   child: const Icon(
+          //                     Icons.remove,
+          //                     color: Color(0xFF0D9BFF),
+          //                     size: 16,
+          //                   ),
+          //                 )),
+          //             Container(
+          //               margin: const EdgeInsets.symmetric(horizontal: 8),
+          //               padding: const EdgeInsets.symmetric(
+          //                   horizontal: 8, vertical: 14),
+          //               decoration: BoxDecoration(
+          //                 borderRadius: BorderRadius.circular(3),
+          //               ),
+          //               child: Text(
+          //                 widget.cart.qty!,
+          //                 style: const TextStyle(
+          //                     color: Color(0xff666687),
+          //                     fontSize: 14,
+          //                     fontFamily: 'Mulish',
+          //                     fontWeight: FontWeight.w600),
+          //               ),
+          //             ),
+          //             InkWell(
+          //                 onTap: () {
+          //                   value.addTCart(
+          //                       merchantId: widget.cart.merchantId,
+          //                       id: widget.cart.id,
+          //                       price: widget.cart.price,
+          //                       title: widget.cart.title,
+          //                       image: widget.cart.image ?? '',
+          //                       reviews: '0',
+          //                       discountOnPrice: widget.cart.discountOnPrice,
+          //                       path: widget.cart.path ?? '');
+          //                 },
+          //                 child: Container(
+          //                   height: 32,
+          //                   width: 32,
+          //                   decoration: const BoxDecoration(
+          //                       shape: BoxShape.circle,
+          //                       color: Color(0xFFEAFFFA)),
+          //                   child: const Icon(
+          //                     Icons.add,
+          //                     color: Color(0xFF0D9BFF),
+          //                     size: 16,
+          //                   ),
+          //                 )),
+          //           ],
+          //         )),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -29,20 +29,6 @@ class _C_sliderState extends State<C_slider> {
         weekDeals.add(widget.merchantList[i]);
       }
     }
-
-    // if(lenght > current){
-
-    // }
-    // for (int i = 0; i <= 6; i++) {
-    //   for (int j = 0; j < widget.merchantList.length; j++) {
-    //     DateTime? createdDate =
-    //         DateTime.parse(widget.merchantList[j].createdAt!);
-    //     debugPrint('day : ${createdDate.day}');
-    //     if (createdDate.day <= i && createdDate.day >= lenght) {
-    //       weekDeals.add(widget.merchantList[j]);
-    //     }
-    //   }
-    // }
   }
 
   @override
@@ -56,7 +42,6 @@ class _C_sliderState extends State<C_slider> {
   @override
   void dispose() {
     super.dispose();
-    getDealsDate(now, now_1w!);
   }
 
   int activeIndex = 0;
@@ -64,6 +49,7 @@ class _C_sliderState extends State<C_slider> {
   Widget build(BuildContext context) {
     double carouselwidth = MediaQuery.of(context).size.width;
     double carouselheight = carouselwidth * 145 / 327;
+
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: weekDeals.isEmpty

@@ -128,7 +128,7 @@ class _DealsState extends State<Deals> {
                                 color: Color(0xFF0D9BFF)),
                           ),
                           Text(
-                            widget.merchantListOfDeals.price!,
+                            widget.merchantListOfDeals.price!.toString(),
                             style: const TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 fontFamily: 'Mulish',
@@ -147,8 +147,10 @@ class _DealsState extends State<Deals> {
                           Text(
                             Provider.of<DealProvider>(context, listen: false)
                                 .calculateDiscount(
-                                    widget.merchantListOfDeals.discountOnPrice!,
-                                    widget.merchantListOfDeals.price!),
+                                    widget.merchantListOfDeals.discountOnPrice!
+                                        .toString(),
+                                    widget.merchantListOfDeals.price!
+                                        .toStringAsFixed(0)),
                             style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 16,

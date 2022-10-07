@@ -454,7 +454,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'name': nameCtr.text,
         'email': emailCtr.text,
         'phone_no': phoneNumberCtr.text,
-        'date_of_birth': dobCtr.text,
+
         'password': passCtr.text,
         'password_confirmation': passCtr.text,
         'branch_name': branchCtr.text,
@@ -467,7 +467,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'lat': '${latitued ?? ''}',
         'long': '${longitude ?? ''}',
         'categories[0]': catCtr.text,
-        'categories[1]': catCtr2.text,
+        'categories[1]': catCtr.text,
       };
 
       //get response from ApiClient

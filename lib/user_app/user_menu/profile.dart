@@ -232,7 +232,8 @@ class StoreProfile extends StatelessWidget {
                                                           listen: false)
                                                       .getStars(
                                                 int.parse(data
-                                                    .reviews![index].rating!),
+                                                    .reviews![index].rating!
+                                                    .toString()),
                                               ),
                                             ),
                                           ),

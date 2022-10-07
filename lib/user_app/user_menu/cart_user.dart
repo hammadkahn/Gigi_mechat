@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../providers/order.dart';
-import '../../services/user_merchant_services.dart';
 import 'cart_deals.dart';
 
 class Cart_user extends StatefulWidget {
@@ -112,7 +111,7 @@ class _Cart_userState extends State<Cart_user> {
                                 itemBuilder: ((context, index) {
                                   productId =
                                       value.cartMap.values.toList()[index].id;
-                                  print(value.cartMap.values.toList()[index]);
+
                                   return Slidable(
                                       endActionPane: ActionPane(
                                           motion: const ScrollMotion(),
@@ -177,12 +176,13 @@ class _Cart_userState extends State<Cart_user> {
                           );
                         }
                       : () {
-                          print('product id : $productId');
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (currentContext) => status_1(
-                                    id: int.parse(productId!),
-                                    token: widget.token,
-                                  )));
+                                  id: int.parse(productId!),
+                                  token: widget.token,
+                                  location: userLocation,
+                                  imgUrl:
+                                      '${value.cartMap.values.toList()[0].path!}/${value.cartMap.values.toList()[0].image!}')));
                         },
                 );
               }),

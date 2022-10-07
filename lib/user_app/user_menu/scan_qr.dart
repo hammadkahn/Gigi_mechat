@@ -129,7 +129,7 @@ class _scan_qrState extends State<scan_qr> {
                           fontFamily: 'Mulish',
                           color: Color(0xFF343434))),
                   Text(
-                      DateFormat('dd-MM-yyyy')
+                      DateFormat('yyyy-MM-dd')
                           .format(DateTime.parse(widget.qrCode.purchaseDate!)),
                       style: const TextStyle(
                           fontSize: 12,

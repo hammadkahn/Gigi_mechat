@@ -39,8 +39,8 @@ class CategoryData {
   int? id;
   String? name;
   String? image;
-  String? parentId;
-  String? status;
+  int? parentId;
+  int? status;
   String? createdAt;
   String? updatedAt;
   String? imagePath;
@@ -237,7 +237,7 @@ class SearchData {
 
 class Tags {
   int? id;
-  String? dealId;
+  int? dealId;
   String? tag;
   String? createdAt;
   String? updatedAt;

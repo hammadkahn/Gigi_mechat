@@ -85,7 +85,6 @@ class _My_QrsState extends State<My_Qrs> {
                           );
                         } else {
                           return ListView.builder(
-                            reverse: true,
                             itemCount: provider!.cartData.length,
                             itemBuilder: (context, index) {
                               if (provider!

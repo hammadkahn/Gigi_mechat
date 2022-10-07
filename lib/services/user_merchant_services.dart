@@ -33,12 +33,10 @@ class UserMerchantServices {
       {required String id, required String token}) async {
     print('objec : user id : $id');
     try {
-      final response = await http.get(
-          Uri.parse(
-              'https://gigiapi.zanforthstaging.com/api/user/getMerchant/$id'),
-          headers: {
-            HttpHeaders.authorizationHeader: "Bearer $token",
-          });
+      final response = await http
+          .get(Uri.parse('${ApiUrls.baseUrl}user/getMerchant/$id'), headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+      });
       final result = SingleMerchant.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         debugPrint('name : ${result.data!.id}');
@@ -62,7 +60,9 @@ class UserMerchantServices {
           HttpHeaders.authorizationHeader: 'Bearer $token',
         },
       );
+
       final result = TopMerchantModel.fromJson(jsonDecode(response.body));
+
       if (response.statusCode == 429) {
         debugPrint(
             'user has sent too many requests in a given amount of time ("rate limiting")');

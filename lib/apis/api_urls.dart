@@ -1,7 +1,7 @@
 class ApiUrls {
-  static const String imgBaseUrl = 'https://gigiapi.zanforthstaging.com/';
+  static const String imgBaseUrl = 'http://api.gigi.az/';
 
-  static const String baseUrl = 'https://gigiapi.zanforthstaging.com/api/';
+  static const String baseUrl = 'http://api.gigi.az/api/';
 
   //merchant auth urls
   static final login = Uri.parse('${baseUrl}login');

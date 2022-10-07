@@ -166,7 +166,7 @@ class _auth_pageState extends State<auth_page> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     //if there is no error, get the user's accesstoken and pass it to HomeScreen
-    if (res['message'] == 'success' && res['data']['type'] == '2') {
+    if (res['message'] == 'success' && res['data']['type'] == 2) {
       String accessToken = res['data']['token'];
 
       Navigator.of(context).pushAndRemoveUntil(

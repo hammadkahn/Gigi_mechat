@@ -70,15 +70,17 @@ class MerchantAuthServices {
         preferences.setString('token', result['data']['token']);
         preferences.setString('email', result['data']['email']);
         preferences.setString('status', result['data']['StatusName']);
-        preferences.setString('user_type', result['data']['type']);
+        preferences.setString('user_type', result['data']['type'].toString());
         preferences.setInt('userId', result['data']['id']);
 
-        if (result['data']['type'] == '1') {
+        if (result['data']['type'] == 1) {
           preferences.setString(
               'country', result['data']['location']['country']);
           preferences.setString('city', result['data']['location']['city']);
-          preferences.setString('lat', result['data']['location']['lat']);
-          preferences.setString('long', result['data']['location']['long']);
+          preferences.setString(
+              'lat', result['data']['location']['lat'].toString());
+          preferences.setString(
+              'long', result['data']['location']['long'].toString());
 
           if (result['data']['location']['address'] != null) {
             preferences.setString('address',

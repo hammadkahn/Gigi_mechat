@@ -40,8 +40,8 @@ class Conversation {
 
 class ChatData {
   int? id;
-  String? firstUser;
-  String? secondUser;
+  int? firstUser;
+  int? secondUser;
   String? createdAt;
   String? updatedAt;
   int? unReadCount;
@@ -165,11 +165,11 @@ class SingleChatData {
 
 class LastMessage {
   int? id;
-  String? conversationId;
-  String? userId;
+  int? conversationId;
+  int? userId;
   String? message;
-  String? attachment;
-  String? seen;
+  dynamic attachment;
+  int? seen;
   String? createdAt;
   String? updatedAt;
 
@@ -211,14 +211,16 @@ class LastMessage {
 class OppositeUser {
   int? id;
   String? name;
-  String? type;
+  int? type;
+  String? profilePicture;
   String? profilePicturePath;
-  String? statusName;
+  dynamic statusName;
 
   OppositeUser(
       {this.id,
       this.name,
       this.type,
+      this.profilePicture,
       this.profilePicturePath,
       this.statusName});
 
@@ -226,6 +228,7 @@ class OppositeUser {
     id = json['id'];
     name = json['name'];
     type = json['type'];
+    profilePicture = json['profile_picture'];
     profilePicturePath = json['profilePicturePath'];
     statusName = json['StatusName'];
   }
@@ -235,6 +238,7 @@ class OppositeUser {
     data['id'] = id;
     data['name'] = name;
     data['type'] = type;
+    data['profile_picture'] = profilePicture;
     data['profilePicturePath'] = profilePicturePath;
     data['StatusName'] = statusName;
     return data;
@@ -300,8 +304,7 @@ class ChatProvider with ChangeNotifier {
       String token, String id) async {
     try {
       final response = await http.get(
-          Uri.parse(
-              'https://gigiapi.zanforthstaging.com/api/getConversation/$id'),
+          Uri.parse('${ApiUrls.baseUrl}getConversation/$id'),
           headers: {HttpHeaders.authorizationHeader: 'Bear $token'});
       final result = jsonDecode(response.body) as Map<String, dynamic>;
       if (response.statusCode == 200) {
@@ -321,8 +324,7 @@ class ChatProvider with ChangeNotifier {
       String token, String id) async {
     try {
       final response = await http.get(
-          Uri.parse(
-              'https://gigiapi.zanforthstaging.com/api/getConversationMessages/$id'),
+          Uri.parse('${ApiUrls.baseUrl}getConversationMessages/$id'),
           headers: {HttpHeaders.authorizationHeader: 'Bearer $token'});
 
       final result =
@@ -345,7 +347,7 @@ class ChatProvider with ChangeNotifier {
       final url = Uri.parse('${ApiUrls.baseUrl}createConversation');
       final response = await http.post(
         url,
-        body: {'message': msg, 'receiver': '19'},
+        body: {'message': msg, 'receiver': '1'},
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       final result = jsonDecode(response.body) as Map<String, dynamic>;

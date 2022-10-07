@@ -118,7 +118,7 @@ class _reviewState extends State<review> {
                                       color: Color(0xFFFF6767)),
                                 ),
                                 Text(
-                                  singlePurchaseModel!.data!.price!,
+                                  singlePurchaseModel!.data!.price!.toString(),
                                   style: const TextStyle(
                                       decoration: TextDecoration.lineThrough,
                                       fontFamily: 'Mulish',
@@ -138,8 +138,10 @@ class _reviewState extends State<review> {
                                   Provider.of<DealProvider>(context)
                                       .calculateDiscount(
                                           singlePurchaseModel!
-                                              .data!.discountOnPrice!,
-                                          singlePurchaseModel!.data!.price!),
+                                              .data!.discountOnPrice!
+                                              .toString(),
+                                          singlePurchaseModel!.data!.price!
+                                              .toString()),
                                   style: const TextStyle(
                                       fontFamily: 'Mulish',
                                       fontSize: 16,

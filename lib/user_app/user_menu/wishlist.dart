@@ -14,7 +14,7 @@ class Wishlist extends StatefulWidget {
       : super(key: key);
   final WishData wishData;
   final String token;
-  static const url = 'https://gigiapi.zanforthstaging.com/';
+  static const url = 'http://gigi-api.cryslistechnologies.com/';
 
   @override
   State<Wishlist> createState() => _WishlistState();
@@ -137,7 +137,7 @@ class _WishlistState extends State<Wishlist> {
                               color: Color(0xFFFF6767)),
                         ),
                         Text(
-                          widget.wishData.price!,
+                          '${widget.wishData.price ?? '0'}',
                           style: const TextStyle(
                               decoration: TextDecoration.lineThrough,
                               fontFamily: 'Mulish',
@@ -155,8 +155,8 @@ class _WishlistState extends State<Wishlist> {
                         ),
                         Text(
                           Provider.of<DealProvider>(context).calculateDiscount(
-                            widget.wishData.discountOnPrice!,
-                            widget.wishData.price!,
+                            widget.wishData.discountOnPrice!.toString(),
+                            widget.wishData.price!.toString(),
                           ),
                           style: const TextStyle(
                               fontFamily: 'Mulish',
@@ -192,17 +192,19 @@ class _WishlistState extends State<Wishlist> {
                       Provider.of<Cart>(context, listen: false).addTCart(
                         merchantId: widget.wishData.merchantId.toString(),
                         id: widget.wishData.id.toString(),
-                        price: widget.wishData.price,
+                        price: widget.wishData.price.toString(),
                         title: widget.wishData.name,
                         image: widget.wishData.image!.image ?? '',
                         reviews: '0',
-                        discountOnPrice: widget.wishData.discountOnPrice,
+                        discountOnPrice:
+                            widget.wishData.discountOnPrice.toString(),
                         path: widget.wishData.image!.path ?? '',
                         isWishList: true,
                       );
                       Provider.of<DealProvider>(context, listen: false)
                           .removeFromWishList(
-                              widget.wishData.wishlistId!, widget.token);
+                              widget.wishData.wishlistId!.toString(),
+                              widget.token);
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
                               Cart_user(token: widget.token)));

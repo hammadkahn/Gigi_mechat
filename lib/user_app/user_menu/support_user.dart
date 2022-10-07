@@ -13,15 +13,15 @@ class support_user extends StatefulWidget {
 }
 
 class _support_userState extends State<support_user> {
-  _launchCaller() async {
-    if (await canLaunchUrl(
-        Uri.parse('https://gigifrontend.zanforthstaging.com/userChat'))) {
-      await launchUrl(
-          Uri.parse('https://gigifrontend.zanforthstaging.com/userChat'));
-    } else {
-      throw 'Could not launch url';
-    }
-  }
+  // _launchCaller() async {
+  //   if (await canLaunchUrl(
+  //       Uri.parse('https://gigifrontend.zanforthstaging.com/userChat'))) {
+  //     await launchUrl(
+  //         Uri.parse('https://gigifrontend.zanforthstaging.com/userChat'));
+  //   } else {
+  //     throw 'Could not launch url';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

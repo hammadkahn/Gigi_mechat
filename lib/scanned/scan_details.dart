@@ -53,7 +53,7 @@ class _Scanned_detailsState extends State<Scanned_details> {
                   children: [
                     const SizedBox(height: 15),
                     Text(
-                        'This user Have ${details![4]}% OFF on\n${details![6]}\n',
+                        'This user Have ${details![3]}% OFF on\n${details!.last}\n',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: 'DMSans',
@@ -61,39 +61,46 @@ class _Scanned_detailsState extends State<Scanned_details> {
                           fontWeight: FontWeight.w700,
                           color: Color(0xff0D9BFF),
                         )),
-                    const Text(
-                      'Scan verified',
+                    Text(
+                      'Discount Type: ${details![5]}\nQuantity: ${details![2]}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontFamily: 'Mulish',
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Color(0xff8E8EA9)),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 34.5),
-                      child: TextField(
-                          controller: ctr,
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Color(0xFFEAEAEF)),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              hintText: 'Enter Price of the Bill',
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.calculate),
-                                onPressed: () {
-                                  setState(() {
-                                    percentage = int.parse(details![4]) / 100;
-                                    price = percentage! * int.parse(ctr.text);
-                                    priceAfterDiscount =
-                                        int.parse(ctr.text) - price!;
-                                  });
-                                  debugPrint(priceAfterDiscount.toString());
-                                },
-                              ))),
-                    ),
+                    int.parse(details![2]) <= 0
+                        ? const Center(
+                            child: Text('Out of Stock'),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 34.5),
+                            child: TextField(
+                                controller: ctr,
+                                decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFEAEAEF)),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    hintText: 'Enter Price of the Bill',
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.calculate),
+                                      onPressed: () {
+                                        setState(() {
+                                          percentage =
+                                              int.parse(details![3]) / 100;
+                                          price =
+                                              percentage! * int.parse(ctr.text);
+                                          priceAfterDiscount =
+                                              int.parse(ctr.text) - price!;
+                                        });
+                                        debugPrint(
+                                            priceAfterDiscount.toString());
+                                      },
+                                    ))),
+                          ),
                     Container(
                         margin: const EdgeInsets.symmetric(horizontal: 12),
                         padding: const EdgeInsets.only(top: 12),

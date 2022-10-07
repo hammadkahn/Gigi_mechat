@@ -91,15 +91,15 @@ class SingleMerchant {
 class MerchantData {
   int? id;
   String? name;
-  String? gender;
-  String? age;
+  dynamic gender;
+  int? age;
   String? email;
   String? phone;
-  String? dateOfBirth;
-  String? emailVerifiedAt;
+  dynamic dateOfBirth;
+  dynamic emailVerifiedAt;
   String? profilePicture;
-  String? type;
-  String? status;
+  int? type;
+  int? status;
   String? createdAt;
   String? updatedAt;
   int? activeOffers;
@@ -160,9 +160,7 @@ class MerchantData {
         branches!.add(BranchData.fromJson(v));
       });
     }
-
     averageRating = json['averageRating'];
-
     if (json['reviews'] != null) {
       reviews = <Reviews>[];
       json['reviews'].forEach((v) {

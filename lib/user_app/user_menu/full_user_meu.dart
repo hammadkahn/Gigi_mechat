@@ -26,10 +26,12 @@ class _Full_menu_userState extends State<Full_menu_user> {
   DealProvider? dealProvider;
   String? selectedValue;
   String? country;
-  List<dynamic>? items;
+  ValueNotifier<List<dynamic>>? items = ValueNotifier([]);
+
   String? city = '';
 
   Future<void> getCountry() async {
+    debugPrint('widget : ${widget.token}');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     country = prefs.getString('country');
   }
@@ -38,25 +40,22 @@ class _Full_menu_userState extends State<Full_menu_user> {
     final result =
         await UserDealServices().getSystemCities(widget.token, country ?? '');
 
-    setState(() {
-      items = result['data'];
-    });
+    items!.value = result['data'];
   }
 
-  bool productLoaded = false;
+  ValueNotifier<bool> productLoaded = ValueNotifier(false);
 
   @override
   void didChangeDependencies() {
     dealProvider = Provider.of<DealProvider>(context, listen: false);
+
+    super.didChangeDependencies();
     getCountry().whenComplete(() {
       fetchCitiesAndCountries().whenComplete(
           () => dealProvider!.getAllUserDeals(widget.token).whenComplete(() {
-                setState(() {
-                  productLoaded = true;
-                });
+                productLoaded.value = true;
               }));
     });
-    super.didChangeDependencies();
   }
 
   @override
@@ -88,15 +87,20 @@ class _Full_menu_userState extends State<Full_menu_user> {
                 SearchField(
                   token: widget.token,
                 ),
-                SizedBox(
-                  child: productLoaded == false
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : C_slider(
-                          token: widget.token,
-                          merchantList: dealProvider!.userListOfDeals.data!,
-                        ),
+                ValueListenableBuilder(
+                  valueListenable: productLoaded,
+                  builder: (BuildContext context, bool value, Widget? child) {
+                    return SizedBox(
+                      child: productLoaded.value == false
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : C_slider(
+                              token: widget.token,
+                              merchantList: dealProvider!.userListOfDeals.data!,
+                            ),
+                    );
+                  },
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -160,8 +164,8 @@ class _Full_menu_userState extends State<Full_menu_user> {
             return const Center(child: CircularProgressIndicator());
           default:
             if (snapshot.hasError) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: Text(snapshot.error.toString()),
               );
             } else {
               if (snapshot.data!.data == null || snapshot.data!.data!.isEmpty) {
@@ -194,65 +198,72 @@ class _Full_menu_userState extends State<Full_menu_user> {
     return Row(
       children: [
         Image.asset('assets/images/Vector.png'),
-        Padding(
-          padding: const EdgeInsets.only(left: 10.94),
-          child: items == null
-              ? const Text('fetching...')
-              : DropdownButton2(
-                  icon: const SizedBox(),
-                  isExpanded: true,
-                  hint: Text(
-                    country == null || country!.isEmpty ? 'Country' : country!,
-                    style: const TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF0D9BFF)),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  items: items!
-                      .map((item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                  fontFamily: 'Mulish',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF0D9BFF)),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ))
-                      .toList(),
-                  value: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value as String;
-                      city = value;
-                    });
-                  },
-                  underline: const SizedBox(),
-                  buttonHeight: 30,
-                  buttonWidth: 100,
-                  buttonPadding: const EdgeInsets.only(left: 14, right: 8),
-                  buttonDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  buttonElevation: 0,
-                  itemHeight: 40,
-                  itemPadding: const EdgeInsets.only(left: 14, right: 14),
-                  dropdownMaxHeight: 200,
-                  dropdownWidth: 160,
-                  dropdownPadding: null,
-                  dropdownDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  dropdownElevation: 8,
-                  scrollbarRadius: const Radius.circular(40),
-                  scrollbarThickness: 6,
-                  scrollbarAlwaysShow: true,
-                  offset: const Offset(-20, 0),
-                ),
+        ValueListenableBuilder(
+          valueListenable: items!,
+          builder: (BuildContext context, List<dynamic> value, Widget? child) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 10.94),
+              child: items == null
+                  ? const Text('fetching...')
+                  : DropdownButton2(
+                      icon: const SizedBox(),
+                      isExpanded: true,
+                      hint: Text(
+                        country == null || country!.isEmpty
+                            ? 'Country'
+                            : country!,
+                        style: const TextStyle(
+                            fontFamily: 'Mulish',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF0D9BFF)),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      items: items!.value
+                          .map((item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontFamily: 'Mulish',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF0D9BFF)),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                          .toList(),
+                      value: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value as String;
+                          city = value;
+                        });
+                      },
+                      underline: const SizedBox(),
+                      buttonHeight: 30,
+                      buttonWidth: 100,
+                      buttonPadding: const EdgeInsets.only(left: 14, right: 8),
+                      buttonDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      buttonElevation: 0,
+                      itemHeight: 40,
+                      itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                      dropdownMaxHeight: 200,
+                      dropdownWidth: 160,
+                      dropdownPadding: null,
+                      dropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      dropdownElevation: 8,
+                      scrollbarRadius: const Radius.circular(40),
+                      scrollbarThickness: 6,
+                      scrollbarAlwaysShow: true,
+                      offset: const Offset(-20, 0),
+                    ),
+            );
+          },
         ),
         const Spacer(),
         GestureDetector(

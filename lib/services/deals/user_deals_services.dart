@@ -14,7 +14,7 @@ class UserDealServices {
     try {
       final response = await http.get(
         Uri.parse(
-            'https://gigiapi.zanforthstaging.com/api/user/getTrendingDeals?lat&long&country=$country&cities[0]=$city&cities[1]=$city&priceSort=&timeSort='),
+            '${ApiUrls.baseUrl}user/getTrendingDeals?lat&long&country=$country&cities[0]=$city&cities[1]=$city&priceSort=&timeSort='),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       debugPrint('status code : ${response.statusCode}');

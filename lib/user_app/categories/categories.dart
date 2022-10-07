@@ -49,8 +49,8 @@ class Categories_user extends StatelessWidget {
                               child: CircularProgressIndicator());
                         default:
                           if (snapshot.hasError) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
+                            return Center(
+                              child: Text(snapshot.error.toString()),
                             );
                           } else {
                             // return AllCategoriesWidget(
@@ -144,8 +144,8 @@ class Categories_user extends StatelessWidget {
                         return const Center(child: CircularProgressIndicator());
                       default:
                         if (snapshot.hasError) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
+                          return Center(
+                            child: Text(snapshot.error.toString()),
                           );
                         } else {
                           return AllCategoriesWidget(

@@ -129,6 +129,7 @@ class _Email_verState extends State<Email_ver> {
         //get response from ApiClient
         dynamic res =
             await MerchantAuthServices().login(emailCtr.text, passwordCtr.text);
+
         checkLoginResult(res, prefs);
       }
     } catch (e) {
@@ -145,7 +146,7 @@ class _Email_verState extends State<Email_ver> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     //if there is no error, get the user's accesstoken and pass it to HomeScreen
-    if (res['message'] == 'success' && res['data']['type'] == '1') {
+    if (res['message'] == 'success' && res['data']['type'] == 1) {
       String accessToken = res['data']['token'];
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => User_bar(token: accessToken)),

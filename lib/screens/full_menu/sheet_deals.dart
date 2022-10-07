@@ -18,9 +18,6 @@ class sheet_deals extends StatefulWidget {
 }
 
 class _sheet_dealsState extends State<sheet_deals> {
-  double? percentage;
-  double? price;
-  double? priceAfterDiscount;
   String? totalReviews = '0';
   int? value = 0;
   var isLaoding = false;
@@ -59,12 +56,8 @@ class _sheet_dealsState extends State<sheet_deals> {
                 List<Widget> children;
                 if (snapshot.hasData) {
                   var data = snapshot.data!.data!;
-                  percentage = int.parse(data.discountOnPrice!) / 100;
-                  price = percentage! * int.parse(data.price!);
-                  priceAfterDiscount = int.parse(data.price!) - price!;
-
                   children = [
-                    data.images![0].image!.isEmpty
+                    data.images!.isEmpty
                         ? Image.asset(
                             'assets/images/detail.png',
                             height: 248,
@@ -162,7 +155,7 @@ class _sheet_dealsState extends State<sheet_deals> {
                                   color: Color(0xFFFF6767)),
                             ),
                             Text(
-                              data.price ?? '0',
+                              data.price.toStringAsFixed(2),
                               style: const TextStyle(
                                   decoration: TextDecoration.lineThrough,
                                   fontFamily: 'Mulish',
@@ -179,7 +172,10 @@ class _sheet_dealsState extends State<sheet_deals> {
                                   color: Color(0xFF0D9BFF)),
                             ),
                             Text(
-                              priceAfterDiscount!.toStringAsFixed(2),
+                              Provider.of<DealProvider>(context, listen: false)
+                                  .calculateDiscount(
+                                      data.discountOnPrice!.toString(),
+                                      data.price!.toStringAsFixed(0)),
                               style: const TextStyle(
                                   fontFamily: 'Mulish',
                                   fontSize: 16,

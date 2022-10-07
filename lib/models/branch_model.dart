@@ -40,10 +40,10 @@ class BranchData {
   String? long;
   String? description;
   String? logo;
-  String? status;
-  String? active;
-  String? merchantId;
-  String? createdBy;
+  int? status;
+  int? active;
+  int? merchantId;
+  int? createdBy;
   String? createdAt;
   String? updatedAt;
   String? logoPath;

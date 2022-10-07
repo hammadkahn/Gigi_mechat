@@ -2,12 +2,11 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../apis/api_urls.dart';
 import '../../providers/order.dart';
 
 class order_details extends StatelessWidget {
   const order_details({Key? key}) : super(key: key);
-
-  static const url = 'https://gigiapi.zanforthstaging.com/';
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +40,17 @@ class order_details extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   child: Row(
                     children: [
-                      // cart.cartMap.values.toList()[index].image == ''
-                      //     ?
-                      Image.asset(
-                        'assets/images/expand_pic.png',
-                        height: 40,
-                        width: 40,
-                      ),
-                      // : Image.network(
-                      //     '$url${cart.cartMap.values.toList()[index].path}/${cart.cartMap.values.toList()[index].image}}',
-                      //     height: 40,
-                      //     width: 40,
-                      //   ),
+                      cart.cartMap.values.toList()[index].image == ''
+                          ? Image.asset(
+                              'assets/images/expand_pic.png',
+                              height: 40,
+                              width: 40,
+                            )
+                          : Image.network(
+                              '${ApiUrls.imgBaseUrl}${cart.cartMap.values.toList()[index].path}/${cart.cartMap.values.toList()[index].image}}',
+                              height: 40,
+                              width: 40,
+                            ),
                       Text(
                         cart.cartMap.values.toList()[index].title!,
                         style: const TextStyle(
@@ -86,11 +84,17 @@ class order_details extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Image.asset(
-                          'assets/images/expand_pic.png',
-                          height: 40,
-                          width: 40,
-                        ),
+                        cart.cartMap.values.toList()[index].image == ''
+                            ? Image.asset(
+                                'assets/images/expand_pic.png',
+                                height: 40,
+                                width: 40,
+                              )
+                            : Image.network(
+                                '${ApiUrls.imgBaseUrl}${cart.cartMap.values.toList()[index].path}/${cart.cartMap.values.toList()[index].image}}',
+                                height: 40,
+                                width: 40,
+                              ),
                         Text(
                           cart.cartMap.values.toList()[index].title!,
                           style: const TextStyle(

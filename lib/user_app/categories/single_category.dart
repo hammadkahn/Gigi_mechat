@@ -3,6 +3,8 @@ import 'package:gigi_app/models/category_model.dart';
 import 'package:gigi_app/services/deals/user_deals_services.dart';
 import 'package:gigi_app/user_app/user_menu/deals_details.dart';
 
+import '../../models/deal_model.dart';
+
 class SingleCategory extends StatelessWidget {
   const SingleCategory(
       {Key? key, required this.categoryData, required this.token})
@@ -21,7 +23,7 @@ class SingleCategory extends StatelessWidget {
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        child: FutureBuilder<dynamic>(
+        child: FutureBuilder<UserListOfDeals>(
             future: UserDealServices().getAllUserDeals(token),
             builder: ((context, snapshot) {
               switch (snapshot.connectionState) {
@@ -40,7 +42,7 @@ class SingleCategory extends StatelessWidget {
                             categoryData.name) {
                           return Details_deals(
                             token: token,
-                            dealId: snapshot.data!.data![index].id,
+                            dealId: snapshot.data!.data![index].id.toString(),
                           );
                         } else {
                           return const SizedBox();

@@ -81,7 +81,7 @@ class _trending_userState extends State<trending_user> {
           Row(
             children: [
               Text(
-                widget.data.type!,
+                widget.data.type!.toString(),
                 softWrap: true,
                 style: const TextStyle(
                     fontFamily: 'Mulish',
@@ -129,7 +129,7 @@ class _trending_userState extends State<trending_user> {
                     color: Color(0xFFFF6767)),
               ),
               Text(
-                widget.data.price ?? '0',
+                '${widget.data.price ?? '0'}',
                 style: const TextStyle(
                     decoration: TextDecoration.lineThrough,
                     fontFamily: 'Mulish',
@@ -147,8 +147,8 @@ class _trending_userState extends State<trending_user> {
               ),
               Text(
                 Provider.of<DealProvider>(context).calculateDiscount(
-                    widget.data.discountOnPrice ?? '0',
-                    widget.data.price ?? '0'),
+                    '${widget.data.discountOnPrice ?? '0'}',
+                    '${widget.data.price ?? '0'}'),
                 style: const TextStyle(
                     fontFamily: 'Mulish',
                     fontSize: 16,
@@ -177,9 +177,9 @@ class _trending_userState extends State<trending_user> {
           const SizedBox(
             height: 4,
           ),
-          const Text(
-            'Coupons Left:  100/100',
-            style: TextStyle(
+          Text(
+            'Coupons Left:  ${widget.data.limit}',
+            style: const TextStyle(
                 fontFamily: 'Mulish',
                 fontSize: 5,
                 fontWeight: FontWeight.w700,

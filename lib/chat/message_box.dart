@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class MessageItem extends StatelessWidget {
   final bool send;
   final String? message;
+  final String? url1;
 
-  const MessageItem({Key? key, required this.send, required this.message})
+  const MessageItem(
+      {Key? key, required this.send, required this.message, this.url1})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -17,16 +19,19 @@ class MessageItem extends StatelessWidget {
             send ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
           Visibility(
-            visible: !send,
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: Colors.transparent,
-              child: Image.asset(
-                'assets/images/man1.png',
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
+              visible: !send,
+              child: url1!.isEmpty || url1 == ''
+                  ? CircleAvatar(
+                      radius: 18,
+                      backgroundColor: Colors.transparent,
+                      child: Image.asset(
+                        'assets/images/man1.png',
+                        fit: BoxFit.fill,
+                      ))
+                  : CircleAvatar(
+                      radius: 18,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(url1!))),
           Flexible(
             child: Container(
               margin: EdgeInsets.only(
@@ -61,14 +66,19 @@ class MessageItem extends StatelessWidget {
           ),
           Visibility(
             visible: send,
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: Colors.transparent,
-              child: Image.asset(
-                'assets/images/man2.png',
-                fit: BoxFit.fill,
-              ),
-            ),
+            child: url1!.isEmpty || url1 == ''
+                ? CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset(
+                      'assets/images/man2.png',
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                : CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: NetworkImage(url1!)),
           ),
         ],
       ),

@@ -29,17 +29,16 @@ class UserProfileData {
   int? id;
   String? name;
   String? gender;
-  String? age;
+  int? age;
   String? email;
   String? phone;
   String? dateOfBirth;
-  DateTime? emailVerifiedAt;
+  dynamic emailVerifiedAt;
   String? profilePicture;
-  String? type;
-  String? status;
+  int? type;
+  int? status;
   String? createdAt;
   String? updatedAt;
-  String? token;
   List<Perference>? perference;
   String? profilePicturePath;
   String? statusName;
@@ -58,7 +57,6 @@ class UserProfileData {
       this.status,
       this.createdAt,
       this.updatedAt,
-      this.token,
       this.perference,
       this.profilePicturePath,
       this.statusName});
@@ -77,7 +75,6 @@ class UserProfileData {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    token = json['token'];
     if (json['perference'] != null) {
       perference = <Perference>[];
       json['perference'].forEach((v) {
@@ -103,7 +100,6 @@ class UserProfileData {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    data['token'] = token;
     if (perference != null) {
       data['perference'] = perference!.map((v) => v.toJson()).toList();
     }
@@ -115,8 +111,8 @@ class UserProfileData {
 
 class Perference {
   int? id;
-  String? userId;
-  String? categoryId;
+  int? userId;
+  int? categoryId;
   String? categoryName;
   String? createdAt;
   String? updatedAt;

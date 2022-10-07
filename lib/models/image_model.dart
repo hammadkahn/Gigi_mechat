@@ -1,6 +1,6 @@
 class ImageModel {
   int? id;
-  String? dealId;
+  int? dealId;
   String? originalName;
   String? path;
   String? image;

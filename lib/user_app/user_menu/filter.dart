@@ -345,12 +345,6 @@ class _filter_listState extends State<filter_list> {
                     currentCountry ?? '',
                     currentCity ?? systemCitiesDropdown![0]
                   ]);
-                  // SearchFilter().setFitlers(
-                  //     '${valuess.end}',
-                  //     valuess.start.toString(),
-                  //     selectedValue ?? 'asc',
-                  //     currentCountry,
-                  //     currentCity);
                   Navigator.of(context).pop();
                 }),
             const SizedBox(

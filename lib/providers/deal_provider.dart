@@ -164,6 +164,7 @@ class DealProvider with ChangeNotifier {
       final result = SingleDeal.fromJson(jsonDecode(response.body));
       if (response.statusCode == 200) {
         _dealData = result.data;
+        print('dealData: $dealData');
         notifyListeners();
         return result;
       } else {
@@ -253,11 +254,11 @@ class DealProvider with ChangeNotifier {
 
   Future<void> getAllUserDeals(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    debugPrint('statement: ${prefs.getString('long')}');
+    debugPrint('statement: ${prefs.getString('country')}');
     try {
       final response = await http.get(
         Uri.parse(
-            'https://gigiapi.zanforthstaging.com/api/user/getTrendingDeals?country=${prefs.getString('country') ?? ''}&cities[0]=${prefs.getString('city') ?? ''}&cities[1]=${prefs.getString('city') ?? ''}'),
+            '${ApiUrls.baseUrl}user/getTrendingDeals?country=${prefs.getString('country')}&cities[1]=${prefs.getString('city')}&cities[0]=${prefs.getString('city')}'),
         headers: {HttpHeaders.authorizationHeader: 'Bearer $token'},
       );
       debugPrint('status code : ${response.statusCode}');
@@ -310,8 +311,9 @@ class DealProvider with ChangeNotifier {
 
   String calculateDiscount(
     String discountOnPrice,
-    String price,
+    dynamic price,
   ) {
+    print('price :$price');
     double? priceAfterDiscount = 0;
     double? getPrice;
     double? percentage;

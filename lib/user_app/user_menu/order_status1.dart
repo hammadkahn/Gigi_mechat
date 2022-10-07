@@ -9,10 +9,17 @@ import '../../shared/custom_button.dart';
 import 'order_detials.dart';
 
 class status_1 extends StatefulWidget {
-  const status_1({Key? key, required this.token, required this.id})
+  const status_1(
+      {Key? key,
+      required this.token,
+      required this.id,
+      required this.imgUrl,
+      required this.location})
       : super(key: key);
   final String token;
   final int id;
+  final String imgUrl;
+  final String location;
 
   @override
   State<status_1> createState() => _status_1State();
@@ -58,17 +65,17 @@ class _status_1State extends State<status_1> {
                     padding: const EdgeInsets.only(left: 22),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          'Cafe Bistrovia',
-                          style: TextStyle(
+                          widget.location,
+                          style: const TextStyle(
                               fontFamily: 'Mulish',
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Color(0xFF8E8EA9)),
                         ),
-                        SizedBox(height: 4),
-                        Text(
+                        const SizedBox(height: 4),
+                        const Text(
                           'Your cart',
                           style: TextStyle(
                               fontFamily: 'Mulish',

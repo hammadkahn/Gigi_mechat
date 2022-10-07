@@ -34,26 +34,28 @@ class CartListModel {
 
 class CartData {
   String? merchantName;
-  String? purchaseId;
-  String? purchaseQuantity;
+  int? purchaseId;
+  int? purchaseQuantity;
   String? purchaseDate;
   int? id;
   String? name;
-  String? discount;
+  int? discount;
   String? type;
-  String? price;
-  String? additionalDiscount;
-  String? additionalDiscountDate;
-  String? discountOnPrice;
-  String? afterDiscount;
-  String? actualPrice;
-  String? categoryId;
+  dynamic price;
+  int? additionalDiscount;
+  dynamic additionalDiscountDate;
+  int? discountOnPrice;
+  int? afterDiscount;
+  int? actualPrice;
+  int? categoryId;
+  int? limit;
   String? description;
-  String? status;
+  int? status;
   String? rejectReason;
-  String? active;
-  String? merchantId;
-  String? createdBy;
+  int? active;
+  int? activiationRequest;
+  int? merchantId;
+  int? createdBy;
   String? createdAt;
   String? updatedAt;
   String? expiry;
@@ -76,10 +78,12 @@ class CartData {
       this.afterDiscount,
       this.actualPrice,
       this.categoryId,
+      this.limit,
       this.description,
       this.status,
       this.rejectReason,
       this.active,
+      this.activiationRequest,
       this.merchantId,
       this.createdBy,
       this.createdAt,
@@ -104,10 +108,12 @@ class CartData {
     afterDiscount = json['after_discount'];
     actualPrice = json['actual_price'];
     categoryId = json['category_id'];
+    limit = json['limit'];
     description = json['description'];
     status = json['status'];
     rejectReason = json['reject_reason'];
     active = json['active'];
+    activiationRequest = json['activiation_request'];
     merchantId = json['merchant_id'];
     createdBy = json['created_by'];
     createdAt = json['created_at'];
@@ -134,10 +140,12 @@ class CartData {
     data['after_discount'] = afterDiscount;
     data['actual_price'] = actualPrice;
     data['category_id'] = categoryId;
+    data['limit'] = limit;
     data['description'] = description;
     data['status'] = status;
     data['reject_reason'] = rejectReason;
     data['active'] = active;
+    data['activiation_request'] = activiationRequest;
     data['merchant_id'] = merchantId;
     data['created_by'] = createdBy;
     data['created_at'] = createdAt;

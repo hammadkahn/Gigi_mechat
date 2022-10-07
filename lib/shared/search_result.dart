@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/models/category_model.dart';
 import 'package:provider/provider.dart';
 
+import '../apis/api_urls.dart';
 import '../constant/size_constants.dart';
 import '../providers/deal_provider.dart';
 import '../user_app/user_menu/deals_details.dart';
@@ -138,7 +139,7 @@ class SearchResult extends StatelessWidget {
                                                 color: Color(0xFF0D9BFF)),
                                           ),
                                           Text(
-                                            data.price!,
+                                            data.price!.toString(),
                                             style: const TextStyle(
                                                 decoration:
                                                     TextDecoration.lineThrough,
@@ -159,8 +160,9 @@ class SearchResult extends StatelessWidget {
                                             Provider.of<DealProvider>(context,
                                                     listen: false)
                                                 .calculateDiscount(
-                                                    data.discountOnPrice!,
-                                                    data.price!),
+                                                    data.discountOnPrice!
+                                                        .toString(),
+                                                    data.price!.toString()),
                                             style: const TextStyle(
                                                 fontFamily: 'Mulish',
                                                 fontSize: 16,
@@ -198,7 +200,7 @@ class SearchResult extends StatelessWidget {
                                               color: Colors.white),
                                           children: [
                                             TextSpan(
-                                              text: data.type,
+                                              text: data.type.toString(),
                                               style: const TextStyle(
                                                   fontFamily: 'Mulish',
                                                   fontSize: 11,
@@ -223,7 +225,7 @@ class SearchResult extends StatelessWidget {
                                         )
                                       : CircleAvatar(
                                           backgroundImage: NetworkImage(
-                                            'https://gigiapi.zanforthstaging.com/${data.image!.path}/${data.image!.image}',
+                                            '${ApiUrls.imgBaseUrl}${data.image!.path}/${data.image!.image}',
                                           ),
                                         ),
                                 ),

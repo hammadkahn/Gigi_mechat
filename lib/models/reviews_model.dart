@@ -23,11 +23,11 @@ class ReviewsModel {
 
 class Reviews {
   int? id;
-  String? parentId;
-  String? userId;
-  String? dealId;
-  String? merchantId;
-  String? rating;
+  int? parentId;
+  int? userId;
+  int? dealId;
+  int? merchantId;
+  int? rating;
   String? notes;
   String? createdAt;
   String? updatedAt;
@@ -89,21 +89,21 @@ class Reviews {
       return zeroRating.toString();
     } else {
       for (int i = 0; i < rating.length; i++) {
-        int stars = int.parse(rating[i].rating!);
+        int stars = int.parse(rating[i].rating!.toString());
         if (stars == 5) {
-          fiveStars.add(rating[i].rating!);
+          fiveStars.add(rating[i].rating!.toString());
           debugPrint('five stars: ${fiveStars.length}');
         } else if (stars == 4) {
-          fourStars.add(rating[i].rating!);
+          fourStars.add(rating[i].rating!.toString());
           debugPrint(fourStars.length.toString());
         } else if (stars == 3) {
-          threeStars.add(rating[i].rating!);
+          threeStars.add(rating[i].rating!.toString());
           debugPrint(threeStars.length.toString());
         } else if (stars == 2) {
-          twoStars.add(rating[i].rating!);
+          twoStars.add(rating[i].rating!.toString());
           debugPrint(twoStars.length.toString());
         } else if (stars == 1) {
-          oneStars.add(rating[i].rating!);
+          oneStars.add(rating[i].rating!.toString());
           debugPrint(oneStars.length.toString());
         } else {
           debugPrint('no reviews');

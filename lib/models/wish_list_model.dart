@@ -35,26 +35,28 @@ class WishListModel {
 class WishData {
   int? id;
   String? name;
-  String? discount;
+  int? discount;
   String? type;
-  String? price;
-  String? additionalDiscount;
-  String? additionalDiscountDate;
-  String? discountOnPrice;
-  String? afterDiscount;
-  String? actualPrice;
-  String? categoryId;
+  int? price;
+  int? additionalDiscount;
+  dynamic additionalDiscountDate;
+  int? discountOnPrice;
+  int? afterDiscount;
+  int? actualPrice;
+  int? categoryId;
+  int? limit;
   String? description;
-  String? status;
+  int? status;
   String? rejectReason;
-  String? active;
-  String? merchantId;
-  String? createdBy;
+  int? active;
+  int? activiationRequest;
+  int? merchantId;
+  int? createdBy;
   String? createdAt;
   String? updatedAt;
   String? expiry;
-  String? wishlistId;
-  String? userId;
+  int? wishlistId;
+  int? userId;
   ImageModel? image;
 
   WishData(
@@ -69,10 +71,12 @@ class WishData {
       this.afterDiscount,
       this.actualPrice,
       this.categoryId,
+      this.limit,
       this.description,
       this.status,
       this.rejectReason,
       this.active,
+      this.activiationRequest,
       this.merchantId,
       this.createdBy,
       this.createdAt,
@@ -94,10 +98,12 @@ class WishData {
     afterDiscount = json['after_discount'];
     actualPrice = json['actual_price'];
     categoryId = json['category_id'];
+    limit = json['limit'];
     description = json['description'];
     status = json['status'];
     rejectReason = json['reject_reason'];
     active = json['active'];
+    activiationRequest = json['activiation_request'];
     merchantId = json['merchant_id'];
     createdBy = json['created_by'];
     createdAt = json['created_at'];
@@ -109,7 +115,7 @@ class WishData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = id;
     data['name'] = name;
     data['discount'] = discount;
@@ -121,10 +127,12 @@ class WishData {
     data['after_discount'] = afterDiscount;
     data['actual_price'] = actualPrice;
     data['category_id'] = categoryId;
+    data['limit'] = limit;
     data['description'] = description;
     data['status'] = status;
     data['reject_reason'] = rejectReason;
     data['active'] = active;
+    data['activiation_request'] = activiationRequest;
     data['merchant_id'] = merchantId;
     data['created_by'] = createdBy;
     data['created_at'] = createdAt;

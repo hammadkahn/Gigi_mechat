@@ -18,7 +18,7 @@ class DetailsCardWidget extends StatefulWidget {
 }
 
 class _DetailsCardWidgetState extends State<DetailsCardWidget> {
-  static const baseUrl = 'https://gigiapi.zanforthstaging.com/';
+  static const baseUrl = 'http://gigi-api.cryslistechnologies.com/';
 
   @override
   void initState() {

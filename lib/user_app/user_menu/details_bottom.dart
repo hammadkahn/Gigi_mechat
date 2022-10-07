@@ -112,7 +112,7 @@ class bottom_detail extends StatelessWidget {
                         color: Color(0xFFFF6767)),
                   ),
                   Text(
-                    dealData.price ?? '0',
+                    '${dealData.price ?? '0'}',
                     style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
                         fontFamily: 'Mulish',
@@ -154,7 +154,7 @@ class bottom_detail extends StatelessWidget {
                 ],
               )),
           Text(
-            'Coupons Left:  ${dealData.limit ?? 0}/100',
+            'Coupons Left:  ${dealData.limit ?? 0}',
             style: const TextStyle(
                 fontFamily: 'Mulish',
                 fontSize: 12,

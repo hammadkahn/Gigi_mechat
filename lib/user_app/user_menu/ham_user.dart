@@ -421,7 +421,7 @@ class _ham_userState extends State<ham_user> {
                         color: Colors.white,
                       ),
                       title: Text(
-                        userProfileData.age!,
+                        userProfileData.age!.toString(),
                         style: const TextStyle(color: Colors.white),
                       )),
                 ),
