@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gigi_app/providers/chat_provider.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
+// import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../apis/api_urls.dart';
@@ -21,8 +21,8 @@ class Message_write extends StatefulWidget {
 
 class _Message_writeState extends State<Message_write> {
   final msgController = TextEditingController();
-  PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
-  PusherChannel? myChannel;
+  // PusherChannelsFlutter pusher = PusherChannelsFlutter.getInstance();
+  // PusherChannel? myChannel;
 
   String? userId;
   String? channelName;
@@ -41,42 +41,42 @@ class _Message_writeState extends State<Message_write> {
     super.initState();
   }
 
-  void onConnectPressed(String id) async {
-    FocusScope.of(context).requestFocus(FocusNode());
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  // void onConnectPressed(String id) async {
+  //   FocusScope.of(context).requestFocus(FocusNode());
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    try {
-      await pusher.init(
-        apiKey: '814fe1b741785e7ace5e',
-        cluster: 'ap2',
-        authEndpoint: '${ApiUrls.baseUrl}channelAuthorization',
-        onAuthorizer: onAuthorizer,
-        onEvent: onEvent,
-      );
-      myChannel = await pusher.subscribe(
-        channelName: 'private-messages-channel.$id',
-        onSubscriptionSucceeded: (channelName, data) {
-          print("Subscribed to $channelName");
-          print("I can now access me: ${myChannel!.me}");
-          print("And here are the channel members: ${myChannel!.members}");
-        },
-        onMemberAdded: (member) {
-          print("Member added: $member");
-        },
-        onMemberRemoved: (member) {
-          print("Member removed: $member");
-        },
-        onEvent: (event) {
-          print("Event received: $event");
-        },
-      );
-      debugPrint(myChannel!.channelName);
-      prefs.setString("channelName", myChannel!.channelName);
-      await pusher.connect();
-    } catch (e) {
-      log("ERROR: $e");
-    }
-  }
+  //   try {
+  //     await pusher.init(
+  //       apiKey: '814fe1b741785e7ace5e',
+  //       cluster: 'ap2',
+  //       authEndpoint: '${ApiUrls.baseUrl}channelAuthorization',
+  //       onAuthorizer: onAuthorizer,
+  //       onEvent: onEvent,
+  //     );
+  //     myChannel = await pusher.subscribe(
+  //       channelName: 'private-messages-channel.$id',
+  //       onSubscriptionSucceeded: (channelName, data) {
+  //         print("Subscribed to $channelName");
+  //         print("I can now access me: ${myChannel!.me}");
+  //         print("And here are the channel members: ${myChannel!.members}");
+  //       },
+  //       onMemberAdded: (member) {
+  //         print("Member added: $member");
+  //       },
+  //       onMemberRemoved: (member) {
+  //         print("Member removed: $member");
+  //       },
+  //       onEvent: (event) {
+  //         print("Event received: $event");
+  //       },
+  //     );
+  //     debugPrint(myChannel!.channelName);
+  //     prefs.setString("channelName", myChannel!.channelName);
+  //     await pusher.connect();
+  //   } catch (e) {
+  //     log("ERROR: $e");
+  //   }
+  // }
 
   dynamic onAuthorizer(
       String channelName, String socketId, dynamic options) async {
@@ -103,36 +103,36 @@ class _Message_writeState extends State<Message_write> {
     // };
   }
 
-  void onEvent(PusherEvent event) {
-    debugPrint(event.data);
-    debugPrint(event.eventName);
-    debugPrint(event.channelName);
-    log("onEvent: $event");
-  }
+  // void onEvent(PusherEvent event) {
+  //   debugPrint(event.data);
+  //   debugPrint(event.eventName);
+  //   debugPrint(event.channelName);
+  //   log("onEvent: $event");
+  // }
 
-  void onTriggerEventPressed(dynamic data) async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.setString("eventName", 'messaging sending');
-    // prefs.setString("data", msgController.text);
-    debugPrint(myChannel!.channelName);
-    pusher.trigger(PusherEvent(
-      channelName: myChannel!.channelName,
-      eventName: 'client-event',
-      data: data,
-    ));
-  }
+  // void onTriggerEventPressed(dynamic data) async {
+  //   // SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   // prefs.setString("eventName", 'messaging sending');
+  //   // prefs.setString("data", msgController.text);
+  //   debugPrint(myChannel!.channelName);
+  //   pusher.trigger(PusherEvent(
+  //     channelName: myChannel!.channelName,
+  //     eventName: 'client-event',
+  //     data: data,
+  //   ));
+  // }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      myChannel!.channelName = prefs.getString("channelName")!;
-    });
-  }
+  // Future<void> initPlatformState() async {
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   if (!mounted) return;
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     // myChannel!.channelName = prefs.getString("channelName")!;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
