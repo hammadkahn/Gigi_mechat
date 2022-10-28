@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../apis/api_urls.dart';
 import '../../providers/deal_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,6 @@ class Wishlist extends StatefulWidget {
       : super(key: key);
   final WishData wishData;
   final String token;
-  static const url = 'http://gigi-api.cryslistechnologies.com/';
 
   @override
   State<Wishlist> createState() => _WishlistState();
@@ -60,7 +60,7 @@ class _WishlistState extends State<Wishlist> {
                   width: 90,
                   height: 119,
                   child: Image.network(
-                      '${Wishlist.url}${widget.wishData.image!.path}/${widget.wishData.image!.image}'),
+                      '${ApiUrls.imgBaseUrl}${widget.wishData.image!.path}/${widget.wishData.image!.image}'),
                 ),
           Padding(
             padding: const EdgeInsets.only(left: 15),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../apis/api_urls.dart';
 import '../../models/cart_model.dart';
 import '../../models/deal_model.dart';
 import '../../providers/deal_provider.dart';
@@ -19,7 +20,6 @@ class Details_deals extends StatefulWidget {
 }
 
 class _Details_dealsState extends State<Details_deals> {
-  static const baseUrl = 'http://gigi-api.cryslistechnologies.com/';
   double? percentage;
   double? price;
   double? priceAfterDiscount;
@@ -77,7 +77,7 @@ class _Details_dealsState extends State<Details_deals> {
                                   width: MediaQuery.of(context).size.width,
                                 )
                               : Image.network(
-                                  '$baseUrl${data.images![0].path!}/${data.images![0].image}',
+                                  '${ApiUrls.imgBaseUrl}${data.images![0].path!}/${data.images![0].image}',
                                   height: 248,
                                   width: MediaQuery.of(context).size.width,
                                 ),
